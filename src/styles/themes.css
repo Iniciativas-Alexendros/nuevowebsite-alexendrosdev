@@ -122,8 +122,8 @@
   --color-disabled: var(--disabled);
   --color-disabled-foreground: var(--disabled-foreground);
 
-  --font-sans: var(--font-family-sans);
-  --font-mono: var(--font-family-mono);
+  --font-sans: var(--font-inter, var(--font-family-sans));
+  --font-mono: var(--font-jetbrains, var(--font-family-mono));
 
   --text-2xs: var(--font-size-2xs);
   --text-xs: var(--font-size-xs);
