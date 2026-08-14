@@ -141,7 +141,7 @@ Una sesión NO está terminada si falta alguno:
 
 Hasta existir el repo, estos nombres son el contrato. El scaffold de Fase 1 DEBE crearlos.
 
-- `pnpm check` — typecheck + lint
+- `pnpm check` — typecheck + lint + format:check
 - `pnpm test` — Vitest
 - `pnpm test:e2e` — Playwright
 - `pnpm build` — build de producción
@@ -181,6 +181,8 @@ Umbrales ejecutables (DEC-AGENTS-04; no los rebajes):
 Herramientas autorizadas: **OpenCode Desktop**, **Kimi Code CLI** y **Hermes Desktop**. El contrato de §§1–10 manda. Si un bloque de herramienta choca con él, gana el contrato.
 
 NO añadas otra herramienta de código sin confirmación y sin actualizar este apartado.
+
+LSP: usa el servidor de lenguaje (LSP) disponible en el entorno para los lenguajes del repositorio —TypeScript, CSS, JSON, Markdown— y también para bash, para diagnóstico, navegación y refactorización asistida. El LSP complementa, no sustituye, los gates de §8 (`pnpm check`, `pnpm test`, `pnpm build`).
 
 ## 11.1 OpenCode Desktop
 

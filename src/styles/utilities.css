@@ -1,0 +1,25 @@
+/*
+ * Utilidades de accesibilidad — NFR-A11Y-005 (movimiento) y DESIGN §10 (objetivos táctiles).
+ * El foco visible vive en globals.css (usa --focus/--ring).
+ */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+@layer utilities {
+  /* Objetivo táctil mínimo de 44 px en pantallas con puntero grueso (DESIGN §10). */
+  @media (pointer: coarse) {
+    .min-tap-target {
+      min-height: 2.75rem;
+      min-width: 2.75rem;
+    }
+  }
+}
