@@ -41,16 +41,16 @@ Este archivo es el punto de entrada de lectura del proyecto. Te dice qué leer d
 
 **Pulso:** 14 de agosto de 2026.
 
-**Fase activa:** 3 — shell, navegación y SEO técnico (Fase 2 implementada, pendiente firma del decisor).
+**Fase activa:** 4 — contenido tipado y validado (Fases 1, 2 y 3 implementadas; Fases 2 y 3 pendientes de firma del decisor).
 
-**Siguiente acción:** revisar y firmar la salida de Fase 2 (design system) y arrancar Fase 3; la Fase 4 (contenido) corre en paralelo.
+**Siguiente acción:** revisar y firmar la salida de Fases 2 y 3, y arrancar Fase 4 (contenido tipado, Zod) en paralelo con Fase 5 (landing mínima).
 
 **Objetivo de producto:** v1.0 el 24 de agosto de 2026.
 
 | Capa | Estado |
 | --- | --- |
 | Documentación canónica | Aprobada el 13-08-2026 |
-| Código del sitio nuevo | Fases 1 y 2 implementadas (Next.js + TS + Tailwind + design system OKLCH + Vitest + Playwright + CI) |
+| Código del sitio nuevo | Fases 1, 2 y 3 implementadas (Next.js + TS + Tailwind + design system OKLCH + shell, navegación y SEO técnico + Vitest + Playwright + CI) |
 | Repositorio nuevo | Creado: `Iniciativas-Alexendros/nuevowebsite-alexendrosdev`. Público desde el 14-08-2026 (ADR-0017 revocada) |
 | Sitio anterior | Se archiva en solo lectura. Sin redirecciones (ADR-0013) |
 | Contenido editorial | Por redactar de cero (CONTENT §12) |
@@ -98,7 +98,7 @@ Lee solo lo que cierra la tarea. No leas los ocho documentos de cabo a rabo.
 
 1. Este README entero.
 2. Si vas a escribir código: [AGENTS.md](./AGENTS.md) §§1–6 y §9.
-3. La fase activa de [ROADMAP.md](./ROADMAP.md) (hoy: Fase 3, shell y navegación; Fase 2 pendiente de firma).
+3. La fase activa de [ROADMAP.md](./ROADMAP.md) (hoy: Fase 4, contenido tipado; Fases 2 y 3 pendientes de firma).
 4. Solo el ancla que cite la tarea: un `REQ`, un `NFR` o un `ADR`.
 5. [CONSTITUTION.md](./CONSTITUTION.md) solo si tocas alcance, integraciones, secretos o capacidades nuevas.
 
@@ -156,7 +156,7 @@ El sitio lo implementa un agente de código. El humano dirige, revisa diffs, hac
 
 # Pendiente ahora
 
-Fase 0, Fase 1 y Fase 2 implementadas. Fase 2 (design system) pendiente de firma del decisor; Fase 3 (shell, navegación y SEO técnico) es la siguiente.
+Fase 0, Fase 1, Fase 2 y Fase 3 implementadas. Fases 2 y 3 pendientes de firma del decisor; Fase 4 (contenido tipado y validado) y Fase 5 (landing mínima) son las siguientes.
 
 ## Cierre de Fase 0 — 14 de agosto de 2026, ~4 h
 
@@ -173,6 +173,10 @@ Scaffold de Next.js App Router, TypeScript estricto, pnpm 10, CI verde y preview
 ## Fase 2 (design system) — implementada el 14-08-2026
 
 Tokens primitivos y semánticos OKLCH, tipografía self-hosted, iconos Lucide, primitivos UI y de layout, catálogo `/catalog` y pruebas. Pendiente de firma del decisor: contraste AAA en cuerpo largo y QA visual (claro/oscuro, teclado, responsive). Excluidos justificadamente: Dialog, Sheet, Tooltip, Toast y Navigation.
+
+## Fase 3 (shell, navegación y SEO técnico) — implementada el 14-08-2026
+
+Cabecera y pie de sitio, navegación accesible (escritorio y móvil con Escape), wordmark «Alexendros.dev», página 404 con enlaces sugeridos, error boundary, metadata y SEO técnico (favicon, JSON-LD WebSite, robots.txt, sitemap.xml). Pendiente de firma del decisor. Excluido: contenido real (Fase 5) y textos legales finales (Fase 7).
 
 ## Documentos de apoyo aún no creados
 
