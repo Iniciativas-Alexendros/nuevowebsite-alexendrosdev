@@ -32,7 +32,7 @@ export function IconButton({
     <Button
       variant={variant}
       size="icon"
-      className={cn(square, className)}
+      className={cn(square, "min-tap-target", className)}
       aria-label={label}
       {...props}
     >
