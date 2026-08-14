@@ -133,6 +133,7 @@ Una sesión NO está terminada si falta alguno:
 - Conventional Commits obligatorios: `feat:`, `fix:`, `test:`, `chore:`, `docs:`.
 - El cuerpo del commit DEBE citar los IDs `REQ-*` / `ADR-*` / fase tocados.
 - Un PR = una unidad de trabajo. CI verde es condición de merge.
+- Toda PR lleva al menos una etiqueta temática (ADR-0022). Las PR apiladas se rebasan solas tras cada fusión a `main`, sin auto-merge (ADR-0023).
 - El decisor revisa el diff. El agente no se auto-mergea.
 
 ---
