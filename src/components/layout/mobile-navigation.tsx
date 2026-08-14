@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { usePathname } from "next/navigation";
 import { Menu, X } from "lucide-react";
 import { Link } from "@/components/ui/link";
 import { Icon } from "@/components/ui/icon";
@@ -9,6 +10,7 @@ import { siteConfig } from "@/content/site";
 export function MobileNavigation() {
   const [open, setOpen] = useState(false);
   const detailsRef = useRef<HTMLDetailsElement>(null);
+  const pathname = usePathname();
 
   useEffect(() => {
     if (!open) return;
@@ -21,9 +23,26 @@ export function MobileNavigation() {
       details.querySelector("summary")?.focus();
     }
 
+    function handlePointerDown(event: PointerEvent) {
+      const details = detailsRef.current;
+      if (!details) return;
+      if (event.target instanceof Node && !details.contains(event.target)) {
+        details.open = false;
+      }
+    }
+
     document.addEventListener("keydown", handleKeyDown);
-    return () => document.removeEventListener("keydown", handleKeyDown);
+    document.addEventListener("pointerdown", handlePointerDown);
+    return () => {
+      document.removeEventListener("keydown", handleKeyDown);
+      document.removeEventListener("pointerdown", handlePointerDown);
+    };
   }, [open]);
+
+  useEffect(() => {
+    const details = detailsRef.current;
+    if (details) details.open = false;
+  }, [pathname]);
 
   function close() {
     const details = detailsRef.current;

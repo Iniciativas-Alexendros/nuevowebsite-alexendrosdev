@@ -37,6 +37,16 @@ test.describe("cascarón de navegación", () => {
     expect(href).toBe("#contenido-principal");
   });
 
+  test("el enlace de salto mueve el foco al contenido principal", async ({ page }) => {
+    await page.goto("/");
+
+    await page.keyboard.press("Tab");
+    await page.keyboard.press("Enter");
+
+    const activeId = await page.evaluate(() => document.activeElement?.id);
+    expect(activeId).toBe("contenido-principal");
+  });
+
   test("el pie enlaza las páginas legales", async ({ page }) => {
     await page.goto("/");
 
@@ -66,6 +76,35 @@ test.describe("navegación móvil", () => {
     await expect(page.getByRole("link", { name: "Servicios" })).toBeVisible();
 
     await page.keyboard.press("Escape");
+    await expect(page.getByRole("navigation", { name: "Principal" })).toBeHidden();
+  });
+
+  test("se cierra al hacer clic fuera del menú", async ({ page }) => {
+    await page.setViewportSize({ width: 360, height: 640 });
+    await page.goto("/");
+
+    const summary = page.locator("summary");
+    await summary.click();
+    await expect(page.getByRole("navigation", { name: "Principal" })).toBeVisible();
+
+    await page.getByRole("main").click({ position: { x: 10, y: 10 } });
+    await expect(page.getByRole("navigation", { name: "Principal" })).toBeHidden();
+  });
+
+  test("se cierra al navegar a otra página", async ({ page }) => {
+    await page.setViewportSize({ width: 360, height: 640 });
+    await page.goto("/");
+
+    const summary = page.locator("summary");
+    await summary.click();
+    await expect(page.getByRole("navigation", { name: "Principal" })).toBeVisible();
+
+    await page
+      .getByRole("navigation", { name: "Principal" })
+      .getByRole("link", { name: "Servicios" })
+      .click();
+
+    await expect(page).toHaveURL(/\/servicios/);
     await expect(page.getByRole("navigation", { name: "Principal" })).toBeHidden();
   });
 });
