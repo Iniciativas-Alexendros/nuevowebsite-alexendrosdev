@@ -447,7 +447,7 @@ Todo pull request debe ejecutar:
 # 14. Despliegue y entornos
 
 - Plataforma: Vercel (ADR-0017); previews automáticas por pull request y producción desde la rama protegida `main`.
-- Repositorio: privado en GitHub hasta el lanzamiento; el repositorio anterior queda archivado en solo lectura (resuelto 13-08-2026).
+- Repositorio: público en GitHub (`Iniciativas-Alexendros/nuevowebsite-alexendrosdev`). La cláusula de ADR-0017 «privado hasta el lanzamiento» queda **revocada por el decisor el 14-08-2026** para habilitar previews de Vercel en plan Hobby con repositorio de organización; el resto de ADR-0017 (runtime Node.js, sin Edge) permanece vigente. El repositorio anterior queda archivado en solo lectura (resuelto 13-08-2026).
 - Entornos mínimos: local, preview y producción.
 - Cada pull request debe disponer de preview cuando el proveedor lo permita.
 - Producción solo se desplegará desde una rama protegida y con CI en verde.

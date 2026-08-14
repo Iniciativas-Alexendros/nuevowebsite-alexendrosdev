@@ -39,19 +39,19 @@ Este archivo es el punto de entrada de lectura del proyecto. Te dice qué leer d
 
 # Estado en una mirada
 
-**Pulso:** 13 de agosto de 2026.
+**Pulso:** 14 de agosto de 2026.
 
-**Fase activa:** 0 — marco documental cerrado; falta el repositorio.
+**Fase activa:** 1 — implementada; pendiente de revisión y firma del decisor.
 
-**Siguiente acción:** crear el repositorio privado, `.env.example` y las plantillas de issue/PR.
+**Siguiente acción:** revisar y fusionar los PRs en orden (#1→#6) y cerrar Fase 1.
 
 **Objetivo de producto:** v1.0 el 24 de agosto de 2026.
 
 | Capa | Estado |
 | --- | --- |
 | Documentación canónica | Aprobada el 13-08-2026 |
-| Código del sitio nuevo | No iniciado |
-| Repositorio nuevo | No creado. Privado hasta el lanzamiento (ADR-0017) |
+| Código del sitio nuevo | Fase 1 implementada (Next.js + TS + Tailwind + Vitest + Playwright + CI) |
+| Repositorio nuevo | Creado: `Iniciativas-Alexendros/nuevowebsite-alexendrosdev`. Público desde el 14-08-2026 (ADR-0017 revocada) |
 | Sitio anterior | Se archiva en solo lectura. Sin redirecciones (ADR-0013) |
 | Contenido editorial | Por redactar de cero (CONTENT §12) |
 

@@ -98,8 +98,8 @@ Camino crítico ~70 h con solape de Fase 4. Sin holgura humana de revisión. Rec
 
 **Tareas:**
 
-- [ ]  Crear el nuevo repositorio (GitHub, privado hasta el lanzamiento; ADR-0017).
-- [ ]  Configurar propiedad, visibilidad, licencia y ramas protegidas (`main` protegida con CI en verde; ADR-0017).
+- [x]  Crear el nuevo repositorio (GitHub, privado hasta el lanzamiento; ADR-0017). — **Resuelto:** creado `Iniciativas-Alexendros/nuevowebsite-alexendrosdev`; la cláusula «privado» de ADR-0017 queda revocada el 14-08-2026 (repositorio público para habilitar Vercel en plan Hobby).
+- [x]  Configurar propiedad, visibilidad, licencia y ramas protegidas (`main` protegida con CI en verde; ADR-0017). — **Resuelto:** propiedad organización Iniciativas-Alexendros; visibilidad pública; licencia MIT; `main` protegida con los 7 checks de CI.
 - [x]  Inventariar funcionalidad recuperable del repositorio actual. — **Resuelto:** no se hereda stack ni contenido; todo se redacta de cero (ADR-0006; CONTENT §12).
 - [x]  Clasificar cada activo actual en: conservar como requisito, conservar como contenido, rediseñar, sustituir o descartar. — **Resuelto:** descarte íntegro del stack anterior (ADR-0006); el repositorio anterior queda archivado en solo lectura (ADR-0017).
 - [x]  Identificar rutas antiguas y potenciales redirecciones. — **Resuelto:** lanzamiento limpio sin redirecciones (ADR-0013).
