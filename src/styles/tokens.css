@@ -3,6 +3,10 @@
  * Única fuente de valores crudos. Todo color en OKLCH; prohibido hex/rgb/hsl en producción.
  * Los radios se exponen como utilidades desde themes.css (mismo nombre que Tailwind); el resto
  * de primitivos no generan utilidades y se consumen vía var(--*).
+ *
+ * Espaciado (DESIGN §6): la escala --space-N usa base 4 px (--space-4 = 16 px). Equivale 1:1 a la
+ * escala de espaciado por defecto de Tailwind (--spacing: 0.25rem; N × 4 px), por lo que las
+ * utilidades de Tailwind (p-*, m-*, gap-*) ya materializan --space-N sin tokens duplicados.
  */
 :root {
   /* Color — neutral (matiz 260) */
