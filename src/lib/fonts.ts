@@ -13,5 +13,6 @@ export const fontMono = localFont({
   display: "swap",
   variable: "--font-jetbrains",
   weight: "100 800",
+  preload: false,
   fallback: ["ui-monospace", "SF Mono", "Cascadia Mono", "monospace"],
 });
