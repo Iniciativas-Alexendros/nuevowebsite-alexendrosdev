@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 
 import sitemap from "@/app/sitemap";
+import { siteConfig } from "@/content/site";
 
 describe("sitemap", () => {
   it("genera las ocho rutas estáticas con su URL absoluta", () => {
@@ -8,14 +9,14 @@ describe("sitemap", () => {
 
     expect(entries).toHaveLength(8);
     expect(entries.map((entry) => entry.url)).toEqual([
-      "https://alexendros.dev/",
-      "https://alexendros.dev/servicios",
-      "https://alexendros.dev/proyectos",
-      "https://alexendros.dev/stack",
-      "https://alexendros.dev/sobre-mi",
-      "https://alexendros.dev/contacto",
-      "https://alexendros.dev/aviso-legal",
-      "https://alexendros.dev/privacidad",
+      `${siteConfig.siteUrl}/`,
+      `${siteConfig.siteUrl}/servicios`,
+      `${siteConfig.siteUrl}/proyectos`,
+      `${siteConfig.siteUrl}/stack`,
+      `${siteConfig.siteUrl}/sobre-mi`,
+      `${siteConfig.siteUrl}/contacto`,
+      `${siteConfig.siteUrl}/aviso-legal`,
+      `${siteConfig.siteUrl}/privacidad`,
     ]);
   });
 

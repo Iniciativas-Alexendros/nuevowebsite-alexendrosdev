@@ -36,7 +36,7 @@ export function buildPageMetadata({ title, path, description }: PageMetadataInpu
       url,
       type: "website",
       siteName: siteConfig.siteName,
-      locale: siteConfig.locale,
+      locale: siteConfig.ogLocale,
     },
   };
 }
@@ -52,7 +52,7 @@ export const siteMetadata: Metadata = {
   openGraph: {
     type: "website",
     siteName: siteConfig.siteName,
-    locale: siteConfig.locale,
+    locale: siteConfig.ogLocale,
     title: siteConfig.defaultTitle,
     description: siteConfig.defaultDescription,
     url: siteUrl,
@@ -77,7 +77,7 @@ export const webSiteJsonLd: WebSiteJsonLd = {
   "@context": "https://schema.org",
   "@type": "WebSite",
   name: siteConfig.siteName,
-  url: siteConfig.siteUrl,
+  url: siteUrl,
   description: siteConfig.defaultDescription,
   inLanguage: siteConfig.locale,
 };
