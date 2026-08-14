@@ -5,12 +5,7 @@ import { CircleCheck, CircleX, Info, TriangleAlert } from "lucide-react";
 import { Icon } from "@/components/ui/icon";
 import { cn } from "@/lib/utils";
 
-export type AlertVariant =
-  | "default"
-  | "info"
-  | "success"
-  | "warning"
-  | "destructive";
+export type AlertVariant = "default" | "info" | "success" | "warning" | "destructive";
 
 const alertIcons: Record<AlertVariant, LucideIcon> = {
   default: Info,
@@ -43,8 +38,7 @@ export function Alert({
   ...props
 }: AlertProps) {
   const IconComponent = icon ?? alertIcons[variant];
-  const role =
-    variant === "destructive" || variant === "warning" ? "alert" : "status";
+  const role = variant === "destructive" || variant === "warning" ? "alert" : "status";
 
   return (
     <div
@@ -52,7 +46,7 @@ export function Alert({
       className={cn(
         "flex gap-3 rounded-lg p-4 text-sm leading-normal",
         alertVariants[variant],
-        className,
+        className
       )}
       {...props}
     >

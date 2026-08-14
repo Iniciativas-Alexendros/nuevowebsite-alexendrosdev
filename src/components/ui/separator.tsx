@@ -6,11 +6,7 @@ export type SeparatorProps = HTMLAttributes<HTMLDivElement> & {
   orientation?: "horizontal" | "vertical";
 };
 
-export function Separator({
-  orientation = "horizontal",
-  className,
-  ...props
-}: SeparatorProps) {
+export function Separator({ orientation = "horizontal", className, ...props }: SeparatorProps) {
   return (
     <div
       role="separator"
@@ -18,7 +14,7 @@ export function Separator({
       className={cn(
         "shrink-0 bg-border",
         orientation === "horizontal" ? "h-px w-full" : "h-full w-px",
-        className,
+        className
       )}
       {...props}
     />

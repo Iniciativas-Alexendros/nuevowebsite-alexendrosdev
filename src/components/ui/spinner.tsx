@@ -9,12 +9,7 @@ export type SpinnerProps = HTMLAttributes<HTMLDivElement> & {
   size?: IconSize;
 };
 
-export function Spinner({
-  label = "Cargando…",
-  size = "md",
-  className,
-  ...props
-}: SpinnerProps) {
+export function Spinner({ label = "Cargando…", size = "md", className, ...props }: SpinnerProps) {
   return (
     <div
       role="status"
