@@ -297,6 +297,8 @@ El flujo Borrador → Revisión → Publicado → Archivado se aplica en código
 - Términos técnicos con contexto en su primera aparición: comprensible para perfiles no técnicos sin perder precisión.
 - CTA con verbo de acción real y resultado inequívoco (“Escríbeme”, “Agenda una llamada”).
 
+**Aplicación práctica:** las reglas de tono, convenciones de slug, longitudes por campo y la regla de afirmaciones verificables se detallan en [docs/guia-redaccion.md](./docs/guia-redaccion.md), usado por la redacción de servicios, proyectos, stack, perfil y legales (Fase 4).
+
 ---
 
 # 12. Inventario de contenido
