@@ -20,7 +20,9 @@ export default function RootLayout({
       <body>
         <SkipLink />
         <SiteHeader />
-        <main id="contenido-principal">{children}</main>
+        <main id="contenido-principal" tabIndex={-1}>
+          {children}
+        </main>
         <SiteFooter />
         <script
           type="application/ld+json"
