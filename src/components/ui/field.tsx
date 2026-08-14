@@ -31,9 +31,7 @@ export function Field({
 }: FieldProps) {
   const helpId = `${id}-help`;
   const errorId = `${id}-error`;
-  const describedBy = [help ? helpId : null, error ? errorId : null]
-    .filter(Boolean)
-    .join(" ");
+  const describedBy = [help ? helpId : null, error ? errorId : null].filter(Boolean).join(" ");
 
   const control = isValidElement(children)
     ? cloneElement(children as ReactElement<Record<string, unknown>>, {
