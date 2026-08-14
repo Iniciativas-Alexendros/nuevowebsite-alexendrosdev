@@ -41,16 +41,16 @@ Este archivo es el punto de entrada de lectura del proyecto. Te dice qué leer d
 
 **Pulso:** 14 de agosto de 2026.
 
-**Fase activa:** 2 — design system, en curso.
+**Fase activa:** 3 — shell, navegación y SEO técnico (Fase 2 implementada, pendiente firma del decisor).
 
-**Siguiente acción:** implementar los PRs de Fase 2 (tokens, tipografía, primitivos, catálogo y pruebas) según el plan aprobado.
+**Siguiente acción:** revisar y firmar la salida de Fase 2 (design system) y arrancar Fase 3; la Fase 4 (contenido) corre en paralelo.
 
 **Objetivo de producto:** v1.0 el 24 de agosto de 2026.
 
 | Capa | Estado |
 | --- | --- |
 | Documentación canónica | Aprobada el 13-08-2026 |
-| Código del sitio nuevo | Fase 1 implementada (Next.js + TS + Tailwind + Vitest + Playwright + CI) |
+| Código del sitio nuevo | Fases 1 y 2 implementadas (Next.js + TS + Tailwind + design system OKLCH + Vitest + Playwright + CI) |
 | Repositorio nuevo | Creado: `Iniciativas-Alexendros/nuevowebsite-alexendrosdev`. Público desde el 14-08-2026 (ADR-0017 revocada) |
 | Sitio anterior | Se archiva en solo lectura. Sin redirecciones (ADR-0013) |
 | Contenido editorial | Por redactar de cero (CONTENT §12) |
@@ -98,7 +98,7 @@ Lee solo lo que cierra la tarea. No leas los ocho documentos de cabo a rabo.
 
 1. Este README entero.
 2. Si vas a escribir código: [AGENTS.md](./AGENTS.md) §§1–6 y §9.
-3. La fase activa de [ROADMAP.md](./ROADMAP.md) (hoy: Fase 2, design system).
+3. La fase activa de [ROADMAP.md](./ROADMAP.md) (hoy: Fase 3, shell y navegación; Fase 2 pendiente de firma).
 4. Solo el ancla que cite la tarea: un `REQ`, un `NFR` o un `ADR`.
 5. [CONSTITUTION.md](./CONSTITUTION.md) solo si tocas alcance, integraciones, secretos o capacidades nuevas.
 
@@ -156,7 +156,7 @@ El sitio lo implementa un agente de código. El humano dirige, revisa diffs, hac
 
 # Pendiente ahora
 
-Fase 0 y Fase 1 cerradas. Fase 2 (design system) en curso.
+Fase 0, Fase 1 y Fase 2 implementadas. Fase 2 (design system) pendiente de firma del decisor; Fase 3 (shell, navegación y SEO técnico) es la siguiente.
 
 ## Cierre de Fase 0 — 14 de agosto de 2026, ~4 h
 
@@ -169,6 +169,10 @@ Fase 0 y Fase 1 cerradas. Fase 2 (design system) en curso.
 ## Inmediatamente después — Fase 1, 14–15 ago
 
 Scaffold de Next.js App Router, TypeScript estricto, pnpm 10, CI verde y preview en Vercel. Sin código de producto heredado.
+
+## Fase 2 (design system) — implementada el 14-08-2026
+
+Tokens primitivos y semánticos OKLCH, tipografía self-hosted, iconos Lucide, primitivos UI y de layout, catálogo `/catalog` y pruebas. Pendiente de firma del decisor: contraste AAA en cuerpo largo y QA visual (claro/oscuro, teclado, responsive). Excluidos justificadamente: Dialog, Sheet, Tooltip, Toast y Navigation.
 
 ## Documentos de apoyo aún no creados
 

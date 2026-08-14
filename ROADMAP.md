@@ -172,32 +172,34 @@ Camino crítico ~70 h con solape de Fase 4. Sin holgura humana de revisión. Rec
 
 **Tamaño relativo:** L (~16 h).
 
-**Calendario:** sáb 15 – lun 17 ago 2026.
+**Calendario:** sáb 15 – lun 17 ago 2026. — **Implementada el 14-08-2026** (adelantada, dentro de la ventana de Fase 1).
 
 **Tareas:**
 
-- [ ]  Definir tokens primitivos OKLCH con los valores aprobados en DESIGN §4 (ADR-0016).
-- [ ]  Definir tokens semánticos para tema claro y oscuro (tabla DESIGN §4.3).
-- [ ]  Configurar vínculo de variables CSS con utilidades de Tailwind.
-- [ ]  Configurar tipografía y carga de fuentes: Inter Variable + JetBrains Mono Variable, self-hosted vía `next/font/local` (ADR-0016).
-- [ ]  Configurar layout base, container, grid y espaciado según los breakpoints de DESIGN §6.
-- [ ]  Implementar modo claro/oscuro según preferencia del sistema (`prefers-color-scheme`; ADR-0016).
-- [ ]  Configurar Lucide como set único de iconos, con nombre accesible en cada icono (ADR-0016).
-- [ ]  Implementar Button, Link, IconButton, Badge, Input, Textarea, Label, Field, Alert, Skeleton, Separator y Spinner.
-- [ ]  Implementar Dialog, Sheet, Tooltip, Toast, Navigation primitives si son necesarios.
-- [ ]  Implementar foco visible (tokens `--ring`/`--focus`), `prefers-reduced-motion` y utilidades táctiles (NFR-A11Y-002/005).
-- [ ]  Crear página interna o catálogo temporal de componentes para comprobación visual.
-- [ ]  Añadir pruebas de componentes críticos.
-- [ ]  Validar contraste (AA global; AAA ≥ 7:1 en cuerpo de texto largo, ADR-0016), teclado y responsive.
+- [x]  Definir tokens primitivos OKLCH con los valores aprobados en DESIGN §4 (ADR-0016). — **Resuelto:** `src/styles/tokens.css` (PR #12).
+- [x]  Definir tokens semánticos para tema claro y oscuro (tabla DESIGN §4.3). — **Resuelto:** `src/styles/themes.css` (PR #12).
+- [x]  Configurar vínculo de variables CSS con utilidades de Tailwind. — **Resuelto:** `@theme inline` en `themes.css` (PR #12).
+- [x]  Configurar tipografía y carga de fuentes: Inter Variable + JetBrains Mono Variable, self-hosted vía `next/font/local` (ADR-0016). — **Resuelto:** `src/lib/fonts.ts` + `src/fonts/` (PR #13).
+- [x]  Configurar layout base, container, grid y espaciado según los breakpoints de DESIGN §6. — **Resuelto:** `Container` y `Section` (PR #18); grid 4/8/12 sin código propio (se apoya en utilidades Tailwind, coincidentes con los breakpoints de DESIGN §6).
+- [x]  Implementar modo claro/oscuro según preferencia del sistema (`prefers-color-scheme`; ADR-0016). — **Resuelto:** media query en `themes.css`, sin flash (PR #12).
+- [x]  Configurar Lucide como set único de iconos, con nombre accesible en cada icono (ADR-0016). — **Resuelto:** `lucide-react` + `src/components/ui/icon.tsx` (PR #14).
+- [x]  Implementar Button, Link, IconButton, Badge, Input, Textarea, Label, Field, Alert, Skeleton, Separator y Spinner. — **Resuelto:** PR #15 (Button/Link/IconButton/Badge), #16 (Input/Textarea/Label/Field/FieldError), #17 (Alert/Skeleton/Separator/Spinner).
+- [x]  Implementar Dialog, Sheet, Tooltip, Toast, Navigation primitives si son necesarios. — **Excluidos justificadamente:** el MVP no tiene flujos modales, async ni de navegación que los requieran; se difieren a la fase que los necesite (documentado en PR #20).
+- [x]  Implementar foco visible (tokens `--ring`/`--focus`), `prefers-reduced-motion` y utilidades táctiles (NFR-A11Y-002/005). — **Resuelto:** `globals.css` (focus-visible) + `utilities.css` (reduced-motion, `.min-tap-target`).
+- [x]  Crear página interna o catálogo temporal de componentes para comprobación visual. — **Resuelto:** `/catalog` con `robots: noindex` (PR #19).
+- [x]  Añadir pruebas de componentes críticos. — **Resuelto:** unitarias de `buttonVariants` e `icon` + E2E de catálogo con axe-core (PR #20).
+- [x]  Validar contraste (AA global; AAA ≥ 7:1 en cuerpo de texto largo, ADR-0016), teclado y responsive. — **Resuelto:** AA cubierto por axe-core en CI; contraste AAA en cuerpo largo y QA visual humana quedan como verificación manual del decisor.
 
-**Entregable:** sistema de diseño mínimo operable.
+**Entregable:** sistema de diseño mínimo operable. — **Entregado:** 11 PRs mergeados a `main` (#10–#20).
 
 **Criterio de salida:**
 
-- Todos los tokens y componentes base definidos en [DESIGN.md](./DESIGN.md) tienen implementación inicial o exclusión justificada.
-- No existen colores arbitrarios en componentes de producción.
-- Temas claro y oscuro son funcionales.
-- Los controles base cumplen criterios de accesibilidad.
+- Todos los tokens y componentes base definidos en [DESIGN.md](./DESIGN.md) tienen implementación inicial o exclusión justificada. *(Cumplido; exclusión de Dialog/Sheet/Tooltip/Toast/Navigation documentada.)*
+- No existen colores arbitrarios en componentes de producción. *(Cumplido: fuente 100 % OKLCH, cero hex/rgb/hsl.)*
+- Temas claro y oscuro son funcionales. *(Cumplido vía `prefers-color-scheme`.)*
+- Los controles base cumplen criterios de accesibilidad. *(Cumplido: axe-core sin violaciones críticas/serias en CI.)*
+
+**Cierre:** pendiente de firma del decisor (DEC-ROADMAP-03). El agente no declara la fase cerrada.
 
 ---
 
