@@ -1,6 +1,6 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
 
-import { absoluteUrl, siteMetadata, webSiteJsonLd } from "@/lib/seo";
+import { absoluteUrl, buildPageMetadata, siteMetadata, webSiteJsonLd } from "@/lib/seo";
 
 afterEach(() => {
   vi.unstubAllEnvs();
@@ -35,6 +35,28 @@ describe("siteMetadata", () => {
   it("define description y openGraph base", () => {
     expect(siteMetadata.description).toBe("Sitio web de Alexendros.");
     expect(siteMetadata.openGraph?.siteName).toBe("Alexendros");
+  });
+});
+
+describe("buildPageMetadata", () => {
+  it("define título, canonical y openGraph a partir de la ruta", () => {
+    const metadata = buildPageMetadata({
+      title: "Servicios",
+      path: "/servicios",
+      description: "Servicios de Alexendros.",
+    });
+
+    expect(metadata.title).toBe("Servicios");
+    expect(metadata.description).toBe("Servicios de Alexendros.");
+    expect(metadata.alternates?.canonical).toBe("https://alexendros.dev/servicios");
+    expect(metadata.openGraph?.url).toBe("https://alexendros.dev/servicios");
+  });
+
+  it("reutiliza la descripción por defecto cuando no se proporciona", () => {
+    const metadata = buildPageMetadata({ title: "Stack", path: "/stack" });
+
+    expect(metadata.description).toBe("Sitio web de Alexendros.");
+    expect(metadata.alternates?.canonical).toBe("https://alexendros.dev/stack");
   });
 });
 

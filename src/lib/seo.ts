@@ -14,6 +14,33 @@ export function absoluteUrl(path: string): string {
   return `${base}${normalized}`;
 }
 
+export interface PageMetadataInput {
+  title: string;
+  path: string;
+  description?: string;
+}
+
+export function buildPageMetadata({ title, path, description }: PageMetadataInput): Metadata {
+  const url = absoluteUrl(path);
+  const metaDescription = description ?? siteConfig.defaultDescription;
+
+  return {
+    title,
+    description: metaDescription,
+    alternates: {
+      canonical: url,
+    },
+    openGraph: {
+      title,
+      description: metaDescription,
+      url,
+      type: "website",
+      siteName: siteConfig.siteName,
+      locale: siteConfig.locale,
+    },
+  };
+}
+
 export const siteMetadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: {
