@@ -6,7 +6,7 @@ Audiencia: Agente
 Autoridad: Derivada
 Clase: Obligatorio
 Días para revisión: 90
-En repo: No
+En repo: Sí
 Estado: Aprobado
 Orden: 6
 Propósito: Define cómo se organiza y opera el software.
@@ -14,14 +14,14 @@ Reforma: ADR + decisor
 Responsable: Alexendros
 Revisión: 13 de noviembre de 2026
 Rol: Arquitectura
-Ruta: http://ARCHITECTURE.md
+Ruta: ./ARCHITECTURE.md
 
 <aside>
 📌
 
 **Propósito**
 
-[ARCHITECTURE.md](http://ARCHITECTURE.md) definirá la estructura del software, los límites de responsabilidad, el modelo de renderizado, las convenciones de módulos, las integraciones, la estrategia de datos, la gestión de secretos, la calidad y el despliegue.
+ARCHITECTURE.md definirá la estructura del software, los límites de responsabilidad, el modelo de renderizado, las convenciones de módulos, las integraciones, la estrategia de datos, la gestión de secretos, la calidad y el despliegue.
 
 Debe permitir crear el proyecto desde cero sin arrastrar la complejidad del repositorio anterior.
 
@@ -254,7 +254,7 @@ Declaración obligatoria por tipo de módulo (ADR-0005; verificable en revisión
 - `/proyectos/[slug]`: casos de estudio completos, P1 (SPECS §6.5); su carpeta se creará al activarse el bloque.
 - `/stack`: tecnologías, herramientas, prácticas y áreas de especialidad.
 - `/sobre-mi`: perfil profesional, enfoque y experiencia.
-- `/contacto`: formulario según REQ-FORM-CONTACT-001 y enlace a agenda [Cal.com](http://Cal.com) (ADR-0007).
+- `/contacto`: formulario según REQ-FORM-CONTACT-001 y enlace a agenda [Cal.com](https://cal.com) (ADR-0007).
 - `/aviso-legal`: aviso legal (ADR-0015); debe reflejar la situación real del prestador y actualizarse al formalizar el alta.
 - `/privacidad`: política de privacidad (ADR-0015).
 - `/cookies`: no existe en el MVP; se publicará junto al banner de consentimiento al activar la analítica P1 (ADR-0010).
@@ -447,7 +447,7 @@ Todo pull request debe ejecutar:
 # 14. Despliegue y entornos
 
 - Plataforma: Vercel (ADR-0017); previews automáticas por pull request y producción desde la rama protegida `main`.
-- Repositorio: privado en GitHub hasta el lanzamiento; el repositorio anterior queda archivado en solo lectura (resuelto 13-08-2026).
+- Repositorio: público en GitHub (`Iniciativas-Alexendros/nuevowebsite-alexendrosdev`). La cláusula de ADR-0017 «privado hasta el lanzamiento» queda **revocada por el decisor el 14-08-2026** para habilitar previews de Vercel en plan Hobby con repositorio de organización; el resto de ADR-0017 (runtime Node.js, sin Edge) permanece vigente. El repositorio anterior queda archivado en solo lectura (resuelto 13-08-2026).
 - Entornos mínimos: local, preview y producción.
 - Cada pull request debe disponer de preview cuando el proveedor lo permita.
 - Producción solo se desplegará desde una rama protegida y con CI en verde.

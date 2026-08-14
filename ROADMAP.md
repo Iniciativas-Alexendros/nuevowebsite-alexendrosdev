@@ -6,7 +6,7 @@ Audiencia: Agente, Dirección
 Autoridad: Operativa
 Clase: Obligatorio
 Días para revisión: 9
-En repo: No
+En repo: Sí
 Estado: Aprobado
 Orden: 8
 Propósito: Define el orden de ejecución.
@@ -14,7 +14,7 @@ Reforma: Operativa
 Responsable: Alexendros
 Revisión: 24 de agosto de 2026
 Rol: Plan
-Ruta: http://ROADMAP.md
+Ruta: ./ROADMAP.md
 
 <aside>
 📌
@@ -59,7 +59,7 @@ Camino crítico ~70 h con solape de Fase 4. Sin holgura humana de revisión. Rec
 
 | Fase | Tamaño | Horas | Ventana | Hito |
 | --- | --- | --- | --- | --- |
-| 0 (resto) | S | 4 | vie 14 ago | Repo privado, `.env.example`, plantillas |
+| 0 (resto) | S | 4 | vie 14 ago | Repositorio, `.env.example`, plantillas |
 | 1 | M | 10 | vie 14 – sáb 15 ago | App vacía, CI verde, preview |
 | 2 | L | 16 | sáb 15 – lun 17 ago | Design system operable |
 | 4 (paralela) | M | 10 | vie 14 – lun 17 ago | Contenido tipado y validado |
@@ -98,8 +98,8 @@ Camino crítico ~70 h con solape de Fase 4. Sin holgura humana de revisión. Rec
 
 **Tareas:**
 
-- [ ]  Crear el nuevo repositorio (GitHub, privado hasta el lanzamiento; ADR-0017).
-- [ ]  Configurar propiedad, visibilidad, licencia y ramas protegidas (`main` protegida con CI en verde; ADR-0017).
+- [x]  Crear el nuevo repositorio (GitHub, privado hasta el lanzamiento; ADR-0017). — **Resuelto:** creado `Iniciativas-Alexendros/nuevowebsite-alexendrosdev`; la cláusula «privado» de ADR-0017 queda revocada el 14-08-2026 (repositorio público para habilitar Vercel en plan Hobby).
+- [x]  Configurar propiedad, visibilidad, licencia y ramas protegidas (`main` protegida con CI en verde; ADR-0017). — **Resuelto:** propiedad organización Iniciativas-Alexendros; visibilidad pública; licencia MIT; `main` protegida con los 7 checks de CI.
 - [x]  Inventariar funcionalidad recuperable del repositorio actual. — **Resuelto:** no se hereda stack ni contenido; todo se redacta de cero (ADR-0006; CONTENT §12).
 - [x]  Clasificar cada activo actual en: conservar como requisito, conservar como contenido, rediseñar, sustituir o descartar. — **Resuelto:** descarte íntegro del stack anterior (ADR-0006); el repositorio anterior queda archivado en solo lectura (ADR-0017).
 - [x]  Identificar rutas antiguas y potenciales redirecciones. — **Resuelto:** lanzamiento limpio sin redirecciones (ADR-0013).
@@ -297,7 +297,7 @@ Camino crítico ~70 h con solape de Fase 4. Sin holgura humana de revisión. Rec
 - [ ]  Implementar secciones de servicios, proyectos destacados, stack destacado y CTA (REQ-DOMAIN-CTA-001).
 - [ ]  Implementar `/servicios` con los 4 servicios aprobados (SPECS §6.2).
 - [ ]  Implementar ServiceCard y componentes relacionados (REQ-DOMAIN-SERVICECARD-001; sin precios, plazos ni garantías no confirmados).
-- [ ]  Implementar `/contacto` con canales, formulario y enlace a [Cal.com](http://Cal.com) como alternativa de llamada (DEC-SPECS-06; si añade script de terceros, exige ADR propio).
+- [ ]  Implementar `/contacto` con canales, formulario y enlace a [Cal.com](https://cal.com) como alternativa de llamada (DEC-SPECS-06; si añade script de terceros, exige ADR propio).
 - [ ]  Implementar ContactForm (aprobado, DEC-SPECS-06) con los campos y validaciones de REQ-FORM-CONTACT-001: nombre, email, empresa, asunto, mensaje de 20–2.000 caracteres, consentimiento no premarcado y honeypot.
 - [ ]  Implementar validación cliente/servidor con esquema Zod único compartido; el servidor es la fuente de verdad (ARCHITECTURE §7).
 - [ ]  Implementar `POST /api/contact` como único punto dinámico del sitio; el resto es SSG puro con runtime Node.js 22 (ADR-0017).

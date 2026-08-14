@@ -6,7 +6,7 @@ Audiencia: Agente, Dirección
 Autoridad: Operativa
 Clase: Complementario
 Días para revisión: 90
-En repo: No
+En repo: Sí
 Estado: Aprobado
 Orden: 9
 Propósito: Contrato operativo del agente de código.
@@ -14,7 +14,7 @@ Reforma: Operativa
 Responsable: Alexendros
 Revisión: 13 de noviembre de 2026
 Rol: Contrato
-Ruta: http://AGENTS.md
+Ruta: ./AGENTS.md
 
 <aside>
 📌
@@ -36,11 +36,11 @@ Este archivo es el contrato operativo del agente de código. Deriva de CONSTITUT
 
 # 2. Fuentes de verdad (orden de lectura)
 
-Empieza siempre por [[README.md](http://README.md)](https://app.notion.com/p/README-md-6a7881ce4b4a4464acdc46285a90efa2?pvs=21). Luego lee solo lo necesario para la tarea, en este orden:
+Empieza siempre por [README.md](./README.md). Luego lee solo lo necesario para la tarea, en este orden:
 
-1. [[README.md](http://README.md)](https://app.notion.com/p/README-md-6a7881ce4b4a4464acdc46285a90efa2?pvs=21) — pulso, enrutado y exclusiones.
+1. [README.md](./README.md) — pulso, enrutado y exclusiones.
 2. Este archivo — contrato operativo de la sesión.
-3. [[CONSTITUTION.md](http://CONSTITUTION.md)](https://app.notion.com/p/CONSTITUTION-md-b088505105114630aa34c5252a9df4e9?pvs=21) si tocas alcance, superficie, integraciones, secretos o capacidades nuevas.
+3. [CONSTITUTION.md](./CONSTITUTION.md) si tocas alcance, superficie, integraciones, secretos o capacidades nuevas.
 4. La fase activa de [ROADMAP.md](./ROADMAP.md) (objetivo, traza, exclusiones, criterio de salida).
 5. Los REQ/NFR citados en la traza, en [SPECS.md](./SPECS.md).
 6. Si tocas UI: [DESIGN.md](./DESIGN.md). Si tocas estructura, datos o endpoint: [ARCHITECTURE.md](./ARCHITECTURE.md). Si tocas textos o entidades: [CONTENT.md](./CONTENT.md).
