@@ -6,7 +6,7 @@ Audiencia: Agente, Dirección
 Autoridad: Suprema
 Clase: Obligatorio
 Días para revisión: 90
-En repo: No
+En repo: Sí
 Estado: Aprobado
 Orden: 2
 Propósito: Norma de rango superior: lo no negociable.
@@ -14,7 +14,7 @@ Reforma: ADR + decisor
 Responsable: Alexendros
 Revisión: 13 de noviembre de 2026
 Rol: Norma
-Ruta: http://CONSTITUTION.md
+Ruta: ./CONSTITUTION.md
 
 <aside>
 📌
@@ -39,7 +39,7 @@ Este archivo es la norma de rango superior del proyecto. Fija lo no negociable. 
 # Documentos
 
 - Los documentos canónicos DEBEN residir en la raíz del repositorio. Plantillas, decisiones históricas y material de apoyo PUEDEN ubicarse en `docs/`.
-- [[README.md](http://README.md)](https://app.notion.com/p/README-md-6a7881ce4b4a4464acdc46285a90efa2?pvs=21) DEBE ser el primer documento de lectura. Orquesta el pulso, el pendiente y el enrutado. NO DEBE relajar ni sustituir esta constitución.
+- [README.md](./README.md) DEBE ser el primer documento de lectura. Orquesta el pulso, el pendiente y el enrutado. NO DEBE relajar ni sustituir esta constitución.
 - Los documentos DEBEN usar Markdown, encabezados jerárquicos, enlaces relativos y lenguaje prescriptivo: DEBE, NO DEBE, PUEDE y REQUIERE.
 - Los documentos NO DEBEN contener secretos, tokens reales, claves API, correos privados, IDs de producción ni configuraciones sensibles.
 
@@ -87,7 +87,7 @@ Este archivo es la norma de rango superior del proyecto. Fija lo no negociable. 
 
 # Jerarquía de lectura
 
-1. [[README.md](http://README.md)](https://app.notion.com/p/README-md-6a7881ce4b4a4464acdc46285a90efa2?pvs=21) — punto de entrada de lectura: pulso, pendiente, programado y enrutado.
+1. [README.md](./README.md) — punto de entrada de lectura: pulso, pendiente, programado y enrutado.
 2. Este archivo — lo no negociable.
 3. [SPECS.md](./SPECS.md) — qué se entrega y cómo se acepta.
 4. [DECISIONS.md](./DECISIONS.md) — por qué se eligió una solución.
