@@ -1,0 +1,51 @@
+name: Autorebase de PRs apiladas
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: read
+
+concurrency:
+  group: autorebase-main
+  cancel-in-progress: false
+
+jobs:
+  rebase:
+    name: Rebase de PRs abiertas sobre main
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Rebasar ramas de PRs abiertas, en orden
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git fetch origin main
+          branches=$(gh pr list --state open --base main --limit 50 \
+            --json number,headRefName,isCrossRepository \
+            --jq 'sort_by(.number) | .[] | select(.isCrossRepository | not) | .headRefName')
+          for branch in $branches; do
+            echo "== $branch"
+            git fetch origin "$branch"
+            if git merge-base --is-ancestor origin/main "origin/$branch"; then
+              echo "al día; nada que hacer"
+              continue
+            fi
+            git checkout -B "$branch" "origin/$branch"
+            if git rebase origin/main; then
+              git push --force-with-lease origin "$branch"
+              echo "rebasada y empujada"
+            else
+              git rebase --abort
+              echo "::warning::Conflicto al rebasar '$branch'; requiere intervención manual"
+            fi
+            git checkout --detach origin/main
+          done
