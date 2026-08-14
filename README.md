@@ -43,7 +43,7 @@ Este archivo es el punto de entrada de lectura del proyecto. Te dice qué leer d
 
 **Fase activa:** 1 — implementada; pendiente de revisión y firma del decisor.
 
-**Siguiente acción:** fusionar PR #6 (absorbe #1–#5) y cerrar Fase 1.
+**Siguiente acción:** firmar el criterio de salida de Fase 1 (DEC-ROADMAP-03) y arrancar Fase 2 (diseño visual).
 
 **Objetivo de producto:** v1.0 el 24 de agosto de 2026.
 
