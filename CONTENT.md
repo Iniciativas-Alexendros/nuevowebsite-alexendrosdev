@@ -65,15 +65,15 @@ Batería 5.3 respondida íntegramente, verificaciones del plan cumplidas y ADR-0
 - `defaultTitle`
 - `defaultDescription`
 - `locale`
+- `ogLocale`
 - `socialLinks`
-- `contactChannels`
 - `navigation`
 - `footerNavigation`
 - `organization` o `person` schema data
 - `availability` status, solo si se mantiene con rigor
 - `defaultOpenGraphImage`
 
-**Obligatorios:** `siteName`, `siteUrl`, `defaultTitle`, `defaultDescription`, `locale`, `navigation`, `contactChannels`, `defaultOpenGraphImage`.
+**Obligatorios:** `siteName`, `siteUrl`, `defaultTitle`, `defaultDescription`, `locale`, `ogLocale`, `navigation`, `defaultOpenGraphImage`.
 
 **Opcionales:** `socialLinks`, `footerNavigation`, `person` schema data. `availability` no se usa en el MVP; su activación futura requerirá ADR y cadencia de mantenimiento (resuelto 13-08-2026, batería 5.3 pregunta 6).
 
@@ -175,8 +175,9 @@ Batería 5.3 respondida íntegramente, verificaciones del plan cumplidas y ADR-0
 - `featured`
 - `relatedProjects`
 - `relatedServices`
+- `status`
 
-**Obligatorios:** `id`, `name`, `category`, `description`.
+**Obligatorios:** `id`, `name`, `category`, `description`, `status`.
 
 **Opcionales:** `icon`, `website`, `relevance`, `featured`, `relatedProjects`, `relatedServices`.
 
@@ -190,7 +191,7 @@ Batería 5.3 respondida íntegramente, verificaciones del plan cumplidas y ADR-0
 
 # 6. Entidad ContactChannel
 
-**Fuente:** definida dentro de `src/content/site.ts` como `contactChannels: ContactChannel[]`, cubierta por `siteConfigSchema`; consumida por `/contacto` y el footer (SPECS §6.8, ADR-0007).
+**Fuente:** `src/content/contact.ts` — array TS tipado validado con `contactChannelsSchema`; consumida por `/contacto` y el footer (SPECS §6.8, ADR-0007).
 
 **Campos:**
 
@@ -313,7 +314,7 @@ El flujo Borrador → Revisión → Publicado → Archivado se aplica en código
 | 4 servicios (DEC-SPECS-02) | `services/*.ts` | Por redactar de cero |
 | 4 proyectos (DEC-SPECS-03) | `projects/*.ts` | Por redactar de cero; revisar confidencialidad |
 | Stack y prácticas | `technologies/index.ts` | Por redactar de cero |
-| Bio (/sobre-mi) | Contenido de página | Por redactar de cero |
+| Bio (/sobre-mi) | `profile.ts` | Por redactar de cero |
 | Aviso legal y privacidad | `legal/*` | Por redactar (ADR-0015) |
 | Capturas de proyectos | `public/images/` | Por producir (DES-07: capturas reales) |
 | OG images | `opengraph-image.tsx` | Plantilla generada con `opengraph-image.tsx` (resuelto 13-08-2026) |

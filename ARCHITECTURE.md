@@ -309,6 +309,7 @@ Definir tipos de dominio independientes de la fuente:
 - Service.
 - Project.
 - ProjectImage.
+- Profile.
 - Technology.
 - TechnologyGroup.
 - Testimonial o ProofPoint, solo si son verificables.
