@@ -24,7 +24,9 @@ export default function RootLayout({
         <SiteFooter />
         <script
           type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(webSiteJsonLd) }}
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(webSiteJsonLd).replace(/</g, "\\u003c"),
+          }}
         />
       </body>
     </html>

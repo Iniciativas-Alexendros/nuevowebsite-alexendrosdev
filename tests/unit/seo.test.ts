@@ -1,6 +1,7 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
 
 import { absoluteUrl, buildPageMetadata, siteMetadata, webSiteJsonLd } from "@/lib/seo";
+import { siteConfig } from "@/content/site";
 
 afterEach(() => {
   vi.unstubAllEnvs();
@@ -9,11 +10,11 @@ afterEach(() => {
 
 describe("absoluteUrl", () => {
   it("resuelve rutas relativas contra el dominio base", () => {
-    expect(absoluteUrl("/servicios")).toBe("https://alexendros.dev/servicios");
+    expect(absoluteUrl("/servicios")).toBe(`${siteConfig.siteUrl}/servicios`);
   });
 
   it("normaliza rutas sin barra inicial", () => {
-    expect(absoluteUrl("contacto")).toBe("https://alexendros.dev/contacto");
+    expect(absoluteUrl("contacto")).toBe(`${siteConfig.siteUrl}/contacto`);
   });
 
   it("usa NEXT_PUBLIC_SITE_URL cuando está definida", async () => {
@@ -25,7 +26,7 @@ describe("absoluteUrl", () => {
 
 describe("siteMetadata", () => {
   it("define metadataBase, título por defecto y plantilla", () => {
-    expect(siteMetadata.metadataBase).toEqual(new URL("https://alexendros.dev"));
+    expect(siteMetadata.metadataBase).toEqual(new URL(siteConfig.siteUrl));
     expect(siteMetadata.title).toEqual({
       default: "Alexendros",
       template: "%s — Alexendros",
@@ -35,6 +36,7 @@ describe("siteMetadata", () => {
   it("define description y openGraph base", () => {
     expect(siteMetadata.description).toBe("Sitio web de Alexendros.");
     expect(siteMetadata.openGraph?.siteName).toBe("Alexendros");
+    expect(siteMetadata.openGraph?.locale).toBe(siteConfig.ogLocale);
   });
 });
 
@@ -48,15 +50,16 @@ describe("buildPageMetadata", () => {
 
     expect(metadata.title).toBe("Servicios");
     expect(metadata.description).toBe("Servicios de Alexendros.");
-    expect(metadata.alternates?.canonical).toBe("https://alexendros.dev/servicios");
-    expect(metadata.openGraph?.url).toBe("https://alexendros.dev/servicios");
+    expect(metadata.alternates?.canonical).toBe(`${siteConfig.siteUrl}/servicios`);
+    expect(metadata.openGraph?.url).toBe(`${siteConfig.siteUrl}/servicios`);
+    expect(metadata.openGraph?.locale).toBe(siteConfig.ogLocale);
   });
 
   it("reutiliza la descripción por defecto cuando no se proporciona", () => {
     const metadata = buildPageMetadata({ title: "Stack", path: "/stack" });
 
     expect(metadata.description).toBe("Sitio web de Alexendros.");
-    expect(metadata.alternates?.canonical).toBe("https://alexendros.dev/stack");
+    expect(metadata.alternates?.canonical).toBe(`${siteConfig.siteUrl}/stack`);
   });
 });
 
@@ -66,7 +69,7 @@ describe("webSiteJsonLd", () => {
       "@context": "https://schema.org",
       "@type": "WebSite",
       name: "Alexendros",
-      url: "https://alexendros.dev",
+      url: siteConfig.siteUrl,
       description: "Sitio web de Alexendros.",
       inLanguage: "es",
     });

@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 
 import robots from "@/app/robots";
+import { siteConfig } from "@/content/site";
 
 describe("robots", () => {
   it("permite el rastreo y excluye el catálogo", () => {
@@ -16,6 +17,6 @@ describe("robots", () => {
   it("referencia el sitemap con la URL del sitio", () => {
     const result = robots();
 
-    expect(result.sitemap).toBe("https://alexendros.dev/sitemap.xml");
+    expect(result.sitemap).toBe(`${siteConfig.siteUrl}/sitemap.xml`);
   });
 });
