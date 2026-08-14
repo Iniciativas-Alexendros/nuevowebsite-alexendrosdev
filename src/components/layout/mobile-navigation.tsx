@@ -43,7 +43,7 @@ export function MobileNavigation() {
       </summary>
       <nav
         aria-label="Principal"
-        className="absolute right-0 top-full z-[1100] mt-2 w-56 rounded-md border border-border bg-surface-raised p-2 shadow-lg"
+        className="absolute right-0 top-full z-dropdown mt-2 w-56 rounded-md border border-border bg-surface-raised p-2 shadow-lg"
       >
         <ul className="flex flex-col">
           {siteConfig.navigation.map((item) => (

@@ -1,3 +1,4 @@
+import { Container } from "@/components/layout/container";
 import { Link } from "@/components/ui/link";
 import { Wordmark } from "@/components/layout/wordmark";
 import { siteConfig } from "@/content/site";
@@ -5,7 +6,7 @@ import { siteConfig } from "@/content/site";
 export function SiteFooter() {
   return (
     <footer className="border-t border-border bg-surface">
-      <div className="mx-auto flex w-full max-w-6xl flex-col gap-6 px-4 py-8 md:flex-row md:items-center md:justify-between md:px-6 lg:px-8">
+      <Container className="flex flex-col gap-6 py-8 md:flex-row md:items-center md:justify-between">
         <Wordmark />
         <nav aria-label="Legal" className="flex items-center gap-6">
           {siteConfig.footerNavigation.map((item) => (
@@ -18,7 +19,7 @@ export function SiteFooter() {
             </Link>
           ))}
         </nav>
-      </div>
+      </Container>
     </footer>
   );
 }
