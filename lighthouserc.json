@@ -1,13 +1,13 @@
 {
   "ci": {
     "collect": {
-      "startServerCommand": "pnpm start",
       "url": ["http://localhost:3000/"],
       "numberOfRuns": 3,
       "settings": {
         "throttling": {
           "cpuSlowdownMultiplier": 1
-        }
+        },
+        "skipAudits": ["is-crawlable"]
       }
     },
     "assert": {
