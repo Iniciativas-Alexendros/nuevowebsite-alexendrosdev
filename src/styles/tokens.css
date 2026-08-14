@@ -82,7 +82,8 @@
 
   /* Tipografía */
   --font-family-sans: "Inter Variable", system-ui, -apple-system, "Segoe UI", sans-serif;
-  --font-family-mono: "JetBrains Mono Variable", ui-monospace, "SF Mono", "Cascadia Mono", monospace;
+  --font-family-mono:
+    "JetBrains Mono Variable", ui-monospace, "SF Mono", "Cascadia Mono", monospace;
 
   --font-size-2xs: 0.694rem;
   --font-size-xs: 0.75rem;

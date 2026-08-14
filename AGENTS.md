@@ -141,7 +141,7 @@ Una sesión NO está terminada si falta alguno:
 
 Hasta existir el repo, estos nombres son el contrato. El scaffold de Fase 1 DEBE crearlos.
 
-- `pnpm check` — typecheck + lint
+- `pnpm check` — typecheck + lint + format:check
 - `pnpm test` — Vitest
 - `pnpm test:e2e` — Playwright
 - `pnpm build` — build de producción
