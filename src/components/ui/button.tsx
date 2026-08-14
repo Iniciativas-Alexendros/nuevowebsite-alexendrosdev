@@ -7,14 +7,18 @@ export type ButtonVariant = "primary" | "secondary" | "outline" | "ghost" | "des
 export type ButtonSize = "sm" | "md" | "lg" | "icon";
 
 const baseClasses =
-  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md font-medium transition-colors disabled:pointer-events-none disabled:opacity-50 [&_svg]:shrink-0";
+  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md font-medium transition-colors disabled:pointer-events-none disabled:text-disabled-foreground [&_svg]:shrink-0";
 
 const variantClasses: Record<ButtonVariant, string> = {
-  primary: "bg-primary text-primary-foreground hover:bg-button-primary-hover",
-  secondary: "bg-secondary text-secondary-foreground hover:bg-button-secondary-hover",
-  outline: "border border-border bg-transparent text-foreground hover:bg-button-subtle-hover",
+  primary:
+    "bg-primary text-primary-foreground hover:bg-button-primary-hover disabled:bg-disabled",
+  secondary:
+    "bg-secondary text-secondary-foreground hover:bg-button-secondary-hover disabled:bg-disabled",
+  outline:
+    "border border-border bg-transparent text-foreground hover:bg-button-subtle-hover disabled:border-muted",
   ghost: "text-foreground hover:bg-button-subtle-hover",
-  destructive: "bg-destructive text-destructive-foreground hover:bg-button-destructive-hover",
+  destructive:
+    "bg-destructive text-destructive-foreground hover:bg-button-destructive-hover disabled:bg-disabled",
 };
 
 const sizeClasses: Record<ButtonSize, string> = {
