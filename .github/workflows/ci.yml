@@ -126,4 +126,12 @@ jobs:
           node-version-file: .nvmrc
           cache: pnpm
       - run: pnpm install --frozen-lockfile
+      - name: Calentar el preview antes de medir
+        run: |
+          url="${{ steps.vercel-deploy.outputs.preview-url }}"
+          for i in 1 2 3; do
+            code=$(curl -sS -o /dev/null -w "%{http_code}" "$url")
+            echo "Warm-up $i: HTTP $code"
+            sleep 2
+          done
       - run: pnpm exec lhci autorun --config=./lighthouserc.json --collect.url="${{ steps.vercel-deploy.outputs.preview-url }}"
