@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 
 import { fontMono, fontSans } from "@/lib/fonts";
 import { siteMetadata, webSiteJsonLd } from "@/lib/seo";
+import { SiteFooter } from "@/components/layout/site-footer";
 import { SiteHeader } from "@/components/layout/site-header";
 import { SkipLink } from "@/components/layout/skip-link";
 
@@ -20,6 +21,7 @@ export default function RootLayout({
         <SkipLink />
         <SiteHeader />
         <main id="contenido-principal">{children}</main>
+        <SiteFooter />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(webSiteJsonLd) }}
