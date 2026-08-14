@@ -182,6 +182,8 @@ Herramientas autorizadas: **OpenCode Desktop**, **Kimi Code CLI** y **Hermes Des
 
 NO añadas otra herramienta de código sin confirmación y sin actualizar este apartado.
 
+LSP: usa el servidor de lenguaje (LSP) disponible en el entorno para los lenguajes del repositorio —TypeScript, CSS, JSON, Markdown— y también para bash, para diagnóstico, navegación y refactorización asistida. El LSP complementa, no sustituye, los gates de §8 (`pnpm check`, `pnpm test`, `pnpm build`).
+
 ## 11.1 OpenCode Desktop
 
 - Carga este `AGENTS.md` de la raíz del repo. NO uses `~/.config/opencode/AGENTS.md` para anular este contrato.
