@@ -101,15 +101,24 @@ jobs:
       - run: pnpm audit --prod --audit-level=high
 
   lighthouse:
-    name: Lighthouse CI
+    name: Lighthouse CI (preview de Vercel)
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - name: Desplegar preview en Vercel
+        id: vercel-deploy
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+        run: |
+          npx vercel@latest deploy --token "$VERCEL_TOKEN" --yes --output /tmp/vercel-deploy.json
+          url=$(node -e "console.log('https://' + require('/tmp/vercel-deploy.json').url)")
+          echo "preview-url=$url" >> "$GITHUB_OUTPUT"
       - uses: pnpm/action-setup@v4
       - uses: actions/setup-node@v4
         with:
           node-version-file: .nvmrc
           cache: pnpm
       - run: pnpm install --frozen-lockfile
-      - run: pnpm build
-      - run: pnpm exec lhci autorun --config=./lighthouserc.json
+      - run: pnpm exec lhci autorun --config=./lighthouserc.json --collect.url="${{ steps.vercel-deploy.outputs.preview-url }}"
