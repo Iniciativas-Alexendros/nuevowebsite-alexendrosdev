@@ -14,7 +14,13 @@ const sectionVariants: Record<SectionVariant, string> = {
   sunken: "bg-surface-sunken",
 };
 
-export function Section({ variant = "default", header, className, children, ...props }: SectionProps) {
+export function Section({
+  variant = "default",
+  header,
+  className,
+  children,
+  ...props
+}: SectionProps) {
   return (
     <section className={cn("py-16 lg:py-24", sectionVariants[variant], className)} {...props}>
       {header}
