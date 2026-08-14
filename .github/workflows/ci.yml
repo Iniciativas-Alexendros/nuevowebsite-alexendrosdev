@@ -113,7 +113,7 @@ jobs:
           VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
         run: |
           set -o pipefail
-          npx vercel@latest link --yes --project "$VERCEL_PROJECT_ID" --team "$VERCEL_ORG_ID" --token "$VERCEL_TOKEN"
+          npx vercel@latest link --yes --project "$VERCEL_PROJECT_ID" --scope "$VERCEL_ORG_ID" --token "$VERCEL_TOKEN"
           npx vercel@latest deploy --token "$VERCEL_TOKEN" --yes > /tmp/vercel-deploy.log 2>&1
           cat /tmp/vercel-deploy.log
           url=$(grep -oE 'https://[^[:space:]]+\.vercel\.app' /tmp/vercel-deploy.log | tail -n 1)
