@@ -41,9 +41,9 @@ Este archivo es el punto de entrada de lectura del proyecto. Te dice qué leer d
 
 **Pulso:** 14 de agosto de 2026.
 
-**Fase activa:** 1 — implementada; pendiente de revisión y firma del decisor.
+**Fase activa:** 2 — design system, en curso.
 
-**Siguiente acción:** firmar el criterio de salida de Fase 1 (DEC-ROADMAP-03) y arrancar Fase 2 (diseño visual).
+**Siguiente acción:** implementar los PRs de Fase 2 (tokens, tipografía, primitivos, catálogo y pruebas) según el plan aprobado.
 
 **Objetivo de producto:** v1.0 el 24 de agosto de 2026.
 
@@ -98,7 +98,7 @@ Lee solo lo que cierra la tarea. No leas los ocho documentos de cabo a rabo.
 
 1. Este README entero.
 2. Si vas a escribir código: [AGENTS.md](./AGENTS.md) §§1–6 y §9.
-3. La fase activa de [ROADMAP.md](./ROADMAP.md) (hoy: resto de Fase 0 y arranque de Fase 1).
+3. La fase activa de [ROADMAP.md](./ROADMAP.md) (hoy: Fase 2, design system).
 4. Solo el ancla que cite la tarea: un `REQ`, un `NFR` o un `ADR`.
 5. [CONSTITUTION.md](./CONSTITUTION.md) solo si tocas alcance, integraciones, secretos o capacidades nuevas.
 
@@ -156,7 +156,7 @@ El sitio lo implementa un agente de código. El humano dirige, revisa diffs, hac
 
 # Pendiente ahora
 
-Fase 0 cerrada. Fase 1 implementada; pendiente de revisión y firma del decisor.
+Fase 0 y Fase 1 cerradas. Fase 2 (design system) en curso.
 
 ## Cierre de Fase 0 — 14 de agosto de 2026, ~4 h
 
