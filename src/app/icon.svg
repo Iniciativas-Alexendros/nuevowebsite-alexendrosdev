@@ -1,14 +1,7 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
   <rect width="64" height="64" rx="14" style="fill:oklch(0.51 0.18 255)" />
-  <text
-    x="32"
-    y="44"
-    text-anchor="middle"
-    font-family="Inter, system-ui, -apple-system, sans-serif"
-    font-weight="600"
-    font-size="36"
+  <path
     style="fill:oklch(1 0 0)"
-  >
-    A
-  </text>
+    d="M19.780 44.0 28.923 17.808H34.891L44.226 44.0H39.078L34.428 30.397Q33.747 28.285 33.004 25.625Q32.261 22.966 31.364 19.562H32.351Q31.478 22.988 30.761 25.670Q30.045 28.352 29.411 30.397L24.913 44.0ZM25.105 37.510V33.731H38.901V37.510Z"
+  />
 </svg>

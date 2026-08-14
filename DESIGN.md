@@ -413,7 +413,7 @@ Los tokens de componente no deben duplicar un token semántico sin aportar una r
 - Tamaños canónicos: xs 14 · sm 16 · md 20 · lg 24 · xl 32 px; grosor de trazo 2 px (1,75 px en xl).
 - Imágenes de proyectos: **capturas reales** en AVIF/WebP con fallback, proporción 16:10, peso máximo 200 KB, `alt` descriptivo obligatorio. Sin fotografía personal ni mockups decorativos en el MVP.
 - OG images generadas con plantilla propia a partir del wordmark.
-- Favicon provisional (`src/app/icon.svg`): monograma «A» en Inter semibold sobre cuadrado redondeado `brand-600` con trazo blanco, derivado del wordmark «Alexendros.dev»; se sustituirá por el logo de la fase de identidad (DES-01).
+- Favicon provisional (`src/app/icon.svg`): monograma «A» en Inter semibold sobre cuadrado redondeado `brand-600` con trazo blanco, derivado del wordmark «Alexendros.dev». El glifo «A» se incrusta como `path` vectorial (no `<text>`), porque las fuentes autoalojadas no cargan dentro de un SVG favicon y el glifo caería a `system-ui`; se sustituirá por el logo de la fase de identidad (DES-01).
 
 ---
 
