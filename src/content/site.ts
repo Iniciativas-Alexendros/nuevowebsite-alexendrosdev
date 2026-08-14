@@ -1,27 +1,13 @@
-export interface NavigationItem {
-  label: string;
-  href: string;
-  external?: boolean;
-}
+import { siteConfigSchema } from "@/lib/validations/content";
 
-export interface SiteConfig {
-  siteName: string;
-  siteUrl: string;
-  defaultTitle: string;
-  defaultDescription: string;
-  locale: string;
-  ogLocale: string;
-  navigation: NavigationItem[];
-  footerNavigation: NavigationItem[];
-}
-
-export const siteConfig: SiteConfig = {
+export const siteConfig = siteConfigSchema.parse({
   siteName: "Alexendros",
   siteUrl: "https://alexendros.dev",
   defaultTitle: "Alexendros",
   defaultDescription: "Sitio web de Alexendros.",
   locale: "es",
   ogLocale: "es_ES",
+  defaultOpenGraphImage: "/opengraph-image",
   navigation: [
     { label: "Servicios", href: "/servicios" },
     { label: "Proyectos", href: "/proyectos" },
@@ -33,4 +19,4 @@ export const siteConfig: SiteConfig = {
     { label: "Aviso legal", href: "/aviso-legal" },
     { label: "Privacidad", href: "/privacidad" },
   ],
-};
+});
