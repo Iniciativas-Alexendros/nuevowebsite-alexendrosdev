@@ -21,6 +21,7 @@ playwright-report/
 test-results/
 blob-report/
 playwright/.cache/
+.lighthouseci/
 
 # TypeScript
 *.tsbuildinfo
