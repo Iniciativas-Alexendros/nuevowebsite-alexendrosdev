@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 
+import { PageHeader } from "@/components/layout/page-header";
 import { absoluteUrl } from "@/lib/seo";
 import { siteConfig } from "@/content/site";
 
@@ -12,10 +13,5 @@ export const metadata: Metadata = {
 };
 
 export default function Home() {
-  return (
-    <>
-      <h1>Sitio en construcción</h1>
-      <p>Alexendros</p>
-    </>
-  );
+  return <PageHeader title="Sitio en construcción" description="Alexendros" />;
 }

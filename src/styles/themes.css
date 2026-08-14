@@ -134,6 +134,13 @@
   --color-button-subtle-hover: var(--button-subtle-hover);
   --color-button-destructive-hover: var(--button-destructive-hover);
 
+  --z-base: var(--z-base);
+  --z-dropdown: var(--z-dropdown);
+  --z-sticky: var(--z-sticky);
+  --z-overlay: var(--z-overlay);
+  --z-modal: var(--z-modal);
+  --z-toast: var(--z-toast);
+
   --font-sans: var(--font-inter, var(--font-family-sans));
   --font-mono: var(--font-jetbrains, var(--font-family-mono));
 
