@@ -100,6 +100,8 @@ Ruta: ./DECISIONS.md
 - **ADR-0019** — Implementación del sitio por agente de código. *(aceptada, 13-08-2026)*
 - **ADR-0020** — Repositorio público durante el desarrollo. *(aceptada, 14-08-2026)*
 - **ADR-0021** — Gestión del entorno vía GitHub (secrets y variables), no en archivos. *(aceptada, 14-08-2026)*
+- **ADR-0022** — Etiquetas temáticas en pull requests. *(aceptada, 14-08-2026)*
+- **ADR-0023** — Autorebase en cadena de pull requests apiladas, sin auto-merge. *(aceptada, 14-08-2026)*
 
 ---
 
@@ -699,6 +701,67 @@ Ruta: ./DECISIONS.md
 	- Migrar a otro gestor de secretos o plataforma sin cambios de código, solo de configuración.
 - Seguridad y privacidad:
 	- Secretos exclusivamente en GitHub (cifrados) y en Vercel; sin PII en archivos ni en logs (NFR-SEC-002/006).
+- Fecha de revisión:
+	- 3 meses (cadencia por defecto).
+
+</details>
+
+<details>
+<summary>**ADR-0022** — Etiquetas temáticas en pull requests</summary>
+
+- Estado: aceptada
+- Fecha: 2026-08-14
+- Decisores: Alexendros (con contraste del asistente IA)
+- Relacionado con: ADR-0019, ADR-0023, DEC-AGENTS-03, [AGENTS.md](./AGENTS.md) §7
+- Contexto:
+	- La cadena de PRs de Fase 4 (A1–A4, B1–B8) crece en volumen y solapa temáticas (SEO, a11y, diseño, contenido, CI, documentación). Sin clasificación visible, la previsualización y la evaluación de cada PR exigen abrir el diff una a una.
+- Decisión:
+	- Toda PR lleva al menos una etiqueta temática que indica su materia (`ci`, `seo`, `accesibilidad`, `diseño`, `contenido`, `documentación`), asignada al crearla por el agente y revisable por el decisor.
+	- Las etiquetas clasifican por temática, no por fase ni prioridad; la traza a REQ/ADR/fase sigue yendo en el cuerpo del commit y de la PR (DEC-AGENTS-02).
+- Alternativas consideradas:
+	- Prefijos en el título más allá de Conventional Commits: rechazado; redundante con el tipo del commit y peor para filtrar.
+	- Proyectos/milestones de GitHub: rechazado; sobrecoste de gestión para un único decisor.
+- Consecuencias positivas:
+	- Previsualización y filtrado rápido de PRs por materia; revisión del decisor más ágil.
+- Consecuencias negativas:
+	- Mantenimiento mínimo del catálogo de etiquetas; riesgo de etiquetas huérfanas si no se aplican con disciplina.
+- Plan de implementación:
+	- Crear las etiquetas temáticas en el repositorio y aplicarlas a las PRs abiertas; el agente etiqueta cada PR nueva al abrirla.
+- Plan de reversión:
+	- Borrar las etiquetas; no afecta al código ni al historial.
+- Seguridad y privacidad:
+	- Sin impacto; metadatos de forja sin secretos ni PII.
+- Fecha de revisión:
+	- 3 meses (cadencia por defecto).
+
+</details>
+
+<details>
+<summary>**ADR-0023** — Autorebase en cadena de pull requests apiladas, sin auto-merge</summary>
+
+- Estado: aceptada
+- Fecha: 2026-08-14
+- Decisores: Alexendros (con contraste del asistente IA)
+- Relacionado con: ADR-0019, ADR-0022, DEC-AGENTS-03, PR #31, [AGENTS.md](./AGENTS.md) §7
+- Contexto:
+	- Las correcciones de Fase 3 y el contenido de Fase 4 se entregan como PRs apiladas (A1→A4, B1→B8). Con fusión squash, cada fusión deja la siguiente rama con commits duplicados que hay que rebasar y re-empujar a mano antes de poder revisarla.
+- Decisión:
+	- Un workflow propio (`.github/workflows/autorebase.yml`), sin acciones de terceros, rebasa sobre `main` las ramas de las PRs abiertas tras cada fusión y las empuja con `--force-with-lease`; en conflicto aborta y avisa.
+	- Queda explícitamente descartado el auto-merge: el decisor revisa el diff y fusiona cada PR a mano (AGENTS §7, ADR-0019).
+- Alternativas consideradas:
+	- Auto-merge de GitHub (`gh pr merge --auto`): rechazado; fusionaría sin revisión humana del diff.
+	- Merge queue de GitHub: rechazado; exige cambiar la protección de rama y los triggers de CI para un beneficio equivalente al autorebase.
+	- Acción de terceros de autoupdate: rechazado; nueva dependencia de CI innecesaria (ADR-0019).
+- Consecuencias positivas:
+	- La cadena de PRs apiladas se mantiene revisable sin intervención manual; historial limpio tras fusión squash.
+- Consecuencias negativas:
+	- Cada rebase dispara un run completo de CI por PR (coste de minutos); un conflicto detiene la cadena hasta intervención manual.
+- Plan de implementación:
+	- Ya implementado en PR #31 (`ci: autorebase de PRs apiladas tras cada fusión a main`), fusionada el 14-08-2026.
+- Plan de reversión:
+	- Borrar `.github/workflows/autorebase.yml`; el flujo vuelve al rebase manual.
+- Seguridad y privacidad:
+	- Usa `GITHUB_TOKEN` con permisos mínimos (`contents: write`); sin secretos nuevos (ADR-0021).
 - Fecha de revisión:
 	- 3 meses (cadencia por defecto).
 
