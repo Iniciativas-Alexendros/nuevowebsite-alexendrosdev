@@ -1,0 +1,48 @@
+name: Tarea / Feature
+description: Ficha de unidad de trabajo (AGENTS §3).
+title: "feat: "
+labels: []
+body:
+  - type: textarea
+    id: objetivo
+    attributes:
+      label: Objetivo
+      description: Resultado verificable en una frase.
+      placeholder: "Implementar..."
+    validations:
+      required: true
+  - type: textarea
+    id: traza
+    attributes:
+      label: Traza
+      description: IDs de SPECS / ADR / fase.
+      placeholder: "REQ-..., ADR-..., Fase X"
+    validations:
+      required: true
+  - type: textarea
+    id: alcance
+    attributes:
+      label: Alcance
+      description: Archivos o rutas que SÍ se tocan.
+  - type: textarea
+    id: exclusiones
+    attributes:
+      label: Exclusiones
+      description: Lo que NO se hará, incluido P1/P2.
+  - type: textarea
+    id: dependencias
+    attributes:
+      label: Dependencias
+      description: Fase, ADR o PR previo.
+  - type: textarea
+    id: pruebas
+    attributes:
+      label: Pruebas
+      description: Comandos y casos.
+  - type: textarea
+    id: criterio
+    attributes:
+      label: Criterio de cierre
+      description: Observable: CI, captura, ruta.
+    validations:
+      required: true
