@@ -1,6 +1,11 @@
 import type { LucideIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { Button, type ButtonProps, type ButtonSize, type ButtonVariant } from "@/components/ui/button";
+import {
+  Button,
+  type ButtonProps,
+  type ButtonSize,
+  type ButtonVariant,
+} from "@/components/ui/button";
 import { Icon, type IconSize } from "@/components/ui/icon";
 
 type IconButtonSize = Exclude<ButtonSize, "icon">;
@@ -24,7 +29,13 @@ export function IconButton({
   const square = size === "sm" ? "h-9 w-9" : size === "lg" ? "h-12 w-12" : "h-11 w-11";
 
   return (
-    <Button variant={variant} size="icon" className={cn(square, className)} aria-label={label} {...props}>
+    <Button
+      variant={variant}
+      size="icon"
+      className={cn(square, className)}
+      aria-label={label}
+      {...props}
+    >
       <Icon icon={icon} size={iconSize} />
     </Button>
   );
