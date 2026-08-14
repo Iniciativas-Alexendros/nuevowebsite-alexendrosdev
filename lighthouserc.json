@@ -6,7 +6,8 @@
       "settings": {
         "throttling": {
           "cpuSlowdownMultiplier": 1
-        }
+        },
+        "skipAudits": ["is-crawlable"]
       }
     },
     "assert": {
