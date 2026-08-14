@@ -94,7 +94,7 @@ Ninguna decisión visual podrá tomarse directamente en una página si pertenece
 
 ### Decisiones de identidad (13-08-2026)
 
-- Marca creada desde cero: no existe logo previo que conservar (DES-01). El logo se diseñará como entregable propio de la fase de identidad; hasta entonces, wordmark tipográfico en Inter semibold.
+- Marca creada desde cero: no existe logo previo que conservar (DES-01). El logo se diseñará como entregable propio de la fase de identidad; hasta entonces, wordmark tipográfico «Alexendros.dev» en Inter semibold.
 - Dirección estética aprobada: **sobrio corporativo** de alto contraste (DES-04). Sin gradientes ni efectos glow. La estética terminal se reserva a los componentes `Terminal`, `TerminalCommand` y `TechnologyBadge`; en el resto prevalece el componente estándar.
 - Tema según preferencia del sistema (DES-02): `:root` define el tema claro y `.dark` el oscuro, aplicado vía `prefers-color-scheme`.
 
@@ -413,6 +413,7 @@ Los tokens de componente no deben duplicar un token semántico sin aportar una r
 - Tamaños canónicos: xs 14 · sm 16 · md 20 · lg 24 · xl 32 px; grosor de trazo 2 px (1,75 px en xl).
 - Imágenes de proyectos: **capturas reales** en AVIF/WebP con fallback, proporción 16:10, peso máximo 200 KB, `alt` descriptivo obligatorio. Sin fotografía personal ni mockups decorativos en el MVP.
 - OG images generadas con plantilla propia a partir del wordmark.
+- Favicon provisional (`src/app/icon.svg`): monograma «A» en Inter semibold sobre cuadrado redondeado `brand-600` con trazo blanco, derivado del wordmark «Alexendros.dev»; se sustituirá por el logo de la fase de identidad (DES-01).
 
 ---
 

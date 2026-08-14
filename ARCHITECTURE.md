@@ -237,7 +237,7 @@ Declaración obligatoria por tipo de módulo (ADR-0005; verificable en revisión
 | --- | --- | --- |
 | `src/app` | Servidor (Server Components) | Ninguna en layouts y páginas; la interactividad se delega en componentes hijos |
 | `src/components/ui` | Servidor | `"use client"` solo en primitivas con interacción demostrable (diálogo, menú, toggle de tema) |
-| `src/components/layout` | Servidor | MobileNavigation como Client Component (gestión de foco y Escape, REQ-LAYOUT-HEADER-001) |
+| `src/components/layout` | Servidor | MobileNavigation y Navigation como Client Components (gestión de foco y Escape, y `aria-current`, REQ-LAYOUT-HEADER-001) |
 | `src/components/sections` | Servidor | Ninguna |
 | `src/components/domain` | Servidor | ContactForm como Client Component con esquema de validación compartido |
 | `src/content` | Solo servidor (build-time) | Ninguna |

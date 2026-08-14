@@ -97,6 +97,9 @@ Ruta: ./DECISIONS.md
 - **ADR-0016** — Identidad visual: tema, tipografía, iconografía y objetivo de accesibilidad. *(aceptada, 13-08-2026)*
 - **ADR-0017** — Vercel como plataforma de despliegue, con runtime Node.js. *(aceptada, 13-08-2026)* — cláusula «repositorio privado» sustituida por ADR-0020 (14-08-2026).
 - **ADR-0018** — Formato fuente y validación del contenido editorial. *(aceptada, 13-08-2026)*
+- **ADR-0019** — Implementación del sitio por agente de código. *(aceptada, 13-08-2026)*
+- **ADR-0020** — Repositorio público durante el desarrollo. *(aceptada, 14-08-2026)*
+- **ADR-0021** — Gestión del entorno vía GitHub (secrets y variables), no en archivos. *(aceptada, 14-08-2026)*
 
 ---
 
@@ -667,5 +670,36 @@ Ruta: ./DECISIONS.md
 	- Sin cambio en la política de secretos; el token SMTP sigue exclusivo de servidor (NFR-SEC-002).
 - Fecha de revisión:
 	- En el lanzamiento o al evaluar Vercel Pro.
+
+</details>
+
+<details>
+<summary>**ADR-0021** — Gestión del entorno vía GitHub (secrets y variables), no en archivos</summary>
+
+- Estado: aceptada
+- Fecha: 2026-08-14
+- Decisores: Alexendros (con contraste del asistente IA)
+- Relacionado con: ADR-0008, ADR-0017, ADR-0020, ARCHITECTURE §9.2
+- Contexto:
+	- El repositorio es público desde el 14-08-2026 (ADR-0020), por lo que ningún secreto, token, ID o URL específica de entorno puede vivir en archivos versionados.
+	- El job de CI de Lighthouse y el despliegue ya requieren credenciales de Vercel (`VERCEL_TOKEN`, `VERCEL_ORG_ID`, `VERCEL_PROJECT_ID`).
+- Decisión:
+	- Toda configuración de entorno — secretos, tokens, IDs y URLs que varían por entorno — se gestiona en GitHub: Actions secrets para valores secretos y variables de repositorio o de entorno para valores no secretos compartidos, y en la plataforma de despliegue (Vercel) para runtime. Nunca en archivos versionados.
+	- Único archivo de entorno versionado: `.env.example`, como plantilla documental con valores vacíos (ADR-0008). `.env.local` (gitignored) queda reservado exclusivamente para desarrollo local.
+- Alternativas consideradas:
+	- Archivos `.env` versionados con valores reales: rechazado; fuga de secretos en un repositorio público (ADR-0020, NFR-SEC-002).
+	- Secretos cifrados en el repositorio (SOPS/age): rechazado; sobrecoste operativo sin necesidad funcional.
+- Consecuencias positivas:
+	- Cero secretos en Git; auditoría y rotación centralizadas en GitHub; previews y despliegue reproducibles.
+- Consecuencias negativas:
+	- Los secretos se configuran fuera del flujo de PR; su ausencia puede romper jobs de CI (p. ej. Lighthouse) hasta que el decisor los configure.
+- Plan de implementación:
+	- Mantener `VERCEL_TOKEN`, `VERCEL_ORG_ID` y `VERCEL_PROJECT_ID` como Actions secrets; añadir el resto de secretos (SMTP) y variables al integrar el contacto (Fase 5); conservar `.env.example` como plantilla.
+- Plan de reversión:
+	- Migrar a otro gestor de secretos o plataforma sin cambios de código, solo de configuración.
+- Seguridad y privacidad:
+	- Secretos exclusivamente en GitHub (cifrados) y en Vercel; sin PII en archivos ni en logs (NFR-SEC-002/006).
+- Fecha de revisión:
+	- 3 meses (cadencia por defecto).
 
 </details>

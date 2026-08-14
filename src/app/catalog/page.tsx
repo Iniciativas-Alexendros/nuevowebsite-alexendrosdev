@@ -57,7 +57,7 @@ function Palette() {
 
 export default function CatalogPage() {
   return (
-    <main>
+    <>
       <Section>
         <Container className="flex flex-col gap-12">
           <header className="flex flex-col gap-2">
@@ -203,6 +203,6 @@ export default function CatalogPage() {
           </section>
         </Container>
       </Section>
-    </main>
+    </>
   );
 }
