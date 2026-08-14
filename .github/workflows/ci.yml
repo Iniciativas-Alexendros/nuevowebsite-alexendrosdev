@@ -113,7 +113,10 @@ jobs:
           VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
         run: |
           set -o pipefail
-          url=$(npx vercel@latest deploy --token "$VERCEL_TOKEN" --yes 2>&1 | grep -oE 'https://[^[:space:]]+\.vercel\.app' | tail -n 1)
+          npx vercel@latest pull --yes --environment=preview --token "$VERCEL_TOKEN"
+          npx vercel@latest deploy --token "$VERCEL_TOKEN" --yes > /tmp/vercel-deploy.log 2>&1
+          cat /tmp/vercel-deploy.log
+          url=$(grep -oE 'https://[^[:space:]]+\.vercel\.app' /tmp/vercel-deploy.log | tail -n 1)
           if [ -z "$url" ]; then echo "No se pudo obtener la URL del preview" >&2; exit 1; fi
           echo "preview-url=$url" >> "$GITHUB_OUTPUT"
       - uses: pnpm/action-setup@v4
