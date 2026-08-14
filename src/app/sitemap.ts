@@ -10,7 +10,7 @@ const staticPaths = [
 ];
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  return staticPaths.map((path) => ({
+  return [...new Set(staticPaths)].map((path) => ({
     url: absoluteUrl(path),
     priority: path === "/" ? 1 : 0.8,
   }));

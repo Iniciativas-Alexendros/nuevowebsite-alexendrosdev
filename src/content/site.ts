@@ -10,6 +10,7 @@ export interface SiteConfig {
   defaultTitle: string;
   defaultDescription: string;
   locale: string;
+  ogLocale: string;
   navigation: NavigationItem[];
   footerNavigation: NavigationItem[];
 }
@@ -20,6 +21,7 @@ export const siteConfig: SiteConfig = {
   defaultTitle: "Alexendros",
   defaultDescription: "Sitio web de Alexendros.",
   locale: "es",
+  ogLocale: "es_ES",
   navigation: [
     { label: "Servicios", href: "/servicios" },
     { label: "Proyectos", href: "/proyectos" },
