@@ -10,8 +10,7 @@ const baseClasses =
   "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md font-medium transition-colors disabled:pointer-events-none disabled:text-disabled-foreground [&_svg]:shrink-0";
 
 const variantClasses: Record<ButtonVariant, string> = {
-  primary:
-    "bg-primary text-primary-foreground hover:bg-button-primary-hover disabled:bg-disabled",
+  primary: "bg-primary text-primary-foreground hover:bg-button-primary-hover disabled:bg-disabled",
   secondary:
     "bg-secondary text-secondary-foreground hover:bg-button-secondary-hover disabled:bg-disabled",
   outline:
