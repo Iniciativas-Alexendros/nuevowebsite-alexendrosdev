@@ -102,6 +102,7 @@ Ruta: ./DECISIONS.md
 - **ADR-0021** — Gestión del entorno vía GitHub (secrets y variables), no en archivos. *(aceptada, 14-08-2026)*
 - **ADR-0022** — Etiquetas temáticas en pull requests. *(aceptada, 14-08-2026)*
 - **ADR-0023** — Autorebase en cadena de pull requests apiladas, sin auto-merge. *(aceptada, 14-08-2026)*
+- **ADR-0024** — Excepción puntual al gate de CI por rate limit de Vercel (14-08-2026). *(aceptada, 14-08-2026)*
 
 ---
 
@@ -764,5 +765,36 @@ Ruta: ./DECISIONS.md
 	- Usa `GITHUB_TOKEN` con permisos mínimos (`contents: write`); sin secretos nuevos (ADR-0021).
 - Fecha de revisión:
 	- 3 meses (cadencia por defecto).
+
+</details>
+<details>
+<summary>**ADR-0024** — Excepción puntual al gate de CI por rate limit de Vercel (14-08-2026)</summary>
+
+- Estado: aceptada
+- Fecha: 2026-08-14
+- Decisores: Alexendros (delegación explícita al agente para ejecutar los merges)
+- Relacionado con: ADR-0017, ADR-0023, DEC-AGENTS-04, AGENTS §8, PRs #27–#30
+- Contexto:
+	- El 14-08-2026 el plan Hobby de Vercel agotó su cuota de despliegues («Deployment rate limited — retry in 24 hours») por la tormenta de previews de la cadena de PRs apiladas (rebases de ADR-0023 + re-firmas SSH).
+	- Sin preview de Vercel, el job de Lighthouse CI no puede medir y falla en cascada. Los otros seis checks (Typecheck, Lint, Test+cobertura, Build, E2E+axe, Secretos) pasan en todas las PRs afectadas.
+- Decisión:
+	- Fusionar con override de administrador las PRs #27, #28, #29 y #30 aceptando como fallos ambientales únicamente «Vercel» y «Lighthouse CI (preview de Vercel)», con los seis checks de código en verde.
+	- Excepción puntual, limitada a esta fecha y a estas PRs: no rebaja los umbrales de DEC-AGENTS-04 ni crea precedente.
+	- El deploy de producción queda pendiente hasta que Vercel restaure la cuota; se forzará con un commit vacío o «Redeploy» en el dashboard.
+- Alternativas consideradas:
+	- Esperar ~24 h al reset de la cuota: rechazado; detiene la cadena de Fase 4 sin riesgo de código que lo justifique.
+	- Rebajar temporalmente el umbral de Lighthouse: rechazado; DEC-AGENTS-04 prohíbe rebajar umbrales.
+- Consecuencias positivas:
+	- La cadena A3→B2 completa su fusión sin esperar 24 h; Fase 4 continúa.
+- Consecuencias negativas:
+	- Lighthouse queda sin medir en estas cuatro PRs (ninguna toca rendimiento: a11y, favicon SVG, docs y esquemas/datos de contenido); producción no se redepliega hasta el reset.
+- Plan de implementación:
+	- Merge admin secuencial #27→#28→#29→#30 ejecutado por el agente con delegación del decisor; re-firma SSH de las ramas restantes tras cada autorebase; forzar deploy de producción cuando Vercel restaure la cuota.
+- Plan de reversión:
+	- No aplica (fusión ya ejecutada); si surgiera una regresión de rendimiento, se detectará en el primer run de Lighthouse post-reset y se corregirá en una `fix/performance`.
+- Seguridad y privacidad:
+	- Sin impacto; el check de «Secretos + auditoría» pasó en todas las PRs.
+- Fecha de revisión:
+	- Al restaurarse la cuota de Vercel: verificar que el deploy de producción y Lighthouse vuelven a verde.
 
 </details>
