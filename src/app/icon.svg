@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <rect width="64" height="64" rx="14" style="fill:oklch(0.51 0.18 255)" />
+  <text
+    x="32"
+    y="44"
+    text-anchor="middle"
+    font-family="Inter, system-ui, -apple-system, sans-serif"
+    font-weight="600"
+    font-size="36"
+    style="fill:oklch(1 0 0)"
+  >
+    A
+  </text>
+</svg>
