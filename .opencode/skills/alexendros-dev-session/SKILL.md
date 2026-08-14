@@ -54,7 +54,7 @@ Mapa de enrutado del canon. Cada documento es un archivo Markdown en la raíz de
 | `ROADMAP.md` | Plan | Operativa | Fase activa, calendario, hitos o criterio de salida |
 | `AGENTS.md` | Contrato | Operativa | Vas a escribir código: ficha, autonomía, DoD y comandos |
 
-Nota: `SPECS.md`, `DECISIONS.md`, `DESIGN.md` y `CONTENT.md` aún no están en el repositorio (siguen en Notion); cuando se exporten, este índice se actualiza.
+Los nueve documentos canónicos están en la raíz del repositorio. Notion es espejo de lectura.
 
 Apoyo (pendiente de crear): `CONTRIBUTING.md`, `SECURITY.md`, `docs/quality-gates.md`, `docs/release-checklist.md`, `docs/testing-strategy.md`.
 
