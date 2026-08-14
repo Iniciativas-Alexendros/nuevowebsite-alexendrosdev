@@ -39,6 +39,10 @@
   --overlay: oklch(0.13 0.006 260 / 0.6);
   --disabled: var(--color-neutral-100);
   --disabled-foreground: var(--color-neutral-400);
+  --button-primary-hover: var(--color-brand-700);
+  --button-secondary-hover: var(--color-neutral-200);
+  --button-subtle-hover: var(--color-neutral-100);
+  --button-destructive-hover: oklch(0.4 0.19 25);
 }
 
 @media (prefers-color-scheme: dark) {
@@ -78,6 +82,10 @@
     --overlay: oklch(0 0 0 / 0.7);
     --disabled: var(--color-neutral-800);
     --disabled-foreground: var(--color-neutral-600);
+    --button-primary-hover: var(--color-brand-300);
+    --button-secondary-hover: var(--color-neutral-700);
+    --button-subtle-hover: var(--color-neutral-800);
+    --button-destructive-hover: oklch(0.8 0.17 25);
   }
 }
 
@@ -121,6 +129,10 @@
   --color-overlay: var(--overlay);
   --color-disabled: var(--disabled);
   --color-disabled-foreground: var(--disabled-foreground);
+  --color-button-primary-hover: var(--button-primary-hover);
+  --color-button-secondary-hover: var(--button-secondary-hover);
+  --color-button-subtle-hover: var(--button-subtle-hover);
+  --color-button-destructive-hover: var(--button-destructive-hover);
 
   --font-sans: var(--font-inter, var(--font-family-sans));
   --font-mono: var(--font-jetbrains, var(--font-family-mono));
