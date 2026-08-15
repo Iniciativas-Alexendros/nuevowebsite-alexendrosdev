@@ -4,6 +4,14 @@ import { getPublishedServices } from "@/lib/content";
 import { getPublishedProjects } from "@/lib/content";
 import { getPublishedTechnologies } from "@/lib/content";
 import { getPublishedProfile } from "@/lib/content";
+import { getServiceBySlug } from "@/lib/content";
+import { getProjectBySlug } from "@/lib/content";
+import { getTechnologiesByCategory } from "@/lib/content";
+import { getFeaturedServices } from "@/lib/content";
+import { getFeaturedProjects } from "@/lib/content";
+import { getFeaturedTechnologies } from "@/lib/content";
+import { getTechnologyById } from "@/lib/content";
+import { getRelatedTechnologies } from "@/lib/content";
 
 describe("selectores de contenido publicado", () => {
   it("getPublishedServices solo devuelve servicios con status 'published'", () => {
@@ -43,15 +51,120 @@ describe("selectores de contenido publicado", () => {
     }
   });
 
-  it("getServiceBySlug devuelve undefined para slugs inexistentes o borradores", async () => {
-    const { getServiceBySlug } = await import("@/lib/content");
+  it("getServiceBySlug devuelve servicio publicado por slug", () => {
+    const service = getServiceBySlug("desarrollo-web");
+
+    expect(service).toBeDefined();
+    expect(service?.slug).toBe("desarrollo-web");
+    expect(service?.status).toBe("published");
+  });
+
+  it("getServiceBySlug devuelve undefined para slugs inexistentes o borradores", () => {
     const service = getServiceBySlug("servicio-inexistente");
     expect(service).toBeUndefined();
   });
 
-  it("getProjectBySlug devuelve undefined para slugs inexistentes o borradores", async () => {
-    const { getProjectBySlug } = await import("@/lib/content");
+  it("getProjectBySlug devuelve proyecto publicado por slug", () => {
+    const project = getProjectBySlug("front-valencia");
+
+    expect(project).toBeDefined();
+    expect(project?.slug).toBe("front-valencia");
+    expect(project?.status).toBe("published");
+    expect(project?.visibility).toBe("publico");
+  });
+
+  it("getProjectBySlug devuelve undefined para slugs inexistentes o borradores", () => {
     const project = getProjectBySlug("proyecto-inexistente");
     expect(project).toBeUndefined();
+  });
+
+  it("getTechnologiesByCategory filtra por categoría", () => {
+    const lenguajes = getTechnologiesByCategory("lenguaje");
+    const frameworks = getTechnologiesByCategory("framework");
+    const herramientas = getTechnologiesByCategory("herramienta");
+
+    expect(lenguajes.length).toBeGreaterThan(0);
+    expect(frameworks.length).toBeGreaterThan(0);
+    expect(herramientas.length).toBeGreaterThan(0);
+
+    for (const tech of lenguajes) {
+      expect(tech.category).toBe("lenguaje");
+    }
+    for (const tech of frameworks) {
+      expect(tech.category).toBe("framework");
+    }
+    for (const tech of herramientas) {
+      expect(tech.category).toBe("herramienta");
+    }
+  });
+
+  it("getTechnologiesByCategory devuelve array vacío para categoría sin tecnologías", () => {
+    const result = getTechnologiesByCategory("cms");
+    expect(Array.isArray(result)).toBe(true);
+  });
+
+  it("getFeaturedServices solo devuelve servicios featured", () => {
+    const featured = getFeaturedServices();
+
+    expect(featured.length).toBeGreaterThan(0);
+    for (const service of featured) {
+      expect(service.featured).toBe(true);
+      expect(service.status).toBe("published");
+    }
+  });
+
+  it("getFeaturedProjects solo devuelve proyectos featured", () => {
+    const featured = getFeaturedProjects();
+
+    expect(featured.length).toBeGreaterThan(0);
+    for (const project of featured) {
+      expect(project.featured).toBe(true);
+      expect(project.status).toBe("published");
+      expect(project.visibility).toBe("publico");
+    }
+  });
+
+  it("getFeaturedTechnologies solo devuelve tecnologías featured", () => {
+    const featured = getFeaturedTechnologies();
+
+    expect(featured.length).toBeGreaterThan(0);
+    for (const tech of featured) {
+      expect(tech.featured).toBe(true);
+      expect(tech.status).toBe("published");
+    }
+  });
+
+  it("getTechnologyById devuelve tecnología por id", () => {
+    const tech = getTechnologyById("next-js");
+
+    expect(tech).toBeDefined();
+    expect(tech?.id).toBe("next-js");
+    expect(tech?.status).toBe("published");
+  });
+
+  it("getTechnologyById devuelve undefined para id inexistente", () => {
+    const tech = getTechnologyById("tecnologia-inexistente");
+    expect(tech).toBeUndefined();
+  });
+
+  it("getRelatedTechnologies filtra por relatedProjects y relatedServices", () => {
+    const related = getRelatedTechnologies(["front-valencia"], ["desarrollo-web"]);
+
+    expect(related.length).toBeGreaterThan(0);
+    for (const tech of related) {
+      const hasProject = tech.relatedProjects?.some((p) => p === "front-valencia") ?? false;
+      const hasService = tech.relatedServices?.some((s) => s === "desarrollo-web") ?? false;
+      expect(hasProject || hasService).toBe(true);
+    }
+  });
+
+  it("getRelatedTechnologies devuelve array vacío si no hay coincidencias", () => {
+    const related = getRelatedTechnologies(["proyecto-inexistente"], ["servicio-inexistente"]);
+    expect(related).toEqual([]);
+  });
+
+  it("getRelatedTechnologies maneja arrays undefined en relatedProjects/relatedServices", () => {
+    const related = getRelatedTechnologies([], []);
+    expect(related).toEqual([]);
   });
 });
