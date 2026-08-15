@@ -41,19 +41,19 @@ Este archivo es el punto de entrada de lectura del proyecto. Te dice qué leer d
 
 **Pulso:** 15 de agosto de 2026.
 
-**Fase activa:** 5 — MVP de captación en implementación (Fases 0–4 firmadas; REQ-GLOBAL-008 firmado el 15-08-2026).
+**Fase activa:** 7 — Legal en implementación (aviso y privacidad `published`; Fases 0–6 en curso o firmadas según checklist).
 
-**Siguiente acción:** fusionar PRs de Fase 5 (inicio, servicios, contacto + `POST /api/contact`); hito público jue 20-08. Placeholders legales finales siguen en Fase 7.
+**Siguiente acción:** revisar y fusionar PR de Fase 7; residual asesoría externa antes de `PROMOTE` (Fase 8 / ADR-0025). Capturas DES-07 siguen pendientes.
 
 **Objetivo de producto:** v1.0 el 24 de agosto de 2026.
 
 | Capa | Estado |
 | --- | --- |
 | Documentación canónica | Aprobada el 13-08-2026 |
-| Código del sitio nuevo | Fases 1–4 en `main`; Fase 5: captación (Hero, servicios, formulario, endpoint Proton SMTP) |
+| Código del sitio nuevo | Fases 1–6 en `main` o en PR; Fase 7: legales tipados `published` |
 | Repositorio nuevo | Creado: `Iniciativas-Alexendros/nuevowebsite-alexendrosdev`. Público desde el 14-08-2026 (ADR-0017 revocada) |
 | Sitio anterior | Se archiva en solo lectura. Sin redirecciones (ADR-0013) |
-| Contenido editorial | Hechos de servicios/proyectos/stack/perfil/site firmados (REQ-GLOBAL-008); capturas DES-07 y legales finales pendientes |
+| Contenido editorial | Hechos firmados (REQ-GLOBAL-008); aviso legal y privacidad publicados en contenido; asesoría externa residual pre-PROMOTE; capturas DES-07 pendientes |
 
 ---
 
@@ -146,7 +146,7 @@ El sitio lo implementa un agente de código. El humano dirige, revisa diffs, hac
 - `pnpm build` — build de producción
 - `pnpm ci` — check + test + build
 
-**Umbrales.** Lighthouse ≥90 en las cuatro categorías en móvil (CI local, ADR-0025). axe-core bloqueante. Cobertura mínima 70 % en `src/lib/` y validaciones. **Deploy Vercel:** solo tras cierre de fase firmado (preview MITL → production con PROMOTE; ADR-0025).
+**Umbrales.** Lighthouse ≥90 en las cuatro categorías en móvil (CI local, ADR-0025). axe-core bloqueante. Cobertura mínima 70 % en `src/lib/` y validaciones. **Deploy Vercel:** tras integrar la fase en `main` → preview MITL → firma de cierre → production con PROMOTE (ADR-0025).
 
 **Herramientas autorizadas:** OpenCode Desktop, Kimi Code CLI, Hermes Desktop.
 

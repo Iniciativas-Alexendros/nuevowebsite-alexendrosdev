@@ -170,18 +170,26 @@ describe("selectores de contenido publicado", () => {
     expect(related).toEqual([]);
   });
 
-  it("getPublishedLegalDocuments no incluye borradores en review", () => {
+  it("getPublishedLegalDocuments incluye aviso-legal y privacidad publicados", () => {
     const published = getPublishedLegalDocuments();
-    expect(published).toEqual([]);
+    const slugs = published.map((doc) => doc.slug).sort();
+
+    expect(slugs).toEqual(["aviso-legal", "privacidad"]);
+    expect(published.every((doc) => doc.status === "published")).toBe(true);
   });
 
-  it("getLegalDocumentBySlug carga aviso-legal y privacidad en review", () => {
+  it("getLegalDocumentBySlug carga aviso-legal y privacidad publicados sin placeholders", () => {
     const aviso = getLegalDocumentBySlug("aviso-legal");
     const privacidad = getLegalDocumentBySlug("privacidad");
 
-    expect(aviso?.status).toBe("review");
-    expect(privacidad?.status).toBe("review");
+    expect(aviso?.status).toBe("published");
+    expect(privacidad?.status).toBe("published");
     expect(aviso?.sections.length).toBeGreaterThan(0);
     expect(privacidad?.sections.length).toBeGreaterThan(0);
+
+    const paragraphs = [...(aviso?.sections ?? []), ...(privacidad?.sections ?? [])].flatMap(
+      (section) => section.paragraphs
+    );
+    expect(paragraphs.some((paragraph) => paragraph.includes("[PENDIENTE:"))).toBe(false);
   });
 });

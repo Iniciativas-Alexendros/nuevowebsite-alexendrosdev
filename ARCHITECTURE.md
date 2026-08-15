@@ -449,10 +449,11 @@ Todo pull request debe ejecutar:
 
 - Plataforma: Vercel (ADR-0017); runtime Node.js 22, sin Edge.
 - **Política de deploy (ADR-0025):** no hay preview automática por PR ni producción automática por push a `main`. La integración Git ignora builds (`vercel.json` → `ignoreCommand: exit 0`).
-- **Cuándo desplegar:** tras fusionar a `main` todos los PR de la fase y **firma del criterio de salida** (DEC-ROADMAP-03).
+- **Cuándo desplegar preview:** tras fusionar a `main` todos los PR de la fase. El preview MITL es **requisito previo** a la firma del criterio de salida (DEC-ROADMAP-03); no se firma sin revisar y validar.
 - **Flujo MITL:**
-	1. Workflow `Deploy fase (Vercel)` → `target=preview` desde `main` → QA visual del decisor.
-	2. Mismo workflow → `target=production` + `confirmation=PROMOTE` + entorno GitHub `Production` (required reviewers) → producción.
+	1. Workflow `Deploy fase (Vercel)` → `target=preview` desde `main` → QA visual y validación del decisor.
+	2. Firma del criterio de salida de la fase (DEC-ROADMAP-03) solo si el preview es aceptable.
+	3. Mismo workflow → `target=production` + `confirmation=PROMOTE` + entorno GitHub `Production` (required reviewers) → producción.
 - Repositorio: público en GitHub (`Iniciativas-Alexendros/nuevowebsite-alexendrosdev`) (ADR-0020). El repositorio anterior queda archivado en solo lectura.
 - Entornos mínimos: local, preview de fase (MITL) y producción.
 - Las variables se gestionarán por entorno (GitHub Actions secrets + Vercel runtime; ADR-0021).
