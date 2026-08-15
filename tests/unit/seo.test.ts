@@ -28,14 +28,14 @@ describe("siteMetadata", () => {
   it("define metadataBase, título por defecto y plantilla", () => {
     expect(siteMetadata.metadataBase).toEqual(new URL(siteConfig.siteUrl));
     expect(siteMetadata.title).toEqual({
-      default: "Alexendros",
-      template: "%s — Alexendros",
+      default: siteConfig.defaultTitle,
+      template: `%s — ${siteConfig.siteName}`,
     });
   });
 
   it("define description y openGraph base", () => {
-    expect(siteMetadata.description).toBe("Sitio web de Alexendros.");
-    expect(siteMetadata.openGraph?.siteName).toBe("Alexendros");
+    expect(siteMetadata.description).toBe(siteConfig.defaultDescription);
+    expect(siteMetadata.openGraph?.siteName).toBe(siteConfig.siteName);
     expect(siteMetadata.openGraph?.locale).toBe(siteConfig.ogLocale);
   });
 });
@@ -58,7 +58,7 @@ describe("buildPageMetadata", () => {
   it("reutiliza la descripción por defecto cuando no se proporciona", () => {
     const metadata = buildPageMetadata({ title: "Stack", path: "/stack" });
 
-    expect(metadata.description).toBe("Sitio web de Alexendros.");
+    expect(metadata.description).toBe(siteConfig.defaultDescription);
     expect(metadata.alternates?.canonical).toBe(`${siteConfig.siteUrl}/stack`);
   });
 });
@@ -68,10 +68,10 @@ describe("webSiteJsonLd", () => {
     expect(webSiteJsonLd).toEqual({
       "@context": "https://schema.org",
       "@type": "WebSite",
-      name: "Alexendros",
+      name: siteConfig.siteName,
       url: siteConfig.siteUrl,
-      description: "Sitio web de Alexendros.",
-      inLanguage: "es",
+      description: siteConfig.defaultDescription,
+      inLanguage: siteConfig.locale,
     });
   });
 });

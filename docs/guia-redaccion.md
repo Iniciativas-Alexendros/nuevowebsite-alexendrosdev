@@ -1,142 +1,205 @@
-# Guía de redacción y convenciones de contenido
+# Guía de redacción
 
-Abrir cuando: Vas a redactar o revisar contenido editorial (servicios, proyectos, stack, perfil, legales).
-Deriva de: [CONTENT.md](../CONTENT.md) §§1, 11 y 12; [SPECS.md](../SPECS.md) §6; [DECISIONS.md](../DECISIONS.md) ADR-0018.
-Rol: Complementario (no canónico). El contrato enforceable son los esquemas Zod de `src/lib/validations/content/` y CONTENT.md.
+Esta guía define las convenciones editoriales para todo el contenido del sitio. El objetivo es mantener coherencia de tono, estructura y calidad sin depender de revisión manual constante.
 
 ---
 
-## 1. Tono y voz
+## 1. Principios de tono y voz
 
-Reglas de CONTENT §11. Deben aplicarse a todo texto de cara al visitante.
+- **Primera persona singular** ("diseño y construyo", "entrego", "audito") con **tuteo** al lector ("tu web", "tu equipo", "te explico").
+- **Voz activa**, frases cortas, sin relleno ni superlativos vacíos.
+- **Hechos con evidencia**: cada afirmación técnica o de resultado debe tener respaldo verificable (URL, métrica, repositorio, testimonio nombrado).
+- **Capacidades sin prometer** plazos, precios ni resultados garantizados.
+- **Términos técnicos con contexto** en su primera aparición: comprensible para perfiles no técnicos sin perder precisión.
+- **CTA con verbo de acción real** y resultado inequívoco: "Escríbeme", "Agenda una llamada", "Ver proyecto".
 
-- **Primera persona singular** con tuteo al lector: «diseño y construyo…», «me cuentas tu caso…».
-- **Voz activa** y frases cortas. Sin relleno ni superlativos vacíos («el mejor», «el más rápido», «experto»).
-- **Hechos con evidencia.** Las capacidades se describen sin prometer plazos, precios ni resultados garantizados.
-- **Términos técnicos con contexto** en su primera aparición: comprensible para un perfil no técnico sin perder precisión para el especialista.
-- **CTA con verbo de acción real** y resultado inequívoco: «Escríbeme», «Agenda una llamada». Nunca «Descubre más» si no hay destino concreto.
+---
 
 ## 2. Convenciones de slug
 
-Todo identificador publicable usa slug en minúsculas y kebab-case.
+- **kebab-case en minúsculas**: `desarrollo-web`, `front-valencia`, `vcf-cribador`.
+- **Máximo 64 caracteres**, mínimo 2.
+- **Solo letras, números y guiones**: `^[a-z0-9]+(?:-[a-z0-9]+)*$`.
+- **Semánticos y estables**: el slug no cambia aunque cambie el título.
+- **Unicidad global**: ningún slug se repite entre servicios, proyectos, tecnologías.
 
-- Solo caracteres `[a-z0-9]` y guion medio `-`.
-- **Sin tildes ni diacríticos**: `automatizacion-ia`, no `automatización-ia`.
-- **Sin espacios ni caracteres especiales** (`ñ` → `n`, `&` → `y`).
-- Guiones simples, sin guiones dobles ni guiones iniciales/finales.
-- Único por entidad y **estable**: un slug publicado no cambia; si cambia, debe evaluarse redirección (CONTENT §8).
-- Longitud orientativa: 3–64 caracteres.
+---
 
-Slugs de servicio aprobados (DEC-SPECS-02, SPECS §6.2):
+## 3. Longitudes por campo (validados por Zod)
 
-| Servicio | Slug |
-| --- | --- |
-| Desarrollo web a medida | `desarrollo-web` |
-| Landing pages | `landing-pages` |
-| Automatización y agentes IA | `automatizacion-ia` |
-| Auditoría de rendimiento y accesibilidad | `auditoria-web` |
+| Entidad | Campo | Mín | Máx | Notas |
+|---------|-------|-----|-----|-------|
+| Service | title | 1 | 80 | Capacidad comprensible |
+| Service | shortDescription | 1 | 200 | Para cards y previews |
+| Service | description | 1 | — | Detalle completo |
+| Service | audience | 1 | — | A quién va dirigido |
+| Service | problemsSolved[] | 1 | — | Mínimo 1 elemento |
+| Service | scope[] | 1 | — | Mínimo 1 elemento |
+| Service | deliverables[] | 1 | — | Mínimo 1 elemento |
+| Service | process[] | 0 | — | Opcional |
+| Service | technologies[] | 0 | — | Slugs de Technology |
+| Project | title | 1 | 80 | Nombre del proyecto |
+| Project | shortDescription | 1 | 200 | Para cards |
+| Project | summary | 1 | — | Resumen ejecutivo |
+| Project | role | 1 | — | Tu responsabilidad |
+| Project | context | 0 | — | Opcional |
+| Project | challenge | 0 | — | Opcional |
+| Project | solution | 0 | — | Opcional |
+| Project | responsibilities[] | 0 | — | Opcional |
+| Project | technologies[] | 1 | — | Mínimo 1 slug |
+| Project | highlights[] | 0 | — | Opcional |
+| Project | results[] | 0 | — | Solo demostrables |
+| Project | images[] | 0 | — | alt obligatorio si existe |
+| Project | links[] | 0 | — | Opcional |
+| Technology | name | 1 | 40 | Nombre canónico |
+| Technology | description | 1 | — | Qué es y para qué sirve |
+| Technology | relevance | 0 | — | Contexto de uso |
+| Profile | name | 1 | 80 | Nombre visible |
+| Profile | title | 1 | 120 | Headline profesional |
+| Profile | summary | 1 | — | Resumen breve |
+| Profile | bio[] | 1 | — | Mínimo 1 párrafo |
 
-Los slugs de proyecto se derivan del mismo modo a partir de su nombre (p. ej. `front-valencia`, `graficas-nasve`, `vcf-cribador`, `alexendros-me`).
+---
 
-## 3. Longitudes por campo
+## 4. Estructura por entidad
 
-Rangos orientativos. El contrato ejecutable son los esquemas Zod de `src/lib/validations/content/`; si hay conflicto, manda el esquema.
+### Service
+1. **title**: nombre del servicio (ej. "Desarrollo web a medida")
+2. **shortDescription**: una frase para cards/previews
+3. **description**: párrafo completo explicando qué haces y cómo
+4. **audience**: a quién va dirigido (perfil, necesidad, tamaño)
+5. **problemsSolved**: lista de dolores que resuelves (mín. 3)
+6. **scope**: qué incluye el servicio (mín. 3)
+7. **deliverables**: qué entrega el cliente al final (mín. 3)
+8. **process** (opcional): pasos del 1 al N
+9. **technologies** (opcional): slugs de Technology relacionadas
+10. **exclusions** (opcional): qué NO incluye
+11. **cta**: `{ label, href }` — siempre "/contacto"
+12. **featured**: `true` si aparece en home
+13. **status**: `"published"` | `"draft"` | `"review"` | `"archived"`
+14. **metadata**: `{ title, description }` para SEO
+15. **openGraphImage** (opcional): ruta a imagen OG específica
 
-### 3.1. Service (CONTENT §3)
+### Project
+1. **title**: nombre del proyecto (ej. "FRONT Valencia")
+2. **shortDescription**: una frase para cards
+3. **summary**: 2-3 párrafos: contexto, reto, solución, resultado
+4. **role**: tu responsabilidad concreta
+5. **context** (opcional): situación inicial del cliente
+6. **challenge** (opcional): dificultad técnica/negocio
+7. **solution** (opcional): enfoque técnico adoptado
+8. **responsibilities** (opcional): lista de lo que hiciste tú
+9. **technologies**: slugs de Technology usadas (mín. 1)
+10. **highlights** (opcional): logros técnicos/diferenciales
+11. **results** (opcional): métricas demostrables (con fuente)
+12. **images** (opcional): capturas reales, alt obligatorio
+13. **links** (opcional): web, repo, demo, caso de estudio
+14. **publishedAt**: ISO date (YYYY-MM-DD)
+15. **updatedAt** (opcional): ISO date
+16. **featured**: `true` si aparece en home
+17. **status**: `"published"` | `"draft"` | `"review"` | `"archived"`
+18. **visibility**: `"publico"` | `"limitado"` | `"privado"`
+19. **confidentialityNotice** (obligatorio si visibility ≠ "publico")
+20. **metadata**: `{ title, description }` para SEO
 
-| Campo | Rango orientativo | Notas |
-| --- | --- | --- |
-| `id` | == `slug` | |
-| `slug` | 3–64 | kebab-case |
-| `title` | 10–80 | capacidad o servicio comprensible |
-| `shortDescription` | 60–160 | apto para card |
-| `description` | 150–500 | detalle sin promesas |
-| `audience` | 20–200 | a quién sirve |
-| `problemsSolved[]` | 3–6 ítems × 10–90 | problema que aborda |
-| `scope[]` | 1–6 ítems × 10–120 | qué incluye |
-| `deliverables[]` | 2–8 ítems × 10–120 | entregables orientativos |
-| `process[]` | 2–6 ítems × 10–120 | opcional |
-| `technologies[]` | 0–12 slugs | refieren entidades Technology |
-| `exclusions[]` | 0–6 ítems × 10–120 | opcional |
-| `CTA` | `label` 2–30, `href` ruta | verbo de acción real |
-| `featured` | boolean | default `false` |
-| `status` | enum §5 | |
-| `metadata.title` | 10–70 | |
-| `metadata.description` | 60–160 | |
-| `openGraphImage` | ruta | opcional; fallback a `defaultOpenGraphImage` |
+### Technology
+1. **id** = slug (ej. "next-js")
+2. **name**: nombre canónico ("Next.js")
+3. **category**: `lenguaje` | `framework` | `cms` | `estilo` | `herramienta`
+4. **description**: qué es y para qué lo usas tú
+5. **icon** (opcional): nombre de icono Lucide
+6. **website** (opcional): URL oficial
+7. **relevance** (opcional): contexto de uso en tus proyectos
+8. **featured**: `true` si aparece en /stack destacado
+9. **status**: `"published"` | `"draft"` | `"review"` | `"archived"`
+10. **relatedProjects** (opcional): slugs de Project
+11. **relatedServices** (opcional): slugs de Service
 
-### 3.2. Project (CONTENT §4)
+### Profile
+1. **name**: "Alexendros"
+2. **title**: headline profesional (máx. 120 chars)
+3. **summary**: 1-2 frases de presentación
+4. **bio**: array de párrafos (mín. 3) con trayectoria, enfoque, valores
+5. **location** (opcional): "Valencia, España"
+6. **languages** (opcional): array de idiomas
+7. **links** (opcional): GitHub, LinkedIn, Email, Cal.com
+8. **status**: `"published"` | `"draft"` | `"review"` | `"archived"`
+9. **metadata**: `{ title, description }` para SEO
 
-| Campo | Rango orientativo | Notas |
-| --- | --- | --- |
-| `id` | == `slug` | |
-| `slug` | 3–64 | kebab-case |
-| `title` | 5–80 | |
-| `shortDescription` | 60–160 | apto para card |
-| `summary` | 150–500 | resumen del caso |
-| `role` | 10–120 | rol desempeñado |
-| `context` / `challenge` / `solution` | 40–400 c/u | opcionales |
-| `responsibilities[]` | 1–8 ítems × 10–120 | opcional |
-| `technologies[]` | 1–12 slugs | obligatorio; refieren Technology |
-| `highlights[]` | 1–6 ítems × 10–120 | opcional |
-| `results[]` | 0–6 ítems × 10–160 | **solo demostrables** |
-| `images[]` | alt obligatorio | opcional |
-| `links[]` | `label` + `href` (+ `external`) | |
-| `publishedAt` / `updatedAt` | fecha ISO | |
-| `featured` | boolean | |
-| `status` / `visibility` | enum §5 | `visibility`: público/limitado/privado |
-| `confidentialityNotice` | texto | **obligatorio si `visibility` ≠ público** |
+---
 
-### 3.3. Technology (CONTENT §5)
+## 5. Reglas de contenido
 
-| Campo | Rango orientativo | Notas |
-| --- | --- | --- |
-| `id` | 2–64 | kebab-case |
-| `name` | 2–40 | |
-| `category` | vocabulario §6 | agrupación |
-| `description` | 20–160 | contexto de uso, no autoevaluación |
-| `icon` | Lucide | opcional; no sustituye al texto |
-| `website` | URL | opcional |
-| `relevance` | texto | opcional; sin porcentajes subjetivos |
-| `featured` | boolean | default `false` |
-| `relatedProjects[]` / `relatedServices[]` | slugs | opcionales |
+### Qué SÍ hacer
+- Usar datos reales: URLs de repositorios, métricas con fecha, nombres de clientes autorizados.
+- Vincular tecnologías a entidades `Technology` (slugs), no cadenas libres.
+- Escribir `results` solo con resultados demostrables (fuente: cliente, analytics, logs).
+- Incluir `confidentialityNotice` en proyectos no públicos.
+- Mantener `updatedAt` al día al modificar contenido sustancial.
+- Usar `openGraphImage` específica por entidad cuando exista.
 
-## 4. Regla de afirmaciones verificables (REQ-GLOBAL-008)
+### Qué NO hacer
+- Prometer plazos, precios o resultados garantizados sin decisión comercial documentada.
+- Incluir testimonios no verificables, proyectos inexistentes o métricas inventadas.
+- Usar porcentajes subjetivos ("90 % experto en React") sin escala editorial definida.
+- Dejar campos obligatorios con "Contenido en borrador" o placeholders.
+- Cambiar slugs de entidades publicadas (rompe URLs, sitemap, SEO).
+- Mezclar opiniones personales sin etiquetar como tales en ensayos/artículos.
 
-El contenido **no DEBE** contener afirmaciones ficticias, testimonios no verificables, proyectos inexistentes ni afirmaciones técnicas sin respaldo.
+---
 
-Toda afirmación de hecho —cifras, resultados, clientes, plazos, certificaciones, testimonios, métricas— debe:
+## 6. Flujo editorial (implementado en código)
 
-1. Tener **evidencia** disponible (SPECS §6.2/§6.4, repositorio enlazado, o fuente del decisor), o
-2. Quedar **marcada como pendiente de verificación humana** en la entrega.
+```text
+draft → review → published → archived
+```
 
-Mientras no esté verificada, la entidad conserva `status: "draft"` y la afirmación se lista explícitamente en el PR bajo «Afirmaciones pendientes de verificación (REQ-GLOBAL-008)». La verificación de hechos es humana e indelegable; el agente que redacta nunca la da por hecha.
+- **draft**: en desarrollo, no publicado ni indexado.
+- **review**: listo para revisión técnica/editorial/legal.
+- **published**: visible e indexable (sitemap, rutas, selectors).
+- **archived**: retirado de navegación; evaluar redirección.
 
-## 5. Estados editoriales (CONTENT §8–§9)
+**Mecanismo técnico**:
+- `status` es enum validado por Zod en build: valor inválido = build fallido.
+- Selectores únicos: `getPublishedServices()`, `getPublishedProjects()`, `getPublishedTechnologies()`, `getPublishedProfile()`.
+- `sitemap.ts`, `robots.ts` y rutas dinámicas derivan **exclusivamente** de esos selectores.
+- Test unitario en CI verifica que ningún elemento no publicado aparece en sitemap ni rutas (gate bloqueante).
 
-- `draft`: contenido en desarrollo, no publicado ni indexado.
-- `review`: preparado para revisión técnica, editorial y legal.
-- `published`: visible e indexable (único estado que genera ruta y sitemap).
-- `archived`: retirado de navegación y sitemap.
+---
 
-Todo contenido nuevo de Fase 4 entra como `draft`. La publicación es decisión del decisor, no del agente.
+## 7. Checklist antes de publicar (status: "published")
 
-## 6. Vocabulario de categoría (Technology)
+- [ ] Todos los campos obligatorios completos y validados por Zod.
+- [ ] Slug único global (no colisiona con servicios/proyectos/tecnologías).
+- [ ] `technologies` referencia slugs existentes en `technologies/index.ts`.
+- [ ] `relatedProjects` / `relatedServices` en Technology son slugs válidos.
+- [ ] `images` tienen `alt` descriptivo (no "imagen", "captura").
+- [ ] `links` verificados (HTTP 200, no redirecciones rotas).
+- [ ] `results` tienen fuente citada (cliente, analytics, logs, repo).
+- [ ] `confidentialityNotice` presente si `visibility !== "publico"`.
+- [ ] `metadata.title` ≤ 80 chars, `metadata.description` ≤ 200 chars.
+- [ ] `openGraphImage` existe en `public/images/` si se especifica.
+- [ ] Sin "Contenido en borrador", "TODO", "FIXME" ni placeholders.
+- [ ] Tono: primera persona, tuteo, voz activa, hechos verificables.
+- [ ] Build pasa (`pnpm build`) y tests pasan (`pnpm test`).
 
-Valores sugeridos para `category`. El esquema Zod define el conjunto cerrado.
+---
 
-- `lenguaje` — TypeScript, Rust…
-- `framework` — Next.js, Astro, React…
-- `cms` — Payload CMS…
-- `estilo` — Tailwind…
-- `herramienta` — CLI, Playwright, Lighthouse…
+## 8. Actualización de contenido
 
-## 7. Prohibiciones
+- **Servicios/Proyectos/Stack**: editar archivo `.ts` correspondiente en `src/content/`.
+- **Perfil**: editar `src/content/profile.ts`.
+- **Configuración del sitio**: editar `src/content/site.ts`.
+- **Canales de contacto**: editar `src/content/contact.ts`.
+- **Tecnologías**: editar `src/content/technologies/index.ts`.
 
-- NO precios, tarifas ni presupuestos.
-- NO plazos de entrega garantizados.
-- NO garantías de resultados ni rankings comparativos.
-- NO testimonios, cifras de clientes ni métricas sin evidencia.
-- NO porcentajes de dominio ni niveles subjetivos salvo escala editorial documentada (REQ-DOMAIN-TECHBADGE-001).
-- NO información personal innecesaria (CONTENT §6.7).
-- NO detalles protegidos por confidencialidad en proyectos (CONTENT §4).
+Cada cambio genera PR, pasa CI y se revisa en preview antes de mergear a `main`.
+
+---
+
+## 9. Referencias
+
+- [CONTENT.md](./CONTENT.md) — modelo editorial, entidades, flujo de publicación.
+- [SPECS.md](./SPECS.md) — requisitos funcionales, criterios de aceptación.
+- [DESIGN.md](./DESIGN.md) — tokens, componentes, accesibilidad visual.
+- [ARCHITECTURE.md](./ARCHITECTURE.md) — estructura, selectores, validación en build.
