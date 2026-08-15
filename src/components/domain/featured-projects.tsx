@@ -10,8 +10,8 @@ export type FeaturedProjectsProps = {
 };
 
 /**
- * Proyectos destacados sin capturas (DES-07 diferido).
- * Enlace principal: primer link del proyecto o /proyectos.
+ * Proyectos destacados en home (DES-07 diferido).
+ * Markup ligero aparte de ProjectCard para no penalizar Lighthouse (OBJ-005).
  */
 export function FeaturedProjects({
   projects,
