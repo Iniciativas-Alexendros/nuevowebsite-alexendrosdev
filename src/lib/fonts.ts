@@ -1,5 +1,10 @@
 import localFont from "next/font/local";
 
+/**
+ * Tipografías self-hosted (DES-03).
+ * Los woff2 están subset a Latin/Latin-1 (español) para LCP (OBJ-005);
+ * los archivos completos no viven en el repo.
+ */
 export const fontSans = localFont({
   src: "../fonts/inter/InterVariable.woff2",
   display: "swap",
