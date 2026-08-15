@@ -4,7 +4,7 @@ export const avisoLegal = legalDocumentSchema.parse({
   id: "aviso-legal",
   slug: "aviso-legal",
   title: "Aviso legal",
-  status: "review",
+  status: "published",
   updatedAt: "2026-08-15",
   metadata: {
     title: "Aviso legal",
@@ -16,9 +16,9 @@ export const avisoLegal = legalDocumentSchema.parse({
       heading: "Datos del prestador",
       paragraphs: [
         "En cumplimiento del artículo 10 de la Ley 34/2002, de 11 de julio, de Servicios de la Sociedad de la Información y de Comercio Electrónico (LSSI-CE), se informa de los datos identificativos del prestador de este sitio web.",
-        "Titular: Alexendros ([PENDIENTE: nombre completo / razón social]).",
-        "NIF: [PENDIENTE: NIF].",
-        "Domicilio: [PENDIENTE: domicilio].",
+        "Titular: Alejandro Domingo Agustí.",
+        "NIF: 21002968N.",
+        "Domicilio: C/ Higinio Noja 21, puerta 9 — 46023 Valencia, Comunidad Valenciana, España.",
         "Correo de contacto: hola@alexendros.dev.",
         "Sitio web: https://alexendros.dev.",
       ],
