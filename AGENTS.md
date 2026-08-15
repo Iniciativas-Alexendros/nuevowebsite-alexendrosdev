@@ -135,7 +135,7 @@ Una sesión NO está terminada si falta alguno:
 - Un PR = una unidad de trabajo. CI verde es condición de merge.
 - Toda PR lleva al menos una etiqueta temática (ADR-0022). Las PR apiladas se rebasan solas tras cada fusión a `main`, sin auto-merge (ADR-0023).
 - El decisor revisa el diff. El agente no se auto-mergea.
-- **Despliegue (ADR-0025):** el agente NO dispara deploy Vercel por PR. Tras firma de fase, el decisor (o el agente con confirmación explícita) ejecuta `Deploy fase (Vercel)` → preview MITL; producción solo con `PROMOTE` + entorno `Production`.
+- **Despliegue (ADR-0025):** el agente NO dispara deploy Vercel por PR. Tras integrar en `main` todos los PR de la fase, el decisor (o el agente con confirmación explícita) ejecuta `Deploy fase (Vercel)` → preview MITL; la firma del criterio de salida es **posterior** a esa validación; producción solo con firma + `PROMOTE` + entorno `Production`.
 
 ---
 
@@ -163,9 +163,10 @@ Umbrales ejecutables (DEC-AGENTS-04; no los rebajes):
 2. Humano entrega una ficha §3 o apunta a una tarea de ROADMAP.
 3. Agente lee §2, implementa, deja CI verde, abre PR.
 4. Humano revisa diff, hace QA visual si hay UI, y fusiona.
-5. Al cumplir el criterio de salida de la fase, el decisor firma la épica.
-6. Tras la firma: workflow `Deploy fase (Vercel)` → preview MITL; si el decisor confirma, production con `PROMOTE` (ADR-0025).
-7. Fase 1 se ejecuta sin copiar el repo anterior.
+5. Tras fusionar a `main` todos los PR de la fase: workflow `Deploy fase (Vercel)` → preview MITL (ADR-0025).
+6. El decisor revisa y valida el preview; solo entonces firma el criterio de salida de la épica (DEC-ROADMAP-03).
+7. Tras la firma: mismo workflow → production con `PROMOTE` (ADR-0025).
+8. Fase 1 se ejecuta sin copiar el repo anterior.
 
 ---
 
@@ -175,7 +176,7 @@ Umbrales ejecutables (DEC-AGENTS-04; no los rebajes):
 - Textos legales finales (ADR-0015).
 - Aceptación de dependencias y proveedores (ADR-0006).
 - Firma del criterio de salida de cada fase.
-- Confirmación MITL de preview de fase y promoción a producción (`PROMOTE`, ADR-0025).
+- Validación MITL del preview de fase (previa a firmar cierre) y promoción a producción (`PROMOTE`, ADR-0025).
 - Decisiones que requieran ADR nuevo.
 
 ---
@@ -255,5 +256,5 @@ Batería 7.3 del [Plan de verificación y desarrollo de documentos pendientes �
 - Reserva Cal.com: solo enlace a `https://cal.com/alexendros` (sin script de terceros).
 - Envío de contacto: Proton SMTP vía `nodemailer` en `src/lib/server/` (ADR-0011); org secrets `PROTON_SMTP_HOST`/`PORT`, `PROTON_MAIL_FROM`, `PROTON_SMTP_TOKEN` (no reutilizar `PROTON_BRIDGE_PASS`); sync a Vercel con `sync-env-vercel.yml`.
 - Residual Fase 5: smoke SMTP real pendiente de `PROTON_SMTP_TOKEN` + sync-env; sin config el formulario degrada a 503.
-- Despliegue Vercel (ADR-0025): sin preview por PR; `ignoreCommand` en `vercel.json`; Lighthouse CI local; deploy de fase vía `Deploy fase (Vercel)` (preview MITL → production con `PROMOTE`).
+- Despliegue Vercel (ADR-0025): sin preview por PR; `ignoreCommand` en `vercel.json`; Lighthouse CI local; tras integrar la fase en `main` → preview MITL → firma → production con `PROMOTE`.
 - Borradores legales tipados pueden vivir en `src/content/legal/` en estado `draft`/`review`; la firma legal final queda en Fase 7.
