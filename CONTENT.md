@@ -312,11 +312,11 @@ El flujo Borrador → Revisión → Publicado → Archivado se aplica en código
 
 | Pieza | Fuente prevista | Estado |
 | --- | --- | --- |
-| Propuesta de valor y home | `site.ts` • secciones | Tipado en `site.ts`; secciones de landing en Fase 5 |
-| 4 servicios (DEC-SPECS-02) | `services/*.ts` | Borrador tipado `published`; firma humana pendiente (REQ-GLOBAL-008) |
-| 4 proyectos (DEC-SPECS-03) | `projects/*.ts` | Borrador tipado `published`; firma humana y confidencialidad pendientes; sin capturas aún |
-| Stack y prácticas | `technologies/index.ts` | Tipado `published`; firma humana pendiente |
-| Bio (/sobre-mi) | `profile.ts` | Tipado `published`; firma humana pendiente |
+| Propuesta de valor y home | `site.ts` • secciones | Tipado en `site.ts`; secciones de landing en Fase 5; hechos de site firmados 15-08-2026 (REQ-GLOBAL-008) |
+| 4 servicios (DEC-SPECS-02) | `services/*.ts` | Tipado `published`; firmado por el decisor el 15-08-2026 (REQ-GLOBAL-008) |
+| 4 proyectos (DEC-SPECS-03) | `projects/*.ts` | Tipado `published`; firmado por el decisor el 15-08-2026 (REQ-GLOBAL-008); sin capturas aún (DES-07) |
+| Stack y prácticas | `technologies/index.ts` | Tipado `published`; firmado por el decisor el 15-08-2026 (REQ-GLOBAL-008) |
+| Bio (/sobre-mi) | `profile.ts` | Tipado `published`; firmado por el decisor el 15-08-2026 (REQ-GLOBAL-008) |
 | Aviso legal y privacidad | `legal/*` | Borrador tipado `review` con placeholders; firma/asesoría en Fase 7 (ADR-0015) |
 | Capturas de proyectos | `public/images/` | Por producir (DES-07: capturas reales); refs retiradas del contenido |
-| OG images | `opengraph-image.tsx` | Implementado: `src/app/opengraph-image.tsx` (ADR-0018) |
+| OG images | `opengraph-image.tsx` | Implementado: `src/app/opengraph-image.tsx` (ADR-0018; #37) |
