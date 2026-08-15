@@ -1,13 +1,13 @@
 name: Deploy fase (Vercel)
 
-# ADR-0025 — Despliegue solo tras cierre de fase firmado.
-# Preview = man-in-the-loop. Production exige input PROMOTE + entorno GitHub `Production`.
+# ADR-0025 — Preview MITL tras integrar la fase en main (antes de firmar cierre).
+# Firma DEC-ROADMAP-03 solo tras validar preview. Production: PROMOTE + entorno `Production`.
 
 on:
   workflow_dispatch:
     inputs:
       phase:
-        description: "Número de fase ROADMAP ya firmada (ej. 6)"
+        description: "Número de fase ROADMAP (ej. 6). Preview = antes de firmar; production = tras firmar"
         required: true
         type: string
       target:
@@ -18,7 +18,7 @@ on:
           - preview
           - production
       confirmation:
-        description: "Solo production: escribir exactamente PROMOTE tras QA visual del preview"
+        description: "Solo production: PROMOTE tras QA del preview y firma de cierre de fase"
         required: false
         type: string
         default: ""
@@ -58,7 +58,7 @@ jobs:
           echo "" >> "$GITHUB_STEP_SUMMARY"
           echo "- **URL:** $url" >> "$GITHUB_STEP_SUMMARY"
           echo "- **Commit:** \`$(git rev-parse --short HEAD)\`" >> "$GITHUB_STEP_SUMMARY"
-          echo "- **Siguiente:** QA visual MITL → si OK, relanzar este workflow con target \`production\` y confirmation \`PROMOTE\`." >> "$GITHUB_STEP_SUMMARY"
+          echo "- **Siguiente:** QA visual MITL → si OK, firmar cierre de fase (DEC-ROADMAP-03) → relanzar con target \`production\` y confirmation \`PROMOTE\`." >> "$GITHUB_STEP_SUMMARY"
 
   deploy-production:
     name: Producción tras MITL (fase ${{ github.event.inputs.phase }})
@@ -91,4 +91,4 @@ jobs:
           echo "" >> "$GITHUB_STEP_SUMMARY"
           echo "- **URL:** $url" >> "$GITHUB_STEP_SUMMARY"
           echo "- **Commit:** \`$(git rev-parse --short HEAD)\`" >> "$GITHUB_STEP_SUMMARY"
-          echo "- Confirmación MITL: PROMOTE" >> "$GITHUB_STEP_SUMMARY"
+          echo "- Confirmación MITL + firma de fase: PROMOTE" >> "$GITHUB_STEP_SUMMARY"
