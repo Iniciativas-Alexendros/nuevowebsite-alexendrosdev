@@ -5,7 +5,7 @@ export const automatizacionIa = serviceSchema.parse({
   slug: "automatizacion-ia",
   title: "Automatización y agentes IA",
   shortDescription:
-    "Agentes y flujos de trabajo con MCP, CLI y LLMs locales/remotos. Automatizo tareas repetitivas, extracción de datos y decisión asistida sin depender de plataformas cerradas.",
+    "Automatización de flujos repetitivos como extracción y análisis de datos. Toma de decisiones y asistencia guiada por modelos de IA de código abierto y auditable.",
   description:
     "Diseño e implemento automatizaciones a medida usando Model Context Protocol (MCP) para conectar LLMs con tus herramientas (GitHub, Notion, filesystem, bases de datos, APIs), CLI en Rust/Go/Node para tareas de alto rendimiento, y flujos de trabajo orquestados sin vendor lock-in. El código es tuyo, se ejecuta en tu infraestructura y se audita igual que cualquier otra parte de tu stack. No vendo 'IA mágica': entrego sistemas deterministas, testeados y observables que resuelven problemas concretos.",
   audience:
