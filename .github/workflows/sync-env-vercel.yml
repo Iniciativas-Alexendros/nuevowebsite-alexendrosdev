@@ -1,9 +1,9 @@
 # Sincroniza secretos de org/repo → variables de entorno de Vercel (ADR-0021).
 # No imprime valores. Solo workflow_dispatch (manual).
 #
-# Requiere org secrets (visibles al repo): PROTON_SMTP_HOST, PROTON_SMTP_PORT,
-# PROTON_MAIL_FROM (hola@ / contacto público), PROTON_SMTP_USER (cuenta del token,
-# p. ej. operaciones@), y PROTON_SMTP_TOKEN (submission, no Bridge).
+# Requiere org secrets (visibles al repo; visibility=all si el repo es público):
+# PROTON_SMTP_HOST, PROTON_SMTP_PORT, PROTON_MAIL_FROM, PROTON_SMTP_USER
+# (p. ej. ambos operaciones@), PROTON_SMTP_TOKEN (submission, no Bridge).
 # Repo secrets: VERCEL_TOKEN, VERCEL_ORG_ID, VERCEL_PROJECT_ID.
 
 name: Sync env → Vercel
