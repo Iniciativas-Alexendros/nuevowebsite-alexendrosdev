@@ -267,8 +267,8 @@ Camino crítico ~70 h con solape de Fase 4. Sin holgura humana de revisión. Rec
 - [x]  Configurar validación del contenido en build: contenido inválido rompe el build, como gate de CI (ADR-0018).
 - [x]  Crear guías de redacción y convenciones de slug: primera persona con tuteo, guía de tono de CONTENT §11. — **Resuelto:** `docs/guia-redaccion.md`.
 - [x]  Definir tratamiento de borradores: enum `status`, selectores `getPublished*()`, sitemap y rutas derivados, test bloqueante en CI (CONTENT §9; REQ-GLOBAL-007). — **Sitemap solo rutas estáticas P0 hasta activar `[slug]` P1 (#37).**
-- [x]  Revisar exactitud de afirmaciones profesionales y técnicas (REQ-GLOBAL-008). Tarea no delegable: firma humana obligatoria. — **Firmado por el decisor el 15-08-2026 (servicios, proyectos, stack, perfil y site). Placeholders legales `[PENDIENTE: …]` quedan para Fase 7.**
-- [x]  Preparar contenido legal según funcionalidades **P0** confirmadas: aviso legal y privacidad, sin cookies (ADR-0010, ADR-0015). — **Borrador tipado en `src/content/legal/` con status `review` y placeholders; firma/asesoría en Fase 7.**
+- [x]  Revisar exactitud de afirmaciones profesionales y técnicas (REQ-GLOBAL-008). Tarea no delegable: firma humana obligatoria. — **Firmado por el decisor el 15-08-2026 (servicios, proyectos, stack, perfil y site). Legales cerrados en Fase 7.**
+- [x]  Preparar contenido legal según funcionalidades **P0** confirmadas: aviso legal y privacidad, sin cookies (ADR-0010, ADR-0015). — **Completado en Fase 7:** `published` con datos reales; asesoría externa residual pre-PROMOTE.
 
 **Entregable:** conjunto de contenido tipado, validado y listo para renderizar.
 
@@ -375,15 +375,15 @@ Camino crítico ~70 h con solape de Fase 4. Sin holgura humana de revisión. Rec
 
 **Tareas:**
 
-- [ ]  Redactar aviso legal (`/aviso-legal`): identificación del prestador conforme al art. 10 LSSI-CE, reflejando la situación real sin alta de autónomo, con actualización obligatoria al formalizar el alta (ADR-0015, DEC-SPECS-05).
-- [ ]  Redactar política de privacidad (`/privacidad`): responsable, finalidad, base jurídica, conservación y derechos (art. 13 RGPD).
+- [x]  Redactar aviso legal (`/aviso-legal`): identificación del prestador conforme al art. 10 LSSI-CE, reflejando la situación real sin alta de autónomo, con actualización obligatoria al formalizar el alta (ADR-0015, DEC-SPECS-05). — **Hecho:** `published` con datos firmados por el decisor (15-08-2026).
+- [x]  Redactar política de privacidad (`/privacidad`): responsable, finalidad, base jurídica, conservación y derechos (art. 13 RGPD). — **Hecho:** base art. 6.1.b; conservación máx. 12 meses; Proton/Vercel/DPF+SCC.
 - [x]  Determinar necesidad de política y mecanismo de cookies. — **Resuelto:** sin cookies no esenciales, sin página ni banner en el MVP; se publican al activar la analítica P1 (ADR-0010).
-- [ ]  Revisar proveedores, transferencias, formularios y analítica: Proton Mail (ADR-0011) y Vercel (ADR-0017) como únicos proveedores del MVP.
+- [x]  Revisar proveedores, transferencias, formularios y analítica: Proton Mail (ADR-0011) y Vercel (ADR-0017) como únicos proveedores del MVP. — **Reflejado en privacidad**; Cal.com solo si el usuario abre el enlace.
 - [x]  Implementar banner o gestión de consentimiento solo cuando sea necesario. — **No aplica en el MVP;** condición de activación definida en ADR-0010.
-- [ ]  Verificar enlaces legales en footer y formularios (REQ-LAYOUT-FOOTER-001).
-- [ ]  Revisar textos de consentimiento (checkbox no premarcado; REQ-FORM-CONTACT-001).
-- [ ]  Definir proceso de actualización cuando se añada una integración (criterio SPECS 6.9).
-- [ ]  Validar los textos legales con asesoría antes de producción (riesgo regulatorio residual del criterio SMI, ADR-0015).
+- [x]  Verificar enlaces legales en footer y formularios (REQ-LAYOUT-FOOTER-001).
+- [x]  Revisar textos de consentimiento (checkbox no premarcado; REQ-FORM-CONTACT-001).
+- [x]  Definir proceso de actualización cuando se añada una integración (criterio SPECS 6.9). — **Documentado en CONTENT.md §10.1.**
+- [ ]  Validar los textos legales con asesoría antes de producción (riesgo regulatorio residual del criterio SMI, ADR-0015). — **RESIDUAL pre-PROMOTE:** no bloquea merge ni `published` en repo; sí bloquea promoción a producción (ADR-0025 / Fase 8).
 
 **Entregable:** información legal coherente con la operación real del sitio.
 
@@ -392,6 +392,7 @@ Camino crítico ~70 h con solape de Fase 4. Sin holgura humana de revisión. Rec
 - No hay política genérica desconectada de las tecnologías reales.
 - Todos los tratamientos de datos implementados están reflejados.
 - El contacto y las cookies cumplen el flujo definido.
+- **Residual explícito:** asesoría externa antes de `PROMOTE` a producción.
 
 ---
 
