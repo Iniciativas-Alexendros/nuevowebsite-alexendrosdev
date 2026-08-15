@@ -41,16 +41,16 @@ Este archivo es el punto de entrada de lectura del proyecto. Te dice qué leer d
 
 **Pulso:** 15 de agosto de 2026.
 
-**Fase activa:** 5 — MVP de captación (Fases 0–4 firmadas; residual #37 en `main`; REQ-GLOBAL-008 firmado el 15-08-2026).
+**Fase activa:** 5 — MVP de captación en implementación (Fases 0–4 firmadas; REQ-GLOBAL-008 firmado el 15-08-2026).
 
-**Siguiente acción:** implementar Fase 5 (landing mínima; hito público jue 20-08). Placeholders legales siguen en Fase 7.
+**Siguiente acción:** fusionar PRs de Fase 5 (inicio, servicios, contacto + `POST /api/contact`); hito público jue 20-08. Placeholders legales finales siguen en Fase 7.
 
 **Objetivo de producto:** v1.0 el 24 de agosto de 2026.
 
 | Capa | Estado |
 | --- | --- |
 | Documentación canónica | Aprobada el 13-08-2026 |
-| Código del sitio nuevo | Fases 1–4 en `main` (Zod, contenido tipado firmado, OG, legales en `review`, shell, CI) |
+| Código del sitio nuevo | Fases 1–4 en `main`; Fase 5: captación (Hero, servicios, formulario, endpoint Proton SMTP) |
 | Repositorio nuevo | Creado: `Iniciativas-Alexendros/nuevowebsite-alexendrosdev`. Público desde el 14-08-2026 (ADR-0017 revocada) |
 | Sitio anterior | Se archiva en solo lectura. Sin redirecciones (ADR-0013) |
 | Contenido editorial | Hechos de servicios/proyectos/stack/perfil/site firmados (REQ-GLOBAL-008); capturas DES-07 y legales finales pendientes |
