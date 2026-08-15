@@ -115,8 +115,15 @@ jobs:
           set -o pipefail
           mkdir -p .vercel
           printf '{"projectId":"%s","orgId":"%s"}\n' "$VERCEL_PROJECT_ID" "$VERCEL_ORG_ID" > .vercel/project.json
+          set +e
           npx vercel@latest deploy --token "$VERCEL_TOKEN" --yes > /tmp/vercel-deploy.log 2>&1
+          deploy_status=$?
+          set -e
           cat /tmp/vercel-deploy.log
+          if [ "$deploy_status" -ne 0 ]; then
+            echo "vercel deploy falló con código $deploy_status (ver log arriba)" >&2
+            exit "$deploy_status"
+          fi
           url=$(grep -oE 'https://[^[:space:]]+\.vercel\.app' /tmp/vercel-deploy.log | tail -n 1)
           if [ -z "$url" ]; then echo "No se pudo obtener la URL del preview" >&2; exit 1; fi
           echo "preview-url=$url" >> "$GITHUB_OUTPUT"
