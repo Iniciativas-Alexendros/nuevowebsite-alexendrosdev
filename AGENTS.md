@@ -135,6 +135,7 @@ Una sesión NO está terminada si falta alguno:
 - Un PR = una unidad de trabajo. CI verde es condición de merge.
 - Toda PR lleva al menos una etiqueta temática (ADR-0022). Las PR apiladas se rebasan solas tras cada fusión a `main`, sin auto-merge (ADR-0023).
 - El decisor revisa el diff. El agente no se auto-mergea.
+- **Despliegue (ADR-0025):** el agente NO dispara deploy Vercel por PR. Tras firma de fase, el decisor (o el agente con confirmación explícita) ejecuta `Deploy fase (Vercel)` → preview MITL; producción solo con `PROMOTE` + entorno `Production`.
 
 ---
 
@@ -150,7 +151,7 @@ Hasta existir el repo, estos nombres son el contrato. El scaffold de Fase 1 DEBE
 
 Umbrales ejecutables (DEC-AGENTS-04; no los rebajes):
 
-- Lighthouse ≥90 en las cuatro categorías en móvil (OBJ-005).
+- Lighthouse ≥90 en las cuatro categorías en móvil (OBJ-005), medido en CI **local** tras `pnpm build` (ADR-0025; no despliega Vercel por PR).
 - axe-core sin violaciones bloqueantes en CI.
 - Cobertura mínima 70 % en `src/lib/` y validaciones, medida por Vitest en CI, bloqueante de merge.
 
@@ -163,7 +164,8 @@ Umbrales ejecutables (DEC-AGENTS-04; no los rebajes):
 3. Agente lee §2, implementa, deja CI verde, abre PR.
 4. Humano revisa diff, hace QA visual si hay UI, y fusiona.
 5. Al cumplir el criterio de salida de la fase, el decisor firma la épica.
-6. Fase 1 se ejecuta sin copiar el repo anterior.
+6. Tras la firma: workflow `Deploy fase (Vercel)` → preview MITL; si el decisor confirma, production con `PROMOTE` (ADR-0025).
+7. Fase 1 se ejecuta sin copiar el repo anterior.
 
 ---
 
@@ -173,6 +175,7 @@ Umbrales ejecutables (DEC-AGENTS-04; no los rebajes):
 - Textos legales finales (ADR-0015).
 - Aceptación de dependencias y proveedores (ADR-0006).
 - Firma del criterio de salida de cada fase.
+- Confirmación MITL de preview de fase y promoción a producción (`PROMOTE`, ADR-0025).
 - Decisiones que requieran ADR nuevo.
 
 ---
@@ -232,3 +235,25 @@ Batería 7.3 del [Plan de verificación y desarrollo de documentos pendientes �
 - [x]  El orden de trabajo de §9 encaja con el marco ya aprobado.
 
 **Pendiente de repo (Fase 0–1):** crear los scripts de §8 y la plantilla de PR con la ficha §3.
+
+## Learned User Preferences
+
+- En modo plan: entregar ficha AGENTS §3 y plan; no implementar hasta confirmación explícita del decisor.
+- Ante dependencias nuevas, presentar alternativas viables antes de pedir autorización.
+- Tras cerrar trabajo de fase, documentar en el hub Notion del proyecto con el formato/estructura existentes y actualizar el calendario de fases.
+- En entidades de proyecto: omitir `images[]` hasta tener capturas reales; no dejar rutas placeholder.
+- Asuntos cerrados del formulario de contacto: «Proyecto de software · Programación de aplicaciones», «Portal · Blog · Portafolio», «Formación en Nuevas Tecnologías · Herramientas IA para la empresa», «Auditoría de seguridad y posicionamiento», «Asesoramiento tecnológico · Consultor especializado», «Sistemas profesionales · Flujos de trabajos automatizables».
+- Si un bloqueo es un secreto o token de terceros que solo el decisor puede crear, dejar residual pendiente y continuar a la siguiente fase con prompt de handoff; no estancar la sesión.
+- En `/stack`: agrupar por categoría sin porcentajes subjetivos.
+
+## Learned Workspace Facts
+
+- Hub Notion del proyecto: https://app.notion.com/p/3bb7ded224cb807c9101e14ef41e6dc5 ; ficha Fase 5: https://app.notion.com/p/1965e7f8eb784df0ac7d8490f833fed8 ; ficha Fase 6: https://app.notion.com/p/901e1eba9e874304af08f5a10daddf54
+- Contenido tipado en `src/content/*` (servicios, proyectos, stack, perfil, site, legal); las páginas marketing se alimentan desde ahí.
+- Portfolio P0: rutas `/proyectos`, `/stack`, `/sobre-mi` desde contenido published; `/proyectos/[slug]` y MDX son P1 (Fase 9).
+- Home: `FeaturedProjects` / `FeaturedStack` deben permanecer ligeros (OBJ-005); cards/badges de dominio completos viven en las páginas de portfolio.
+- Reserva Cal.com: solo enlace a `https://cal.com/alexendros` (sin script de terceros).
+- Envío de contacto: Proton SMTP vía `nodemailer` en `src/lib/server/` (ADR-0011); org secrets `PROTON_SMTP_HOST`/`PORT`, `PROTON_MAIL_FROM`, `PROTON_SMTP_TOKEN` (no reutilizar `PROTON_BRIDGE_PASS`); sync a Vercel con `sync-env-vercel.yml`.
+- Residual Fase 5: smoke SMTP real pendiente de `PROTON_SMTP_TOKEN` + sync-env; sin config el formulario degrada a 503.
+- Despliegue Vercel (ADR-0025): sin preview por PR; `ignoreCommand` en `vercel.json`; Lighthouse CI local; deploy de fase vía `Deploy fase (Vercel)` (preview MITL → production con `PROMOTE`).
+- Borradores legales tipados pueden vivir en `src/content/legal/` en estado `draft`/`review`; la firma legal final queda en Fase 7.

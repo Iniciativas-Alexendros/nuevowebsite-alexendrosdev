@@ -1,0 +1,94 @@
+name: Deploy fase (Vercel)
+
+# ADR-0025 — Despliegue solo tras cierre de fase firmado.
+# Preview = man-in-the-loop. Production exige input PROMOTE + entorno GitHub `Production`.
+
+on:
+  workflow_dispatch:
+    inputs:
+      phase:
+        description: "Número de fase ROADMAP ya firmada (ej. 6)"
+        required: true
+        type: string
+      target:
+        description: "Destino del despliegue"
+        required: true
+        type: choice
+        options:
+          - preview
+          - production
+      confirmation:
+        description: "Solo production: escribir exactamente PROMOTE tras QA visual del preview"
+        required: false
+        type: string
+        default: ""
+
+concurrency:
+  group: deploy-fase-${{ github.event.inputs.target }}
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  deploy-preview:
+    name: Preview de fase ${{ github.event.inputs.phase }}
+    if: github.event.inputs.target == 'preview'
+    runs-on: ubuntu-latest
+    environment: phase-preview
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - name: Desplegar preview desde main
+        id: deploy
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+        run: |
+          set -euo pipefail
+          mkdir -p .vercel
+          printf '{"projectId":"%s","orgId":"%s"}\n' "$VERCEL_PROJECT_ID" "$VERCEL_ORG_ID" > .vercel/project.json
+          npx vercel@latest pull --yes --environment=preview --token "$VERCEL_TOKEN"
+          npx vercel@latest build --token "$VERCEL_TOKEN"
+          url=$(npx vercel@latest deploy --prebuilt --token "$VERCEL_TOKEN" | tee /tmp/vercel-out.txt | tail -n 1)
+          echo "url=$url" >> "$GITHUB_OUTPUT"
+          echo "### Preview Fase ${{ github.event.inputs.phase }}" >> "$GITHUB_STEP_SUMMARY"
+          echo "" >> "$GITHUB_STEP_SUMMARY"
+          echo "- **URL:** $url" >> "$GITHUB_STEP_SUMMARY"
+          echo "- **Commit:** \`$(git rev-parse --short HEAD)\`" >> "$GITHUB_STEP_SUMMARY"
+          echo "- **Siguiente:** QA visual MITL → si OK, relanzar este workflow con target \`production\` y confirmation \`PROMOTE\`." >> "$GITHUB_STEP_SUMMARY"
+
+  deploy-production:
+    name: Producción tras MITL (fase ${{ github.event.inputs.phase }})
+    if: github.event.inputs.target == 'production'
+    runs-on: ubuntu-latest
+    environment: Production
+    steps:
+      - name: Exigir confirmación PROMOTE
+        run: |
+          if [ "${{ github.event.inputs.confirmation }}" != "PROMOTE" ]; then
+            echo "Abortado: para production el input confirmation DEBE ser exactamente PROMOTE (ADR-0025)." >&2
+            exit 1
+          fi
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - name: Desplegar producción desde main
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+        run: |
+          set -euo pipefail
+          mkdir -p .vercel
+          printf '{"projectId":"%s","orgId":"%s"}\n' "$VERCEL_PROJECT_ID" "$VERCEL_ORG_ID" > .vercel/project.json
+          npx vercel@latest pull --yes --environment=production --token "$VERCEL_TOKEN"
+          npx vercel@latest build --prod --token "$VERCEL_TOKEN"
+          url=$(npx vercel@latest deploy --prebuilt --prod --token "$VERCEL_TOKEN" | tee /tmp/vercel-out.txt | tail -n 1)
+          echo "### Producción Fase ${{ github.event.inputs.phase }}" >> "$GITHUB_STEP_SUMMARY"
+          echo "" >> "$GITHUB_STEP_SUMMARY"
+          echo "- **URL:** $url" >> "$GITHUB_STEP_SUMMARY"
+          echo "- **Commit:** \`$(git rev-parse --short HEAD)\`" >> "$GITHUB_STEP_SUMMARY"
+          echo "- Confirmación MITL: PROMOTE" >> "$GITHUB_STEP_SUMMARY"

@@ -101,44 +101,17 @@ jobs:
       - run: pnpm audit --prod --audit-level=high
 
   lighthouse:
-    name: Lighthouse CI (preview de Vercel)
+    name: Lighthouse CI (local)
     runs-on: ubuntu-latest
+    needs: [build]
     steps:
       - uses: actions/checkout@v4
-      - name: Desplegar preview en Vercel
-        id: vercel-deploy
-        env:
-          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
-          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
-          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
-        run: |
-          set -o pipefail
-          mkdir -p .vercel
-          printf '{"projectId":"%s","orgId":"%s"}\n' "$VERCEL_PROJECT_ID" "$VERCEL_ORG_ID" > .vercel/project.json
-          set +e
-          npx vercel@latest deploy --token "$VERCEL_TOKEN" --yes > /tmp/vercel-deploy.log 2>&1
-          deploy_status=$?
-          set -e
-          cat /tmp/vercel-deploy.log
-          if [ "$deploy_status" -ne 0 ]; then
-            echo "vercel deploy falló con código $deploy_status (ver log arriba)" >&2
-            exit "$deploy_status"
-          fi
-          url=$(grep -oE 'https://[^[:space:]]+\.vercel\.app' /tmp/vercel-deploy.log | tail -n 1)
-          if [ -z "$url" ]; then echo "No se pudo obtener la URL del preview" >&2; exit 1; fi
-          echo "preview-url=$url" >> "$GITHUB_OUTPUT"
       - uses: pnpm/action-setup@v4
       - uses: actions/setup-node@v4
         with:
           node-version-file: .nvmrc
           cache: pnpm
       - run: pnpm install --frozen-lockfile
-      - name: Calentar el preview antes de medir
-        run: |
-          url="${{ steps.vercel-deploy.outputs.preview-url }}"
-          for i in 1 2 3; do
-            code=$(curl -sS -o /dev/null -w "%{http_code}" "$url")
-            echo "Warm-up $i: HTTP $code"
-            sleep 2
-          done
-      - run: pnpm exec lhci autorun --config=./lighthouserc.json --collect.url="${{ steps.vercel-deploy.outputs.preview-url }}"
+      - run: pnpm build
+      - name: Lighthouse contra servidor local (ADR-0025)
+        run: pnpm exec lhci autorun --config=./lighthouserc.json

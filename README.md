@@ -146,7 +146,7 @@ El sitio lo implementa un agente de código. El humano dirige, revisa diffs, hac
 - `pnpm build` — build de producción
 - `pnpm ci` — check + test + build
 
-**Umbrales.** Lighthouse ≥90 en las cuatro categorías en móvil. axe-core bloqueante. Cobertura mínima 70 % en `src/lib/` y validaciones.
+**Umbrales.** Lighthouse ≥90 en las cuatro categorías en móvil (CI local, ADR-0025). axe-core bloqueante. Cobertura mínima 70 % en `src/lib/` y validaciones. **Deploy Vercel:** solo tras cierre de fase firmado (preview MITL → production con PROMOTE; ADR-0025).
 
 **Herramientas autorizadas:** OpenCode Desktop, Kimi Code CLI, Hermes Desktop.
 

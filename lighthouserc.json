@@ -3,6 +3,9 @@
     "collect": {
       "url": ["http://localhost:3000/"],
       "numberOfRuns": 3,
+      "startServerCommand": "pnpm start",
+      "startServerReadyPattern": "Ready",
+      "startServerReadyTimeout": 60000,
       "settings": {
         "throttling": {
           "cpuSlowdownMultiplier": 1

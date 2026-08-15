@@ -103,6 +103,7 @@ Ruta: ./DECISIONS.md
 - **ADR-0022** — Etiquetas temáticas en pull requests. *(aceptada, 14-08-2026)*
 - **ADR-0023** — Autorebase en cadena de pull requests apiladas, sin auto-merge. *(aceptada, 14-08-2026)*
 - **ADR-0024** — Excepción puntual al gate de CI por rate limit de Vercel (14-08-2026). *(aceptada, 14-08-2026)*
+- **ADR-0025** — Despliegue Vercel por cierre de fase (preview MITL → producción confirmada). *(aceptada, 15-08-2026)* — sustituye las previews automáticas por PR de ADR-0017.
 
 ---
 
@@ -559,9 +560,10 @@ Ruta: ./DECISIONS.md
 - Contexto:
 	- El sitio es SSG con un único endpoint dinámico (`POST /api/contact`, ADR-0007/0011). Se requieren previews por pull request y despliegue reproducible en menos de 10 minutos (OBJ-008), sin coste inicial.
 - Decisión:
-	- Vercel como plataforma de despliegue: runtime Node.js 22 (sin Edge), previews automáticas por PR y producción desde la rama protegida `main`.
+	- Vercel como plataforma de despliegue: runtime Node.js 22 (sin Edge).
 	- Monitorización P0 con logs y dashboards de la propia plataforma; Sentry free tier como candidato para P1 mediante ADR propio.
 	- Repositorio privado en GitHub hasta el lanzamiento; el repositorio anterior queda archivado en solo lectura. *(Cláusula sustituida el 14-08-2026 por ADR-0020 — repositorio público.)*
+	- *(Cláusula «previews automáticas por PR y producción desde `main`» sustituida el 15-08-2026 por ADR-0025 — despliegue por cierre de fase.)*
 - Alternativas consideradas:
 	- Netlify: paridad de funciones sin ventaja diferencial y menor integración con Next.js.
 	- Cloudflare Pages/Workers: runtime workerd con incompatibilidades para SMTP y APIs Node.
@@ -796,5 +798,46 @@ Ruta: ./DECISIONS.md
 	- Sin impacto; el check de «Secretos + auditoría» pasó en todas las PRs.
 - Fecha de revisión:
 	- Al restaurarse la cuota de Vercel: verificar que el deploy de producción y Lighthouse vuelven a verde.
+
+</details>
+
+<details>
+<summary>**ADR-0025** — Despliegue Vercel por cierre de fase (preview MITL → producción confirmada)</summary>
+
+- Estado: aceptada
+- Fecha: 2026-08-15
+- Decisores: Alexendros
+- Relacionado con: ADR-0017 (sustituye previews automáticas por PR), ADR-0020, ADR-0021, ADR-0024, OBJ-005, OBJ-008, DEC-ROADMAP-03, ARCHITECTURE §13–§14, [AGENTS.md](./AGENTS.md) §7–§9
+- Contexto:
+	- Las previews automáticas por cada PR (y el job de Lighthouse que redeployaba en cada push) agotaron la cuota Hobby de Vercel (`api-deployments-free-per-day`) y bloquearon CI sin fallo de código (ADR-0024).
+	- El decisor exige man-in-the-loop: visualizar el resultado de una fase completa firmada en Preview y solo entonces promover a Producción.
+- Decisión:
+	- **No hay despliegue Vercel por PR ni por push automático a `main`.** Los builds disparados por la integración Git se ignoran (`vercel.json` → `ignoreCommand: exit 0`). El CLI/`workflow_dispatch` sigue pudiendo desplegar.
+	- **Momento de deploy:** solo tras integrar en `main` todos los PR de la fase y **firma del criterio de salida** por el decisor (DEC-ROADMAP-03).
+	- **Paso 1 — Preview MITL:** workflow `Deploy fase (Vercel)` con `target=preview` desde `main` (entorno GitHub `phase-preview`). El decisor revisa la URL de preview.
+	- **Paso 2 — Producción:** el mismo workflow con `target=production` y `confirmation=PROMOTE`, más aprobación del entorno GitHub `Production` (required reviewers). Sin `PROMOTE` el job aborta.
+	- **Lighthouse en PR (OBJ-005):** se mide contra servidor local post-`pnpm build` (`lighthouserc.json` + job `Lighthouse CI (local)`). No consume cuota de Vercel. Los umbrales DEC-AGENTS-04 no se rebajan.
+	- Los gates de código de CI (typecheck, lint, test, build, e2e/axe, secretos) siguen bloqueantes de merge en cada PR.
+- Alternativas consideradas:
+	- Seguir con preview por PR + Lighthouse remoto: rechazado; agota Hobby y no aporta el gate MITL de fase.
+	- Desplegar a producción automáticamente al fusionar a `main`: rechazado; salta la confirmación visual del decisor.
+	- Solo dashboard Vercel manual: rechazado; menos auditable y reproducible que Actions + CLI.
+- Consecuencias positivas:
+	- Cuota Vercel bajo control; QA visual por fase; producción solo con confirmación explícita; Lighthouse estable en CI sin depender del proveedor.
+- Consecuencias negativas:
+	- No hay URL de preview por PR individual (la revisión de PR es por diff + CI local).
+	- Requiere que el decisor dispare el workflow tras firmar la fase y configure los entornos GitHub `phase-preview` / `production`.
+- Plan de implementación:
+	- `vercel.json` con `ignoreCommand: exit 0`.
+	- Job Lighthouse local en `.github/workflows/ci.yml`.
+	- Workflow `.github/workflows/deploy-phase.yml` (`workflow_dispatch`).
+	- Actualizar ARCHITECTURE §13–§14 y AGENTS §§7–9; anotar ADR-0017.
+	- Crear en GitHub Environments: `phase-preview` (opcional) y `production` con required reviewers = decisor.
+- Plan de reversión:
+	- ADR sustituto que restablezca previews por PR; quitar `ignoreCommand` y restaurar deploy en el job Lighthouse.
+- Seguridad y privacidad:
+	- Secretos Vercel solo en Actions (ADR-0021); producción protegida por entorno y confirmación `PROMOTE`; sin secretos en el repo.
+- Fecha de revisión:
+	- Al evaluar plan Pro de Vercel, o a los 3 meses.
 
 </details>
