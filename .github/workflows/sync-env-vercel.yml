@@ -2,7 +2,8 @@
 # No imprime valores. Solo workflow_dispatch (manual).
 #
 # Requiere org secrets (visibles al repo): PROTON_SMTP_HOST, PROTON_SMTP_PORT,
-# PROTON_MAIL_FROM, y PROTON_SMTP_TOKEN (token SMTP de submission, no Bridge).
+# PROTON_MAIL_FROM (hola@ / contacto público), PROTON_SMTP_USER (cuenta del token,
+# p. ej. operaciones@), y PROTON_SMTP_TOKEN (submission, no Bridge).
 # Repo secrets: VERCEL_TOKEN, VERCEL_ORG_ID, VERCEL_PROJECT_ID.
 
 name: Sync env → Vercel
@@ -25,13 +26,14 @@ jobs:
           PROTON_SMTP_HOST: ${{ secrets.PROTON_SMTP_HOST }}
           PROTON_SMTP_PORT: ${{ secrets.PROTON_SMTP_PORT }}
           PROTON_MAIL_FROM: ${{ secrets.PROTON_MAIL_FROM }}
+          PROTON_SMTP_USER: ${{ secrets.PROTON_SMTP_USER }}
           PROTON_SMTP_TOKEN: ${{ secrets.PROTON_SMTP_TOKEN }}
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
           VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
           VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
         run: |
           missing=0
-          for name in PROTON_SMTP_HOST PROTON_SMTP_PORT PROTON_MAIL_FROM PROTON_SMTP_TOKEN VERCEL_TOKEN VERCEL_ORG_ID VERCEL_PROJECT_ID; do
+          for name in PROTON_SMTP_HOST PROTON_SMTP_PORT PROTON_MAIL_FROM PROTON_SMTP_USER PROTON_SMTP_TOKEN VERCEL_TOKEN VERCEL_ORG_ID VERCEL_PROJECT_ID; do
             if [ -z "${!name}" ]; then
               echo "Falta secreto: $name" >&2
               missing=1
@@ -40,7 +42,7 @@ jobs:
             fi
           done
           if [ "$missing" -ne 0 ]; then
-            echo "Crea PROTON_SMTP_TOKEN en org secrets (token SMTP submission de Proton; no uses PROTON_BRIDGE_PASS)." >&2
+            echo "Crea PROTON_SMTP_TOKEN / PROTON_SMTP_USER en org secrets (token SMTP submission de Proton; no uses PROTON_BRIDGE_PASS)." >&2
             exit 1
           fi
 
@@ -58,6 +60,7 @@ jobs:
           PROTON_SMTP_HOST: ${{ secrets.PROTON_SMTP_HOST }}
           PROTON_SMTP_PORT: ${{ secrets.PROTON_SMTP_PORT }}
           PROTON_MAIL_FROM: ${{ secrets.PROTON_MAIL_FROM }}
+          PROTON_SMTP_USER: ${{ secrets.PROTON_SMTP_USER }}
           PROTON_SMTP_TOKEN: ${{ secrets.PROTON_SMTP_TOKEN }}
         run: |
           set -euo pipefail
@@ -80,11 +83,12 @@ jobs:
             done
           }
 
-          upsert PROTON_SMTP_HOST "$PROTON_SMTP_HOST" sensitive
-          upsert PROTON_SMTP_PORT "$PROTON_SMTP_PORT" sensitive
+          # Runtime (ARCHITECTURE §9.2): SMTP_HOST/PORT, no prefijo PROTON_
+          upsert SMTP_HOST "$PROTON_SMTP_HOST" sensitive
+          upsert SMTP_PORT "$PROTON_SMTP_PORT" sensitive
           upsert CONTACT_TO_EMAIL "$PROTON_MAIL_FROM" sensitive
           upsert EMAIL_FROM_ADDRESS "$PROTON_MAIL_FROM" sensitive
-          upsert SMTP_USER "$PROTON_MAIL_FROM" sensitive
+          upsert SMTP_USER "$PROTON_SMTP_USER" sensitive
           upsert SMTP_TOKEN "$PROTON_SMTP_TOKEN" sensitive
 
           # Públicas conocidas del contenido tipado (site.ts)
