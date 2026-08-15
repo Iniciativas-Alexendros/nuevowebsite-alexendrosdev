@@ -59,21 +59,45 @@ jobs:
           VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
         run: |
           set -euo pipefail
-          if ! npx "$VERCEL_CLI" whoami --token "$VERCEL_TOKEN" >/tmp/vercel-whoami.txt 2>/tmp/vercel-whoami.err; then
-            echo "VERCEL_TOKEN rechazado por la CLI." >&2
-            echo "Regenera en https://vercel.com/account/tokens (scope del team)" >&2
-            echo "y actualiza el repo secret:" >&2
-            echo "  gh secret set VERCEL_TOKEN -R Iniciativas-Alexendros/nuevowebsite-alexendrosdev" >&2
-            tail -n 5 /tmp/vercel-whoami.err >&2 || true
+          # Newlines/espacios al pegar el secret rompen Bearer auth ("User not found").
+          VERCEL_TOKEN="$(printf '%s' "$VERCEL_TOKEN" | tr -d '\r\n' | sed 's/^[[:space:]]*//;s/[[:space:]]*$//')"
+          echo "token_len=${#VERCEL_TOKEN}"
+          if [ "${#VERCEL_TOKEN}" -lt 20 ]; then
+            echo "VERCEL_TOKEN demasiado corto tras sanitizar; re-súbelo sin comillas ni saltos." >&2
             exit 1
           fi
-          echo "vercel whoami OK (identidad no mostrada)"
+
+          user_code=$(curl -sS -o /tmp/vercel-user.json -w "%{http_code}" \
+            -H "Authorization: Bearer ${VERCEL_TOKEN}" \
+            "https://api.vercel.com/v2/user")
+          echo "GET /v2/user → HTTP $user_code"
+          if [ "$user_code" != "200" ]; then
+            echo "VERCEL_TOKEN rechazado por la API (no CLI)." >&2
+            echo "Crea un token personal en https://vercel.com/account/tokens" >&2
+            echo "logueado como operaciones@alexendros.dev (scope del team) y:" >&2
+            echo "  printf '%s' 'TOKEN' | gh secret set VERCEL_TOKEN -R Iniciativas-Alexendros/nuevowebsite-alexendrosdev" >&2
+            # Cuerpo de error sin token; suele ser JSON pequeño.
+            head -c 200 /tmp/vercel-user.json >&2 || true
+            echo >&2
+            exit 1
+          fi
+          echo "API /v2/user OK (identidad no mostrada)"
+
+          if ! npx "$VERCEL_CLI" whoami --token "$VERCEL_TOKEN" >/tmp/vercel-whoami.txt 2>/tmp/vercel-whoami.err; then
+            echo "API OK pero CLI whoami falló; se continúa con la API como fuente de verdad." >&2
+            tail -n 5 /tmp/vercel-whoami.err >&2 || true
+          else
+            echo "vercel whoami OK (identidad no mostrada)"
+          fi
+
           proj_code=$(curl -sS -o /tmp/vercel-proj.json -w "%{http_code}" \
-            -H "Authorization: Bearer $VERCEL_TOKEN" \
+            -H "Authorization: Bearer ${VERCEL_TOKEN}" \
             "https://api.vercel.com/v9/projects/${VERCEL_PROJECT_ID}?teamId=${VERCEL_ORG_ID}")
           echo "GET /v9/projects/{id}?teamId=… → HTTP $proj_code"
           if [ "$proj_code" != "200" ]; then
             echo "VERCEL_ORG_ID / VERCEL_PROJECT_ID incorrectos o el token no tiene acceso al team/proyecto." >&2
+            head -c 200 /tmp/vercel-proj.json >&2 || true
+            echo >&2
             exit 1
           fi
           echo "Acceso al proyecto OK"
@@ -90,8 +114,11 @@ jobs:
         run: |
           set -euo pipefail
 
+          # Misma sanitización que el precheck (newlines al pegar el secret).
+          VERCEL_TOKEN="$(printf '%s' "$VERCEL_TOKEN" | tr -d '\r\n' | sed 's/^[[:space:]]*//;s/[[:space:]]*$//')"
+
           # Enlace por env (patrón CI oficial); evita .vercel/project.json frágil
-          export VERCEL_ORG_ID VERCEL_PROJECT_ID
+          export VERCEL_ORG_ID VERCEL_PROJECT_ID VERCEL_TOKEN
 
           upsert() {
             local name="$1"
