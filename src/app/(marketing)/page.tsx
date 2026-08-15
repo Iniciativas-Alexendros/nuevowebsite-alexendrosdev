@@ -25,11 +25,12 @@ export const metadata: Metadata = {
 };
 
 const HOME_STACK_LIMIT = 8;
+const HOME_PROJECT_LIMIT = 2;
 
 export default function Home() {
   const profile = getPublishedProfile();
   const featuredServices = getFeaturedServices();
-  const featuredProjects = getFeaturedProjects();
+  const featuredProjects = getFeaturedProjects().slice(0, HOME_PROJECT_LIMIT);
   const featuredStack = getFeaturedTechnologies().slice(0, HOME_STACK_LIMIT);
 
   const heroTitle = siteConfig.defaultTitle.includes("—")

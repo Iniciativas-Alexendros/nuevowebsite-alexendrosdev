@@ -426,7 +426,7 @@ No se añadirá ninguna variable al ejemplo hasta que una integración esté apr
 
 # 13. Calidad y CI
 
-Pipeline confirmado (13-08-2026): GitHub Actions, con gates bloqueantes de merge — typecheck, lint, test, build y axe-core (ADR-0009, OBJ-006) — más Lighthouse CI sobre el despliegue preview (OBJ-005).
+Pipeline confirmado (13-08-2026; actualizado 15-08-2026 por ADR-0025): GitHub Actions, con gates bloqueantes de merge — typecheck, lint, test, build y axe-core (ADR-0009, OBJ-006) — más Lighthouse CI **local** tras `pnpm build` (OBJ-005; sin desplegar en Vercel por PR).
 
 Todo pull request debe ejecutar:
 
@@ -447,12 +447,15 @@ Todo pull request debe ejecutar:
 
 # 14. Despliegue y entornos
 
-- Plataforma: Vercel (ADR-0017); previews automáticas por pull request y producción desde la rama protegida `main`.
-- Repositorio: público en GitHub (`Iniciativas-Alexendros/nuevowebsite-alexendrosdev`). La cláusula de ADR-0017 «privado hasta el lanzamiento» queda **revocada por el decisor el 14-08-2026** para habilitar previews de Vercel en plan Hobby con repositorio de organización; el resto de ADR-0017 (runtime Node.js, sin Edge) permanece vigente. El repositorio anterior queda archivado en solo lectura (resuelto 13-08-2026).
-- Entornos mínimos: local, preview y producción.
-- Cada pull request debe disponer de preview cuando el proveedor lo permita.
-- Producción solo se desplegará desde una rama protegida y con CI en verde.
-- Las variables se gestionarán por entorno.
+- Plataforma: Vercel (ADR-0017); runtime Node.js 22, sin Edge.
+- **Política de deploy (ADR-0025):** no hay preview automática por PR ni producción automática por push a `main`. La integración Git ignora builds (`vercel.json` → `ignoreCommand: exit 0`).
+- **Cuándo desplegar:** tras fusionar a `main` todos los PR de la fase y **firma del criterio de salida** (DEC-ROADMAP-03).
+- **Flujo MITL:**
+	1. Workflow `Deploy fase (Vercel)` → `target=preview` desde `main` → QA visual del decisor.
+	2. Mismo workflow → `target=production` + `confirmation=PROMOTE` + entorno GitHub `Production` (required reviewers) → producción.
+- Repositorio: público en GitHub (`Iniciativas-Alexendros/nuevowebsite-alexendrosdev`) (ADR-0020). El repositorio anterior queda archivado en solo lectura.
+- Entornos mínimos: local, preview de fase (MITL) y producción.
+- Las variables se gestionarán por entorno (GitHub Actions secrets + Vercel runtime; ADR-0021).
 - Los cambios de esquema, proveedores o redirecciones deberán incluir un plan de rollback.
-- El despliegue debe ser reproducible desde el repositorio, sin pasos manuales opacos.
+- El despliegue debe ser reproducible desde el repositorio vía CLI en Actions, sin pasos manuales opacos en el dashboard salvo emergencia.
 - El documento de release debe comprobar metadatos, formularios, cookies, sitemap, robots, 404, errores, rendimiento y rutas críticas.
