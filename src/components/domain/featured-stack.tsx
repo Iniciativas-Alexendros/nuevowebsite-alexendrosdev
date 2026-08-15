@@ -1,5 +1,5 @@
 import type { Technology } from "@/lib/validations/content";
-import { Badge } from "@/components/ui/badge";
+import { TechnologyBadge } from "@/components/domain/technology-badge";
 import { Link } from "@/components/ui/link";
 import { cn } from "@/lib/utils";
 
@@ -11,8 +11,8 @@ export type FeaturedStackProps = {
 };
 
 /**
- * Stack destacado sin iconografía obligatoria (REQ-DOMAIN-TECHBADGE-001 simplificado).
- * Nombre accesible en texto; sin porcentajes subjetivos.
+ * Stack destacado (REQ-DOMAIN-TECHBADGE-001).
+ * Sin porcentajes subjetivos; reutiliza TechnologyBadge.
  */
 export function FeaturedStack({
   technologies,
@@ -35,7 +35,7 @@ export function FeaturedStack({
       <ul className="flex list-none flex-wrap gap-2">
         {technologies.map((tech) => (
           <li key={tech.id}>
-            <Badge variant="outline">{tech.name}</Badge>
+            <TechnologyBadge technology={tech} />
           </li>
         ))}
       </ul>
