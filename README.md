@@ -41,16 +41,16 @@ Este archivo es el punto de entrada de lectura del proyecto. Te dice qué leer d
 
 **Pulso:** 15 de agosto de 2026.
 
-**Fase activa:** 5 — MVP de captación en implementación (Fases 0–4 firmadas; REQ-GLOBAL-008 firmado el 15-08-2026).
+**Fase activa:** 6 — Portfolio, proyectos y stack en implementación (Fases 0–5 código en `main`; REQ-GLOBAL-008 firmado el 15-08-2026).
 
-**Siguiente acción:** fusionar PRs de Fase 5 (inicio, servicios, contacto + `POST /api/contact`); hito público jue 20-08. Placeholders legales finales siguen en Fase 7.
+**Siguiente acción:** fusionar PRs apiladas de Fase 6 (`/proyectos`, `/stack`, `/sobre-mi` + E2E). Residual Fase 5: smoke SMTP real. Placeholders legales finales en Fase 7. Hito v1.0 lun 24-08.
 
 **Objetivo de producto:** v1.0 el 24 de agosto de 2026.
 
 | Capa | Estado |
 | --- | --- |
 | Documentación canónica | Aprobada el 13-08-2026 |
-| Código del sitio nuevo | Fases 1–4 en `main`; Fase 5: captación (Hero, servicios, formulario, endpoint Proton SMTP) |
+| Código del sitio nuevo | Fases 1–5 en `main`; Fase 6: portfolio (`/proyectos`, `/stack`, `/sobre-mi`) |
 | Repositorio nuevo | Creado: `Iniciativas-Alexendros/nuevowebsite-alexendrosdev`. Público desde el 14-08-2026 (ADR-0017 revocada) |
 | Sitio anterior | Se archiva en solo lectura. Sin redirecciones (ADR-0013) |
 | Contenido editorial | Hechos de servicios/proyectos/stack/perfil/site firmados (REQ-GLOBAL-008); capturas DES-07 y legales finales pendientes |
@@ -98,7 +98,7 @@ Lee solo lo que cierra la tarea. No leas los ocho documentos de cabo a rabo.
 
 1. Este README entero.
 2. Si vas a escribir código: [AGENTS.md](./AGENTS.md) §§1–6 y §9.
-3. La fase activa de [ROADMAP.md](./ROADMAP.md) (hoy: Fase 5 — MVP de captación; Fases 0–4 firmadas, REQ-GLOBAL-008 firmado el 15-08-2026).
+3. La fase activa de [ROADMAP.md](./ROADMAP.md) (hoy: Fase 6 — Portfolio; Fases 0–5 código en `main`, REQ-GLOBAL-008 firmado el 15-08-2026).
 4. Solo el ancla que cite la tarea: un `REQ`, un `NFR` o un `ADR`.
 5. [CONSTITUTION.md](./CONSTITUTION.md) solo si tocas alcance, integraciones, secretos o capacidades nuevas.
 
@@ -156,7 +156,7 @@ El sitio lo implementa un agente de código. El humano dirige, revisa diffs, hac
 
 # Pendiente ahora
 
-Fases 0–4 en `main` (residual #37 fusionado). REQ-GLOBAL-008 firmado por el decisor el 15-08-2026 (hechos de servicios/proyectos/stack/perfil/site). Placeholders legales y capturas DES-07 quedan fuera. **Siguiente:** Fase 5 (landing mínima; hito público 20-08).
+Fases 0–5 código en `main`. REQ-GLOBAL-008 firmado el 15-08-2026. **En curso:** Fase 6 — portfolio (`/proyectos`, `/stack`, `/sobre-mi`). Residual Fase 5: smoke SMTP. Placeholders legales (Fase 7) y capturas DES-07 quedan fuera.
 
 ## Cierre de Fase 0 — 14 de agosto de 2026, ~4 h
 
