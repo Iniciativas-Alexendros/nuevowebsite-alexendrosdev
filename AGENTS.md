@@ -257,3 +257,16 @@ Batería 7.3 del [Plan de verificación y desarrollo de documentos pendientes �
 - Residual Fase 5: smoke SMTP real pendiente de `PROTON_SMTP_TOKEN` + sync-env; sin config el formulario degrada a 503.
 - Despliegue Vercel (ADR-0025): sin preview por PR; `ignoreCommand` en `vercel.json`; Lighthouse CI local; deploy de fase vía `Deploy fase (Vercel)` (preview MITL → production con `PROMOTE`).
 - Borradores legales tipados pueden vivir en `src/content/legal/` en estado `draft`/`review`; la firma legal final queda en Fase 7.
+
+## Cursor Cloud specific instructions
+
+Servicio único: app Next.js 16 (App Router) + React 19 + TypeScript, pnpm 10 / Node 22. Comandos canónicos en `package.json` (referencia; no duplicar): `pnpm check`, `pnpm test`, `pnpm build`, `pnpm test:e2e`, `pnpm ci`. El update script del entorno ya ejecuta `pnpm install --frozen-lockfile` al arrancar el pod.
+
+Notas no obvias para arrancar/probar:
+
+- Dev server: `pnpm dev` (Turbopack) en `http://localhost:3000`. Arráncalo en una terminal tmux, no en `install`/`start`.
+- La app NO necesita `.env.local` para desarrollar ni para la suite de tests: `getSiteEnv()` solo se usa en tests unitarios; en runtime SEO cae a `siteConfig` (`https://alexendros.dev`). NO fijes `NEXT_PUBLIC_SITE_URL=http://localhost:3000` en `.env.local`, porque rompe los e2e de SEO (`tests/e2e/seo.spec.ts` esperan `https://alexendros.dev`).
+- Endpoint `POST /api/contact`: sin variables SMTP (`CONTACT_TO_EMAIL`, `SMTP_*`, `EMAIL_FROM_ADDRESS`) degrada a 503 con mensaje amable. Es el comportamiento esperado en desarrollo; los e2e de contacto mockean la API. El smoke SMTP real es residual pendiente del decisor.
+- E2E: requieren el navegador de Playwright. Instálalo bajo demanda con `pnpm exec playwright install --with-deps chromium` (no está en el update script). El `webServer` de Playwright hace su propio `pnpm build && pnpm start`.
+- Auto-generados por `next dev`/`next build` (Next.js 16): reescribe `next-env.d.ts` (rutas `.next/dev/types/...`) y anexa un bloque `<!-- BEGIN:nextjs-agent-rules -->` al final de este `AGENTS.md`. Son artefactos de la tooling; no los commitees como cambio propio (revierte con `git checkout -- next-env.d.ts AGENTS.md` si aparecen sueltos).
+- Aviso benigno de pnpm install: "Ignored build scripts: unrs-resolver". No afecta a lint/build/test; no ejecutes `pnpm approve-builds` (interactivo).
