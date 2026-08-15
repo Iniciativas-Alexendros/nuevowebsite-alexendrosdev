@@ -1,13 +1,28 @@
 import type { Metadata } from "next";
+import { notFound } from "next/navigation";
 
-import { PageHeader } from "@/components/layout/page-header";
+import { LegalDocumentView } from "@/components/domain/legal-document-view";
+import { getLegalDocumentBySlug } from "@/lib/content";
 import { buildPageMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = buildPageMetadata({
-  title: "Privacidad",
-  path: "/privacidad",
-});
+const SLUG = "privacidad";
+
+export function generateMetadata(): Metadata {
+  const document = getLegalDocumentBySlug(SLUG);
+  if (!document) {
+    return buildPageMetadata({ title: "Privacidad", path: "/privacidad" });
+  }
+  return buildPageMetadata({
+    title: document.metadata.title,
+    description: document.metadata.description,
+    path: "/privacidad",
+  });
+}
 
 export default function PrivacidadPage() {
-  return <PageHeader title="Privacidad" />;
+  const document = getLegalDocumentBySlug(SLUG);
+  if (!document) {
+    notFound();
+  }
+  return <LegalDocumentView document={document} />;
 }

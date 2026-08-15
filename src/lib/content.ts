@@ -2,10 +2,12 @@ import type { Service } from "@/lib/validations/content";
 import type { Project } from "@/lib/validations/content";
 import type { Technology } from "@/lib/validations/content";
 import type { Profile } from "@/lib/validations/content";
+import type { LegalDocument } from "@/lib/validations/content";
 import { services } from "@/content/services";
 import { projects } from "@/content/projects";
 import { technologies } from "@/content/technologies";
 import { profile } from "@/content/profile";
+import { legalDocuments } from "@/content/legal";
 
 export function getPublishedServices(): Service[] {
   return services.filter((s) => s.status === "published");
@@ -61,4 +63,13 @@ export function getRelatedTechnologies(
       (t.relatedProjects?.some((p) => projectSlugs.includes(p)) ?? false) ||
       (t.relatedServices?.some((s) => serviceSlugs.includes(s)) ?? false)
   );
+}
+
+export function getPublishedLegalDocuments(): LegalDocument[] {
+  return legalDocuments.filter((doc) => doc.status === "published");
+}
+
+/** Rutas legales P0 fijas: cargan el documento por slug para revisión, sin filtrar por published. */
+export function getLegalDocumentBySlug(slug: string): LegalDocument | undefined {
+  return legalDocuments.find((doc) => doc.slug === slug);
 }
