@@ -191,7 +191,7 @@ Batería 5.3 respondida íntegramente, verificaciones del plan cumplidas y ADR-0
 
 # 6. Entidad ContactChannel
 
-**Fuente:** `src/content/contact.ts` — array TS tipado validado con `contactChannelsSchema`; consumida por `/contacto` y el footer (SPECS §6.8, ADR-0007).
+**Fuente:** `src/content/contact.ts` — array TS tipado validado con `contactChannelsSchema`; consumida por `/contacto` y el footer (SPECS §6.8, ADR-0007). Asuntos del formulario: `src/content/contact-subjects.ts` (lista cerrada, REQ-FORM-CONTACT-001).
 
 **Campos:**
 

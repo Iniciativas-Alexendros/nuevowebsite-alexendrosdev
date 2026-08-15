@@ -73,7 +73,12 @@ test.describe("navegación móvil", () => {
 
     await summary.click();
     await expect(page.getByRole("navigation", { name: "Principal" })).toBeVisible();
-    await expect(page.getByRole("link", { name: "Servicios" })).toBeVisible();
+    await expect(
+      page.getByRole("navigation", { name: "Principal" }).getByRole("link", {
+        name: "Servicios",
+        exact: true,
+      })
+    ).toBeVisible();
 
     await page.keyboard.press("Escape");
     await expect(page.getByRole("navigation", { name: "Principal" })).toBeHidden();
