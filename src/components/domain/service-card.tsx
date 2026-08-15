@@ -4,6 +4,8 @@ import { cn } from "@/lib/utils";
 
 export type ServiceCardProps = {
   service: Service;
+  /** En listados densos (home) se omite el preview de alcance. */
+  showScope?: boolean;
   className?: string;
 };
 
@@ -11,8 +13,8 @@ export type ServiceCardProps = {
  * Tarjeta de servicio (REQ-DOMAIN-SERVICECARD-001).
  * Sin precios, plazos ni garantías; una sola acción enfocable.
  */
-export function ServiceCard({ service, className }: ServiceCardProps) {
-  const scopePreview = service.scope.slice(0, 3);
+export function ServiceCard({ service, showScope = true, className }: ServiceCardProps) {
+  const scopePreview = showScope ? service.scope.slice(0, 3) : [];
 
   return (
     <article className={cn("flex h-full flex-col gap-4 border-t border-border pt-6", className)}>

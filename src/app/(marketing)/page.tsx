@@ -24,11 +24,13 @@ export const metadata: Metadata = {
   },
 };
 
+const HOME_STACK_LIMIT = 8;
+
 export default function Home() {
   const profile = getPublishedProfile();
   const featuredServices = getFeaturedServices();
   const featuredProjects = getFeaturedProjects();
-  const featuredStack = getFeaturedTechnologies();
+  const featuredStack = getFeaturedTechnologies().slice(0, HOME_STACK_LIMIT);
 
   const heroTitle = siteConfig.defaultTitle.includes("—")
     ? siteConfig.defaultTitle.split("—")[1]!.trim()
@@ -50,7 +52,7 @@ export default function Home() {
         secondaryCta={{ label: "Ver servicios", href: "/servicios" }}
       />
 
-      <Section variant="surface" aria-labelledby="servicios-destacados">
+      <Section variant="surface" deferPaint aria-labelledby="servicios-destacados">
         <Container className="flex flex-col gap-10">
           <div className="flex flex-col gap-3">
             <h2
@@ -63,11 +65,11 @@ export default function Home() {
               Áreas en las que puedo ayudarte, con alcance concreto y sin promesas vacías.
             </p>
           </div>
-          <ServiceList services={featuredServices} />
+          <ServiceList services={featuredServices} showScope={false} />
         </Container>
       </Section>
 
-      <Section aria-labelledby="proyectos-destacados">
+      <Section deferPaint aria-labelledby="proyectos-destacados">
         <Container>
           <FeaturedProjects
             projects={featuredProjects}
@@ -77,7 +79,7 @@ export default function Home() {
         </Container>
       </Section>
 
-      <Section variant="sunken" aria-labelledby="stack-destacado">
+      <Section variant="sunken" deferPaint aria-labelledby="stack-destacado">
         <Container>
           <FeaturedStack
             technologies={featuredStack}
