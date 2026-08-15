@@ -111,20 +111,45 @@ jobs:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
           VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
           VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+          GITHUB_SHA: ${{ github.sha }}
         run: |
           set -o pipefail
-          mkdir -p .vercel
-          printf '{"projectId":"%s","orgId":"%s"}\n' "$VERCEL_PROJECT_ID" "$VERCEL_ORG_ID" > .vercel/project.json
-          set +e
-          npx vercel@latest deploy --token "$VERCEL_TOKEN" --yes > /tmp/vercel-deploy.log 2>&1
-          deploy_status=$?
-          set -e
-          cat /tmp/vercel-deploy.log
-          if [ "$deploy_status" -ne 0 ]; then
-            echo "vercel deploy falló con código $deploy_status (ver log arriba)" >&2
-            exit "$deploy_status"
+          url=""
+          # 1) Reutilizar el deploy que ya crea la integración de git de Vercel
+          #    para este commit (no consume cuota de deploys del plan Hobby).
+          if [ -n "$VERCEL_TOKEN" ] && [ -n "$VERCEL_PROJECT_ID" ] && [ -n "$GITHUB_SHA" ]; then
+            url=$(curl -sS -H "Authorization: Bearer $VERCEL_TOKEN" \
+              "https://api.vercel.com/v6/deployments?projectId=$VERCEL_PROJECT_ID&limit=10" \
+              | python3 -c "
+          import json, sys, os
+          sha = os.environ.get('GITHUB_SHA', '')
+          try:
+              data = json.load(sys.stdin)
+          except Exception:
+              sys.exit(0)
+          for d in data.get('deployments', []):
+              if d.get('meta', {}).get('githubCommitSha') == sha and d.get('state') == 'READY':
+                  print('https://' + d['url'])
+                  break
+          " 2>/dev/null || true)
           fi
-          url=$(grep -oE 'https://[^[:space:]]+\.vercel\.app' /tmp/vercel-deploy.log | tail -n 1)
+          # 2) Respaldo: crear un deploy manual (solo si no hay deploy existente).
+          if [ -z "$url" ]; then
+            mkdir -p .vercel
+            printf '{"projectId":"%s","orgId":"%s"}\n' "$VERCEL_PROJECT_ID" "$VERCEL_ORG_ID" > .vercel/project.json
+            set +e
+            npx vercel@latest deploy --token "$VERCEL_TOKEN" --yes > /tmp/vercel-deploy.log 2>&1
+            deploy_status=$?
+            set -e
+            cat /tmp/vercel-deploy.log
+            if [ "$deploy_status" -ne 0 ]; then
+              echo "vercel deploy falló con código $deploy_status (ver log arriba)" >&2
+              exit "$deploy_status"
+            fi
+            url=$(grep -oE 'https://[^[:space:]]+\.vercel\.app' /tmp/vercel-deploy.log | tail -n 1)
+          else
+            echo "Reutilizando deploy existente de la integración de git: $url"
+          fi
           if [ -z "$url" ]; then echo "No se pudo obtener la URL del preview" >&2; exit 1; fi
           echo "preview-url=$url" >> "$GITHUB_OUTPUT"
       - uses: pnpm/action-setup@v4
