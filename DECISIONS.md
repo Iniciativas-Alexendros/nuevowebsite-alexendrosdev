@@ -816,7 +816,7 @@ Ruta: ./DECISIONS.md
 	- **Momento de deploy:** solo tras integrar en `main` todos los PR de la fase y **firma del criterio de salida** por el decisor (DEC-ROADMAP-03).
 	- **Paso 1 — Preview MITL:** workflow `Deploy fase (Vercel)` con `target=preview` desde `main` (entorno GitHub `phase-preview`). El decisor revisa la URL de preview.
 	- **Paso 2 — Producción:** el mismo workflow con `target=production` y `confirmation=PROMOTE`, más aprobación del entorno GitHub `Production` (required reviewers). Sin `PROMOTE` el job aborta.
-	- **Lighthouse en PR (OBJ-005):** se mide contra servidor local post-`pnpm build` (`lighthouserc.json` + job `Lighthouse CI (local)`). No consume cuota de Vercel. Los umbrales DEC-AGENTS-04 no se rebajan.
+	- **Lighthouse en PR (OBJ-005):** se mide contra servidor local post-`pnpm build` (`lighthouserc.json` + job `Lighthouse CI`). No consume cuota de Vercel. Los umbrales DEC-AGENTS-04 no se rebajan.
 	- Los gates de código de CI (typecheck, lint, test, build, e2e/axe, secretos) siguen bloqueantes de merge en cada PR.
 - Alternativas consideradas:
 	- Seguir con preview por PR + Lighthouse remoto: rechazado; agota Hobby y no aporta el gate MITL de fase.

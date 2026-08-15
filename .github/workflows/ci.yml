@@ -101,7 +101,7 @@ jobs:
       - run: pnpm audit --prod --audit-level=high
 
   lighthouse:
-    name: Lighthouse CI (local)
+    name: Lighthouse CI
     runs-on: ubuntu-latest
     needs: [build]
     steps:
@@ -113,5 +113,32 @@ jobs:
           cache: pnpm
       - run: pnpm install --frozen-lockfile
       - run: pnpm build
+      - name: Arrancar y calentar servidor local
+        run: |
+          set -euo pipefail
+          pnpm start > /tmp/next-start.log 2>&1 &
+          echo $! > /tmp/next-start.pid
+          for i in $(seq 1 60); do
+            if curl -sf -o /dev/null http://127.0.0.1:3000/; then
+              echo "Servidor listo en intento $i"
+              break
+            fi
+            sleep 1
+          done
+          curl -sf -o /dev/null http://127.0.0.1:3000/ || {
+            echo "No arrancó el servidor:" >&2
+            cat /tmp/next-start.log >&2
+            exit 1
+          }
+          for i in 1 2 3 4 5; do
+            curl -sf -o /dev/null http://127.0.0.1:3000/
+            sleep 1
+          done
       - name: Lighthouse contra servidor local (ADR-0025)
         run: pnpm exec lhci autorun --config=./lighthouserc.json
+      - name: Parar servidor local
+        if: always()
+        run: |
+          if [ -f /tmp/next-start.pid ]; then
+            kill "$(cat /tmp/next-start.pid)" || true
+          fi
