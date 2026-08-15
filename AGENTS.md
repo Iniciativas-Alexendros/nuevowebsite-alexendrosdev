@@ -255,7 +255,7 @@ Batería 7.3 del [Plan de verificación y desarrollo de documentos pendientes �
 - Portfolio P0: rutas `/proyectos`, `/stack`, `/sobre-mi` desde contenido published; `/proyectos/[slug]` y MDX son P1 (Fase 9).
 - Home: `FeaturedProjects` / `FeaturedStack` deben permanecer ligeros (OBJ-005); cards/badges de dominio completos viven en las páginas de portfolio.
 - Reserva Cal.com: solo enlace a `https://cal.com/alexendros` (sin script de terceros).
-- Envío de contacto: Proton SMTP vía `nodemailer` en `src/lib/server/` (ADR-0011); org secrets `PROTON_SMTP_HOST`/`PORT`, `PROTON_MAIL_FROM` y `PROTON_SMTP_USER` (`operaciones@`), `PROTON_SMTP_TOKEN` (no Bridge); mailto público `hola@` (catch-all); sync a Vercel con `sync-env-vercel.yml` → vars runtime `SMTP_*`.
+- Envío de contacto: Proton SMTP vía `nodemailer` en `src/lib/server/` (ADR-0011); org secrets `PROTON_SMTP_HOST`/`PORT`, `PROTON_MAIL_FROM` (`operaciones@` = To+From+SMTP_USER), `PROTON_SMTP_TOKEN` (no Bridge); mailto público `hola@` (catch-all); sync a Vercel con `sync-env-vercel.yml` (CLI Vercel fijada) → vars runtime `SMTP_*`.
 - Residual Fase 5: smoke SMTP real pendiente de sync-env + redeploy; sin config el formulario degrada a 503.
 - Despliegue Vercel (ADR-0025): sin preview por PR; `ignoreCommand` en `vercel.json`; Lighthouse CI local; tras integrar la fase en `main` → preview MITL → firma → production con `PROMOTE`.
 - Borradores legales tipados pueden vivir en `src/content/legal/` en estado `draft`/`review`; la firma legal final queda en Fase 7.
