@@ -1,0 +1,94 @@
+# Sincroniza secretos de org/repo → variables de entorno de Vercel (ADR-0021).
+# No imprime valores. Solo workflow_dispatch (manual).
+#
+# Requiere org secrets (visibles al repo): PROTON_SMTP_HOST, PROTON_SMTP_PORT,
+# PROTON_MAIL_FROM, y PROTON_SMTP_TOKEN (token SMTP de submission, no Bridge).
+# Repo secrets: VERCEL_TOKEN, VERCEL_ORG_ID, VERCEL_PROJECT_ID.
+
+name: Sync env → Vercel
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  sync:
+    name: Sincronizar secretos a Vercel
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Comprobar secretos requeridos
+        env:
+          PROTON_SMTP_HOST: ${{ secrets.PROTON_SMTP_HOST }}
+          PROTON_SMTP_PORT: ${{ secrets.PROTON_SMTP_PORT }}
+          PROTON_MAIL_FROM: ${{ secrets.PROTON_MAIL_FROM }}
+          PROTON_SMTP_TOKEN: ${{ secrets.PROTON_SMTP_TOKEN }}
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+        run: |
+          missing=0
+          for name in PROTON_SMTP_HOST PROTON_SMTP_PORT PROTON_MAIL_FROM PROTON_SMTP_TOKEN VERCEL_TOKEN VERCEL_ORG_ID VERCEL_PROJECT_ID; do
+            if [ -z "${!name}" ]; then
+              echo "Falta secreto: $name" >&2
+              missing=1
+            else
+              echo "OK: $name presente (valor no mostrado)"
+            fi
+          done
+          if [ "$missing" -ne 0 ]; then
+            echo "Crea PROTON_SMTP_TOKEN en org secrets (token SMTP submission de Proton; no uses PROTON_BRIDGE_PASS)." >&2
+            exit 1
+          fi
+
+      - name: Escribir enlace de proyecto Vercel
+        env:
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+        run: |
+          mkdir -p .vercel
+          printf '{"projectId":"%s","orgId":"%s"}\n' "$VERCEL_PROJECT_ID" "$VERCEL_ORG_ID" > .vercel/project.json
+
+      - name: Upsert variables en Preview y Production
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+          PROTON_SMTP_HOST: ${{ secrets.PROTON_SMTP_HOST }}
+          PROTON_SMTP_PORT: ${{ secrets.PROTON_SMTP_PORT }}
+          PROTON_MAIL_FROM: ${{ secrets.PROTON_MAIL_FROM }}
+          PROTON_SMTP_TOKEN: ${{ secrets.PROTON_SMTP_TOKEN }}
+        run: |
+          set -euo pipefail
+
+          upsert() {
+            local name="$1"
+            local value="$2"
+            local sensitive_flag="$3"
+            local env_target
+            for env_target in production preview; do
+              echo "Upsert $name → $env_target"
+              # stdin evita que el valor aparezca en la línea de comando
+              if [ "$sensitive_flag" = "sensitive" ]; then
+                printf '%s' "$value" | npx vercel@latest env add "$name" "$env_target" \
+                  --token "$VERCEL_TOKEN" --yes --force --sensitive
+              else
+                printf '%s' "$value" | npx vercel@latest env add "$name" "$env_target" \
+                  --token "$VERCEL_TOKEN" --yes --force
+              fi
+            done
+          }
+
+          upsert PROTON_SMTP_HOST "$PROTON_SMTP_HOST" sensitive
+          upsert PROTON_SMTP_PORT "$PROTON_SMTP_PORT" sensitive
+          upsert CONTACT_TO_EMAIL "$PROTON_MAIL_FROM" sensitive
+          upsert EMAIL_FROM_ADDRESS "$PROTON_MAIL_FROM" sensitive
+          upsert SMTP_USER "$PROTON_MAIL_FROM" sensitive
+          upsert SMTP_TOKEN "$PROTON_SMTP_TOKEN" sensitive
+
+          # Públicas conocidas del contenido tipado (site.ts)
+          upsert NEXT_PUBLIC_SITE_URL "https://alexendros.dev" plain
+          upsert NEXT_PUBLIC_SITE_NAME "Alexendros" plain
+
+          echo "Sync completado. Redeploy necesario para que el runtime las cargue."
