@@ -12,6 +12,8 @@ import { getFeaturedProjects } from "@/lib/content";
 import { getFeaturedTechnologies } from "@/lib/content";
 import { getTechnologyById } from "@/lib/content";
 import { getRelatedTechnologies } from "@/lib/content";
+import { getPublishedLegalDocuments } from "@/lib/content";
+import { getLegalDocumentBySlug } from "@/lib/content";
 
 describe("selectores de contenido publicado", () => {
   it("getPublishedServices solo devuelve servicios con status 'published'", () => {
@@ -166,5 +168,20 @@ describe("selectores de contenido publicado", () => {
   it("getRelatedTechnologies maneja arrays undefined en relatedProjects/relatedServices", () => {
     const related = getRelatedTechnologies([], []);
     expect(related).toEqual([]);
+  });
+
+  it("getPublishedLegalDocuments no incluye borradores en review", () => {
+    const published = getPublishedLegalDocuments();
+    expect(published).toEqual([]);
+  });
+
+  it("getLegalDocumentBySlug carga aviso-legal y privacidad en review", () => {
+    const aviso = getLegalDocumentBySlug("aviso-legal");
+    const privacidad = getLegalDocumentBySlug("privacidad");
+
+    expect(aviso?.status).toBe("review");
+    expect(privacidad?.status).toBe("review");
+    expect(aviso?.sections.length).toBeGreaterThan(0);
+    expect(privacidad?.sections.length).toBeGreaterThan(0);
   });
 });

@@ -48,20 +48,6 @@ export const frontValencia = projectSchema.parse({
     "Aumento de reservas online del 40 % en el primer mes (dato facilitado por el cliente).",
     "Tiempo de edición de menú reducido de 30 min (WordPress + page builder) a 3 min (Payload).",
   ],
-  images: [
-    {
-      src: "/images/projects/front-valencia-home.webp",
-      alt: "Página de inicio de FRONT Valencia con hero, menú destacado y CTA de reserva",
-    },
-    {
-      src: "/images/projects/front-valencia-menu.webp",
-      alt: "Vista del menú dinámico con filtros por categoría y precios",
-    },
-    {
-      src: "/images/projects/front-valencia-cms.webp",
-      alt: "Interfaz de Payload CMS mostrando la colección de platos con campos de precio, alérgenos y traducción",
-    },
-  ],
   links: [
     { label: "Web en producción", href: "https://frontvalencia.com", external: true },
     {

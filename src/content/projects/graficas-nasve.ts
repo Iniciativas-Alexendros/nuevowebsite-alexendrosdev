@@ -53,20 +53,6 @@ export const graficasNasve = projectSchema.parse({
     "Cero errores de especificación en pedidos online (validación automática de archivos y reglas de precio).",
     "Tiempo de gestión de pedido en producción reducido un 70 % (artes finales generadas automáticamente).",
   ],
-  images: [
-    {
-      src: "/images/projects/graficas-nasve-home.webp",
-      alt: "Página de inicio de Gráficas Nasve con catálogo de productos y calculadora de precio",
-    },
-    {
-      src: "/images/projects/graficas-nasve-calculator.webp",
-      alt: "Calculadora de precio interactiva con opciones de papel, acabados, cantidad y urgencia",
-    },
-    {
-      src: "/images/projects/graficas-nasve-admin.webp",
-      alt: "Panel de administración mostrando lista de pedidos con estado, cliente, importe y acciones",
-    },
-  ],
   links: [
     { label: "Web en producción", href: "https://graficasnasve.com", external: true },
     {

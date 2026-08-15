@@ -17,28 +17,13 @@ vi.mock("@/content/site", () => ({
   },
 }));
 
-vi.mock("@/lib/content", () => ({
-  getPublishedServices: () => [
-    { slug: "desarrollo-web" },
-    { slug: "landing-pages" },
-    { slug: "automatizacion-ia" },
-    { slug: "auditoria-web" },
-  ],
-  getPublishedProjects: () => [
-    { slug: "front-valencia" },
-    { slug: "graficas-nasve" },
-    { slug: "vcf-cribador" },
-    { slug: "alexendros-me" },
-  ],
-}));
-
 import sitemap from "@/app/sitemap";
 
 describe("sitemap", () => {
-  it("genera rutas estáticas + servicios publicados + proyectos publicados", () => {
+  it("genera solo las 8 rutas estáticas P0", () => {
     const entries = sitemap();
 
-    expect(entries).toHaveLength(16);
+    expect(entries).toHaveLength(8);
     const urls = entries.map((entry) => entry.url);
     expect(urls).toContain("https://alexendros.dev/");
     expect(urls).toContain("https://alexendros.dev/servicios");
@@ -48,23 +33,21 @@ describe("sitemap", () => {
     expect(urls).toContain("https://alexendros.dev/contacto");
     expect(urls).toContain("https://alexendros.dev/aviso-legal");
     expect(urls).toContain("https://alexendros.dev/privacidad");
-    expect(urls).toContain("https://alexendros.dev/servicios/desarrollo-web");
-    expect(urls).toContain("https://alexendros.dev/servicios/landing-pages");
-    expect(urls).toContain("https://alexendros.dev/servicios/automatizacion-ia");
-    expect(urls).toContain("https://alexendros.dev/servicios/auditoria-web");
-    expect(urls).toContain("https://alexendros.dev/proyectos/front-valencia");
-    expect(urls).toContain("https://alexendros.dev/proyectos/graficas-nasve");
-    expect(urls).toContain("https://alexendros.dev/proyectos/vcf-cribador");
-    expect(urls).toContain("https://alexendros.dev/proyectos/alexendros-me");
   });
 
-  it("asigna prioridad 1 solo a la raíz, 0.9 a servicios y proyectos, 0.8 al resto", () => {
+  it("no emite rutas [slug] de servicios ni proyectos (P1)", () => {
+    const entries = sitemap();
+    const urls = entries.map((entry) => entry.url);
+
+    expect(urls.some((url) => /\/servicios\/.+/.test(url))).toBe(false);
+    expect(urls.some((url) => /\/proyectos\/.+/.test(url))).toBe(false);
+  });
+
+  it("asigna prioridad 1 solo a la raíz y 0.8 al resto", () => {
     const entries = sitemap();
     const entryMap = Object.fromEntries(entries.map((e) => [e.url, e.priority]));
 
     expect(entryMap["https://alexendros.dev/"]).toBe(1);
-    expect(entryMap["https://alexendros.dev/servicios/desarrollo-web"]).toBe(0.9);
-    expect(entryMap["https://alexendros.dev/proyectos/front-valencia"]).toBe(0.9);
     expect(entryMap["https://alexendros.dev/servicios"]).toBe(0.8);
     expect(entryMap["https://alexendros.dev/proyectos"]).toBe(0.8);
     expect(entryMap["https://alexendros.dev/stack"]).toBe(0.8);
@@ -72,13 +55,5 @@ describe("sitemap", () => {
     expect(entryMap["https://alexendros.dev/contacto"]).toBe(0.8);
     expect(entryMap["https://alexendros.dev/aviso-legal"]).toBe(0.8);
     expect(entryMap["https://alexendros.dev/privacidad"]).toBe(0.8);
-  });
-
-  it("no incluye borradores (status !== 'published') ni proyectos no públicos", () => {
-    const entries = sitemap();
-    const urls = entries.map((entry) => entry.url);
-
-    expect(urls).not.toContain("https://alexendros.dev/servicios/servicio-en-borrador");
-    expect(urls).not.toContain("https://alexendros.dev/proyectos/proyecto-en-borrador");
   });
 });

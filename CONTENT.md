@@ -312,11 +312,11 @@ El flujo Borrador → Revisión → Publicado → Archivado se aplica en código
 
 | Pieza | Fuente prevista | Estado |
 | --- | --- | --- |
-| Propuesta de valor y home | `site.ts` • secciones | Por redactar de cero |
-| 4 servicios (DEC-SPECS-02) | `services/*.ts` | Por redactar de cero |
-| 4 proyectos (DEC-SPECS-03) | `projects/*.ts` | Por redactar de cero; revisar confidencialidad |
-| Stack y prácticas | `technologies/index.ts` | Por redactar de cero |
-| Bio (/sobre-mi) | `profile.ts` | Por redactar de cero |
-| Aviso legal y privacidad | `legal/*` | Por redactar (ADR-0015) |
-| Capturas de proyectos | `public/images/` | Por producir (DES-07: capturas reales) |
-| OG images | `opengraph-image.tsx` | Plantilla generada con `opengraph-image.tsx` (resuelto 13-08-2026) |
+| Propuesta de valor y home | `site.ts` • secciones | Tipado en `site.ts`; secciones de landing en Fase 5 |
+| 4 servicios (DEC-SPECS-02) | `services/*.ts` | Borrador tipado `published`; firma humana pendiente (REQ-GLOBAL-008) |
+| 4 proyectos (DEC-SPECS-03) | `projects/*.ts` | Borrador tipado `published`; firma humana y confidencialidad pendientes; sin capturas aún |
+| Stack y prácticas | `technologies/index.ts` | Tipado `published`; firma humana pendiente |
+| Bio (/sobre-mi) | `profile.ts` | Tipado `published`; firma humana pendiente |
+| Aviso legal y privacidad | `legal/*` | Borrador tipado `review` con placeholders; firma/asesoría en Fase 7 (ADR-0015) |
+| Capturas de proyectos | `public/images/` | Por producir (DES-07: capturas reales); refs retiradas del contenido |
+| OG images | `opengraph-image.tsx` | Implementado: `src/app/opengraph-image.tsx` (ADR-0018) |
