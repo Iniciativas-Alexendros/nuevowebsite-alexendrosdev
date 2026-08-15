@@ -41,19 +41,19 @@ Este archivo es el punto de entrada de lectura del proyecto. Te dice qué leer d
 
 **Pulso:** 15 de agosto de 2026.
 
-**Fase activa:** 4 — residual de contenido tipado casi cerrado (Fases 1–3 implementadas; Fases 2 y 3 pendientes de firma del decisor).
+**Fase activa:** 5 — MVP de captación (Fases 0–4 firmadas; residual #37 en `main`; REQ-GLOBAL-008 firmado el 15-08-2026).
 
-**Siguiente acción:** firmar hechos editoriales (REQ-GLOBAL-008) y placeholders legales; arrancar Fase 5 (landing mínima).
+**Siguiente acción:** implementar Fase 5 (landing mínima; hito público jue 20-08). Placeholders legales siguen en Fase 7.
 
 **Objetivo de producto:** v1.0 el 24 de agosto de 2026.
 
 | Capa | Estado |
 | --- | --- |
 | Documentación canónica | Aprobada el 13-08-2026 |
-| Código del sitio nuevo | Fases 1–3 + núcleo Fase 4 (Zod, contenido tipado, OG, legales en `review`, selectores, CI) |
+| Código del sitio nuevo | Fases 1–4 en `main` (Zod, contenido tipado firmado, OG, legales en `review`, shell, CI) |
 | Repositorio nuevo | Creado: `Iniciativas-Alexendros/nuevowebsite-alexendrosdev`. Público desde el 14-08-2026 (ADR-0017 revocada) |
 | Sitio anterior | Se archiva en solo lectura. Sin redirecciones (ADR-0013) |
-| Contenido editorial | Borradores tipados en repo; firma humana y capturas DES-07 pendientes (CONTENT §12) |
+| Contenido editorial | Hechos de servicios/proyectos/stack/perfil/site firmados (REQ-GLOBAL-008); capturas DES-07 y legales finales pendientes |
 
 ---
 
@@ -98,7 +98,7 @@ Lee solo lo que cierra la tarea. No leas los ocho documentos de cabo a rabo.
 
 1. Este README entero.
 2. Si vas a escribir código: [AGENTS.md](./AGENTS.md) §§1–6 y §9.
-3. La fase activa de [ROADMAP.md](./ROADMAP.md) (hoy: residual Fase 4 casi cerrado → firma humana + Fase 5; Fases 2 y 3 pendientes de firma).
+3. La fase activa de [ROADMAP.md](./ROADMAP.md) (hoy: Fase 5 — MVP de captación; Fases 0–4 firmadas, REQ-GLOBAL-008 firmado el 15-08-2026).
 4. Solo el ancla que cite la tarea: un `REQ`, un `NFR` o un `ADR`.
 5. [CONSTITUTION.md](./CONSTITUTION.md) solo si tocas alcance, integraciones, secretos o capacidades nuevas.
 
@@ -156,7 +156,7 @@ El sitio lo implementa un agente de código. El humano dirige, revisa diffs, hac
 
 # Pendiente ahora
 
-Fases 0–3 implementadas. Fase 4: núcleo tipado + residual (OG, legales en `review`, sitemap P0) implementado; pendiente firma humana de hechos (REQ-GLOBAL-008) y no declarar la fase cerrada. Siguiente implementación: Fase 5 (landing mínima).
+Fases 0–4 en `main` (residual #37 fusionado). REQ-GLOBAL-008 firmado por el decisor el 15-08-2026 (hechos de servicios/proyectos/stack/perfil/site). Placeholders legales y capturas DES-07 quedan fuera. **Siguiente:** Fase 5 (landing mínima; hito público 20-08).
 
 ## Cierre de Fase 0 — 14 de agosto de 2026, ~4 h
 

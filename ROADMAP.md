@@ -259,15 +259,15 @@ Camino crítico ~70 h con solape de Fase 4. Sin holgura humana de revisión. Rec
 **Tareas:**
 
 - [x]  Definir esquemas Zod para SiteConfig, Service, Project, Technology y ContactChannel en `src/lib/validations/content/`, con fuente TS tipada en `src/content/` (ADR-0018). — **Resuelto:** también Profile y LegalDocument.
-- [x]  Crear contenido base de los 4 servicios aprobados: `desarrollo-web`, `landing-pages`, `automatizacion-ia` y `auditoria-web` (DEC-SPECS-02). El agente redacta el borrador; el humano verifica hechos (REQ-GLOBAL-008). — **Borrador en repo; firma humana pendiente.**
-- [x]  Crear contenido base de los 4 proyectos aprobados: FRONT Valencia, Gráficas Nasve, vcf-cribador y alexendros.me (DEC-SPECS-03); redacción de cero, sin anonimización. El agente no publica afirmaciones sin revisión humana. — **Borrador en repo; firma humana pendiente. Capturas DES-07 pospuestas (sin `images[]` hasta assets reales).**
+- [x]  Crear contenido base de los 4 servicios aprobados: `desarrollo-web`, `landing-pages`, `automatizacion-ia` y `auditoria-web` (DEC-SPECS-02). El agente redacta el borrador; el humano verifica hechos (REQ-GLOBAL-008). — **Firmado por el decisor el 15-08-2026.**
+- [x]  Crear contenido base de los 4 proyectos aprobados: FRONT Valencia, Gráficas Nasve, vcf-cribador y alexendros.me (DEC-SPECS-03); redacción de cero, sin anonimización. El agente no publica afirmaciones sin revisión humana. — **Firmado por el decisor el 15-08-2026. Capturas DES-07 pospuestas (sin `images[]` hasta assets reales).**
 - [x]  Crear contenido base de stack.
 - [x]  Crear contenido base de perfil profesional.
-- [x]  Definir imágenes y recursos por entidad: capturas reales de proyectos y OG images con plantilla generada (`opengraph-image.tsx`; ADR-0016/0018). — **Parcial:** `src/app/opengraph-image.tsx` implementado; capturas reales pendientes (DES-07).
+- [x]  Definir imágenes y recursos por entidad: capturas reales de proyectos y OG images con plantilla generada (`opengraph-image.tsx`; ADR-0016/0018). — **Parcial:** `src/app/opengraph-image.tsx` implementado (#37); capturas reales pendientes (DES-07).
 - [x]  Configurar validación del contenido en build: contenido inválido rompe el build, como gate de CI (ADR-0018).
 - [x]  Crear guías de redacción y convenciones de slug: primera persona con tuteo, guía de tono de CONTENT §11. — **Resuelto:** `docs/guia-redaccion.md`.
-- [x]  Definir tratamiento de borradores: enum `status`, selectores `getPublished*()`, sitemap y rutas derivados, test bloqueante en CI (CONTENT §9; REQ-GLOBAL-007). — **Sitemap solo rutas estáticas P0 hasta activar `[slug]` P1.**
-- [ ]  Revisar exactitud de afirmaciones profesionales y técnicas (REQ-GLOBAL-008). Tarea no delegable: firma humana obligatoria.
+- [x]  Definir tratamiento de borradores: enum `status`, selectores `getPublished*()`, sitemap y rutas derivados, test bloqueante en CI (CONTENT §9; REQ-GLOBAL-007). — **Sitemap solo rutas estáticas P0 hasta activar `[slug]` P1 (#37).**
+- [x]  Revisar exactitud de afirmaciones profesionales y técnicas (REQ-GLOBAL-008). Tarea no delegable: firma humana obligatoria. — **Firmado por el decisor el 15-08-2026 (servicios, proyectos, stack, perfil y site). Placeholders legales `[PENDIENTE: …]` quedan para Fase 7.**
 - [x]  Preparar contenido legal según funcionalidades **P0** confirmadas: aviso legal y privacidad, sin cookies (ADR-0010, ADR-0015). — **Borrador tipado en `src/content/legal/` con status `review` y placeholders; firma/asesoría en Fase 7.**
 
 **Entregable:** conjunto de contenido tipado, validado y listo para renderizar.
