@@ -35,7 +35,7 @@ export function FeaturedProjects({
       <ul className="grid list-none grid-cols-1 gap-8 md:grid-cols-2">
         {projects.map((project) => (
           <li key={project.id}>
-            <ProjectCard project={project} />
+            <ProjectCard project={project} showTechnologies={false} />
           </li>
         ))}
       </ul>

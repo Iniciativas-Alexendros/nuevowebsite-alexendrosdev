@@ -12,6 +12,8 @@ const VISIBILITY_LABEL: Record<ProjectVisibility, string> = {
 
 export type ProjectCardProps = {
   project: Project;
+  /** En home/listados densos se omiten badges de tecnologías (peso DOM / Lighthouse). */
+  showTechnologies?: boolean;
   className?: string;
 };
 
@@ -19,14 +21,16 @@ export type ProjectCardProps = {
  * Tarjeta de proyecto (REQ-DOMAIN-PROJECTCARD-001).
  * Una sola acción enfocable; sin placeholders de imagen (DES-07).
  */
-export function ProjectCard({ project, className }: ProjectCardProps) {
+export function ProjectCard({ project, showTechnologies = true, className }: ProjectCardProps) {
   const primaryLink = project.links?.[0];
   const href = primaryLink?.href ?? "/proyectos";
   const linkLabel = primaryLink?.label ?? "Ver proyectos";
 
-  const techNames = project.technologies
-    .map((id) => getTechnologyById(id)?.name)
-    .filter((name): name is string => Boolean(name));
+  const techNames = showTechnologies
+    ? project.technologies
+        .map((id) => getTechnologyById(id)?.name)
+        .filter((name): name is string => Boolean(name))
+    : [];
 
   return (
     <article className={cn("flex h-full flex-col gap-4 border-t border-border pt-6", className)}>
