@@ -51,20 +51,6 @@ export const alexendrosMe = projectSchema.parse({
     "Tiempo de build completo (incluyendo tests E2E): < 3 min en GitHub Actions.",
     "15+ ensayos técnicos publicados, 3 citados en newsletters del sector (This Week in React, Rust Weekly, Frontend Focus).",
   ],
-  images: [
-    {
-      src: "/images/projects/alexendros-me-home.webp",
-      alt: "Página de inicio de alexendros.me con lista de ensayos recientes, búsqueda y TOC lateral",
-    },
-    {
-      src: "/images/projects/alexendros-me-post.webp",
-      alt: "Vista de ensayo técnico con tipografía Inter, código con JetBrains Mono, TOC lateral y modo oscuro",
-    },
-    {
-      src: "/images/projects/alexendros-me-search.webp",
-      alt: "Búsqueda en cliente con flexsearch: autocomplete, filtrado por etiquetas, navegación por teclado",
-    },
-  ],
   links: [
     { label: "Web en producción", href: "https://alexendros.me", external: true },
     {

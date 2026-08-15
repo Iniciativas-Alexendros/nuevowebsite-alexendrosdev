@@ -51,16 +51,6 @@ export const vcfCribador = projectSchema.parse({
     "Cero CVEs en dependencias (cargo-audit en CI cada push, dependabot semanal).",
     "Tiempo de limpieza de 10k contactos: < 2 s en portátil estándar (M2 / Ryzen 7).",
   ],
-  images: [
-    {
-      src: "/images/projects/vcf-cribador-cli.webp",
-      alt: "Terminal mostrando vcf-cribador clean --input contacts.vcf --output clean.vcf --key email,phone con barra de progreso",
-    },
-    {
-      src: "/images/projects/vcf-cribador-dedup.webp",
-      alt: "Salida de vcf-cribador dedup mostrando 1.234 duplicados encontrados y fusionados por clave email+nombre",
-    },
-  ],
   links: [
     {
       label: "Repositorio",
