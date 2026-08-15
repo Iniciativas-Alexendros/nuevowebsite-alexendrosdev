@@ -3,11 +3,14 @@ import type { Project } from "@/lib/validations/content";
 import type { Technology } from "@/lib/validations/content";
 import type { Profile } from "@/lib/validations/content";
 import type { LegalDocument } from "@/lib/validations/content";
+import type { ContactChannel } from "@/lib/validations/content";
 import { services } from "@/content/services";
 import { projects } from "@/content/projects";
 import { technologies } from "@/content/technologies";
 import { profile } from "@/content/profile";
 import { legalDocuments } from "@/content/legal";
+import { contactChannels } from "@/content/contact";
+import { CONTACT_SUBJECTS, type ContactSubject } from "@/content/contact-subjects";
 
 export function getPublishedServices(): Service[] {
   return services.filter((s) => s.status === "published");
@@ -72,4 +75,14 @@ export function getPublishedLegalDocuments(): LegalDocument[] {
 /** Rutas legales P0 fijas: cargan el documento por slug para revisión, sin filtrar por published. */
 export function getLegalDocumentBySlug(slug: string): LegalDocument | undefined {
   return legalDocuments.find((doc) => doc.slug === slug);
+}
+
+export function getVisibleContactChannels(): ContactChannel[] {
+  return contactChannels
+    .filter((channel) => channel.visible)
+    .sort((a, b) => a.priority - b.priority);
+}
+
+export function getContactSubjects(): readonly ContactSubject[] {
+  return CONTACT_SUBJECTS;
 }
