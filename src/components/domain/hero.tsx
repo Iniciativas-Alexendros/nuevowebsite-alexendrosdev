@@ -3,7 +3,6 @@ import { Link } from "@/components/ui/link";
 import { cn } from "@/lib/utils";
 
 export type HeroProps = {
-  brand: string;
   title: string;
   description: string;
   primaryCta: { label: string; href: string };
@@ -15,18 +14,10 @@ export type HeroProps = {
  * Hero de captación (REQ-DOMAIN-HERO-001).
  * Único H1 de la página; contenido tipado; CTA operable con teclado.
  */
-export function Hero({
-  brand,
-  title,
-  description,
-  primaryCta,
-  secondaryCta,
-  className,
-}: HeroProps) {
+export function Hero({ title, description, primaryCta, secondaryCta, className }: HeroProps) {
   return (
     <header className={cn("flex flex-col justify-center py-12 md:py-16 lg:py-20", className)}>
       <Container className="flex flex-col gap-6 md:gap-8">
-        <p className="text-sm font-semibold tracking-wide text-foreground-muted">{brand}</p>
         <div className="flex max-w-3xl flex-col gap-4 md:gap-5">
           <h1 className="text-3xl font-semibold tracking-tight text-foreground md:text-5xl lg:text-6xl">
             {title}

@@ -5,7 +5,7 @@ export const landingPages = serviceSchema.parse({
   slug: "landing-pages",
   title: "Landing pages",
   shortDescription:
-    "Páginas de aterrizaje enfocadas en conversión, con pruebas A/B integradas, formularios validados y analítica sin cookies hasta que aceptes.",
+    "Webs navegables desde una única página central, con integración de pruebas sobre el código para garantizar que tus formularios y pasarelas de pago funcionan desde que su incorporación.",
   description:
     "Construyo landing pages que venden: una propuesta de valor clara, un formulario que valida en cliente y servidor (honeypot + rate limit), y un CTA que funciona sin JavaScript. Uso Next.js con SSG para que la página cargue en milisegundos, y el único punto dinámico es el envío del formulario (Proton SMTP). Incluyo variante de prueba A/B controlada por cookie de primera parte (solo tras consentimiento) y métricas de conversión reales, no vanidad.",
   audience:

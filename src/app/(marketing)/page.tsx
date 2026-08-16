@@ -7,6 +7,7 @@ import { Hero } from "@/components/domain/hero";
 import { ServiceList } from "@/components/domain/service-list";
 import { Container } from "@/components/layout/container";
 import { Section } from "@/components/layout/section";
+import { Link } from "@/components/ui/link";
 import { siteConfig } from "@/content/site";
 import {
   getFeaturedProjects,
@@ -45,7 +46,6 @@ export default function Home() {
   return (
     <>
       <Hero
-        brand={siteConfig.siteName}
         title={heroTitle}
         description={heroDescription}
         primaryCta={{ label: "Escríbeme", href: "/contacto" }}
@@ -62,10 +62,24 @@ export default function Home() {
               Servicios
             </h2>
             <p className="max-w-2xl text-lg text-foreground-muted">
-              Áreas en las que puedo ayudarte, con alcance concreto y sin promesas vacías.
+              Áreas en las que puedo ayudarte. Resultados adaptados a tu gusto y necesidades, sin
+              promesas vacías.
             </p>
           </div>
-          <ServiceList services={featuredServices} showScope={false} />
+          <ServiceList services={featuredServices} showScope={false} showCta={false} />
+          <div className="flex max-w-2xl flex-col gap-4 border-t border-border pt-8">
+            <p className="text-lg leading-relaxed text-foreground">
+              Requisitos exigentes, productos de calidad, mantenimiento continuado y criterio
+              profesional.
+            </p>
+            <p className="text-base leading-relaxed text-foreground-muted">
+              Si estos son factores decisivos para ti:{" "}
+              <Link href="/contacto" variant="inline">
+                ponte en contacto
+              </Link>{" "}
+              y expón tu proyecto.
+            </p>
+          </div>
         </Container>
       </Section>
 

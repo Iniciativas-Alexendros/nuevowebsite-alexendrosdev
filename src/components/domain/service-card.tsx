@@ -6,14 +6,21 @@ export type ServiceCardProps = {
   service: Service;
   /** En listados densos (home) se omite el preview de alcance. */
   showScope?: boolean;
+  /** Si es false, no se muestra el CTA por tarjeta (CTA único de sección). */
+  showCta?: boolean;
   className?: string;
 };
 
 /**
  * Tarjeta de servicio (REQ-DOMAIN-SERVICECARD-001).
- * Sin precios, plazos ni garantías; una sola acción enfocable.
+ * Sin precios, plazos ni garantías; como máximo una acción enfocable.
  */
-export function ServiceCard({ service, showScope = true, className }: ServiceCardProps) {
+export function ServiceCard({
+  service,
+  showScope = true,
+  showCta = true,
+  className,
+}: ServiceCardProps) {
   const scopePreview = showScope ? service.scope.slice(0, 3) : [];
 
   return (
@@ -36,11 +43,13 @@ export function ServiceCard({ service, showScope = true, className }: ServiceCar
           ))}
         </ul>
       ) : null}
-      <div className="mt-auto pt-2">
-        <Link href={service.cta.href} variant="secondary" size="sm">
-          {service.cta.label}
-        </Link>
-      </div>
+      {showCta ? (
+        <div className="mt-auto pt-2">
+          <Link href={service.cta.href} variant="secondary" size="sm">
+            {service.cta.label}
+          </Link>
+        </div>
+      ) : null}
     </article>
   );
 }
