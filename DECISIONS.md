@@ -920,3 +920,71 @@ Ruta: ./DECISIONS.md
 	- Tras v1.0 o al encargar la asesoría.
 
 </details>
+
+<details>
+<summary>**ADR-0028** — Diferir capturas de proyecto (DES-07) a Fase 10</summary>
+
+- Estado: aceptada
+- Fecha: 2026-08-16
+- Decisores: Alexendros
+- Relacionado con: DES-07, ADR-0016, DEC-SPECS-03, Fase 6 residual, Fase 10
+- Contexto:
+	- DES-07 exige capturas reales con derechos, dimensiones, optimización y texto alternativo.
+	- En v1.0 los cuatro proyectos publicados omiten `images[]` a propósito; no hay placeholders.
+- Decisión:
+	- Las capturas de proyecto (`images[]`) se **diferirán a Fase 10**.
+	- En P0/v1.0: cards sin imagen; sin rutas placeholder ni assets inventados.
+	- No bloquea firma de Fase 6 ni `PROMOTE` (ADR-0025), siempre que la revisión humana de confidencialidad (P6-R3) esté firmada.
+- Alternativas consideradas:
+	- Añadir capturas ahora: rechazado; no hay assets autorizados listos.
+	- Placeholders genéricos: rechazado (DES-07 / CONTENT).
+- Consecuencias positivas:
+	- v1.0 sin mentiras visuales; backlog de imágenes explícito.
+- Consecuencias negativas:
+	- Listado de proyectos menos visual hasta Fase 10.
+- Plan de implementación:
+	- Mantener `ProjectCard` sin `images[]`; documentar en ROADMAP Fase 10 y release-checklist.
+- Plan de reversión:
+	- ADR sustituto que reactive DES-07 en P0 con assets firmados.
+- Seguridad y privacidad:
+	- Solo publicar capturas con autorización y sin datos confidenciales de cliente.
+- Fecha de revisión:
+	- Inicio de Fase 10 o cuando existan capturas autorizadas.
+
+</details>
+
+<details>
+<summary>**ADR-0029** — Dominio canónico apex y migración al proyecto Vercel correcto</summary>
+
+- Estado: aceptada
+- Fecha: 2026-08-16
+- Decisores: Alexendros
+- Relacionado con: P7z-5 / P7z-5R, ADR-0013, ADR-0025, `NEXT_PUBLIC_SITE_URL`
+- Contexto:
+	- Verificación API (16-08-2026): el proyecto `nuevowebsite-alexendrosdev` (`prj_cZGp4fGW2WG9mAlkVWjNQIXwKjYt`) solo lista alias `*.vercel.app`.
+	- El dominio `alexendros.dev` aparece en el proyecto legacy `website-alexendrosdev` (`prj_ZCEFHC2FAvwsFEkonoKqTfW9Dx9t`).
+	- La app nueva se observa vía `www`/share; el canónico de contenido ya es `https://alexendros.dev` (`siteConfig`, robots, OG).
+- Decisión:
+	- Canónico: **apex** `https://alexendros.dev`.
+	- Redirección permanente única: `www.alexendros.dev` → `alexendros.dev` (configurada en `vercel.json` de este repo; efectiva cuando el dominio esté ligado a este proyecto).
+	- El decisor DEBE mover `alexendros.dev` (y `www` si aplica) desde `website-alexendrosdev` a `nuevowebsite-alexendrosdev` en el panel Vercel antes del `PROMOTE` final de v1.0, o aceptar explícitamente servir producción desde el proyecto legacy (no recomendado).
+	- TLS: gestionado por Vercel tras el enlace del dominio.
+	- Cierra la desviación documental P7z-5 (“dominio no ligado”) sustituyéndola por esta traza verificable.
+- Alternativas consideradas:
+	- Canónico `www`: rechazado; contenido y SEO ya fijan apex.
+	- Dejar dominio en proyecto legacy: rechazado para v1.0; rompe deploy-phase / sync-env del repo nuevo.
+- Consecuencias positivas:
+	- Una URL canónica; headers y redirects del repo nuevo aplican al dominio tras la migración.
+- Consecuencias negativas:
+	- Paso manual en panel Vercel (fuera del agente).
+- Plan de implementación:
+	- `vercel.json`: redirect `www` → apex + headers de seguridad.
+	- Actualizar README/ROADMAP; checklist P8-6.
+- Plan de reversión:
+	- ADR sustituto si se elige canónico `www`.
+- Seguridad y privacidad:
+	- Sin cambio de tratamientos; HSTS ya observado en respuestas Vercel.
+- Fecha de revisión:
+	- Tras migrar el dominio o en P8-6.
+
+</details>

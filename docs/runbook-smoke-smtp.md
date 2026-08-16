@@ -52,7 +52,15 @@ Campos mínimos válidos (Zod): nombre, email de prueba, asunto de la lista cerr
 
 ---
 
-## Relacionados
+## Rotación de SMTP_TOKEN (decisor)
+
+1. Generar nuevo token en Proton (SMTP submission).
+2. Actualizar secreto org `PROTON_SMTP_TOKEN` (y sync a Vercel vía `sync-env-vercel.yml`).
+3. Redeploy del entorno afectado.
+4. Ejecutar este smoke y confirmar recepción.
+5. Registrar en el checklist de release: fecha, motivo, entornos tocados — **nunca** el valor del token.
+
+Ver [SECURITY.md](../SECURITY.md).
 
 - Workflow: [`.github/workflows/smoke-smtp.yml`](../.github/workflows/smoke-smtp.yml)
 - Sync: [`.github/workflows/sync-env-vercel.yml`](../.github/workflows/sync-env-vercel.yml)

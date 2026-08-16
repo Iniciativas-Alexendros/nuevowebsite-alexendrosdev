@@ -19,9 +19,9 @@ export const desarrolloWeb = serviceSchema.parse({
   scope: [
     "Arquitectura y scaffold del proyecto (Next.js o Astro, TypeScript, Tailwind, CI/CD).",
     "Implementación de páginas, componentes y patrones de UI accesibles (WCAG 2.2 AA).",
-    "SEO técnico: metadata, sitemap, robots, JSON-LD, Core Web Vitals ≥ 90 en móvil.",
-    "Integración de formularios, analítica respetuosa y proveedores de email (p. ej. Proton SMTP).",
-    "Despliegue en Vercel/Netlify/Cloudflare con previews por PR y producción desde rama protegida.",
+    "SEO técnico: metadata, sitemap, robots, JSON-LD; objetivo medible Core Web Vitals ≥ 90 en móvil (OBJ-005).",
+    "Integración de formularios y proveedores de email (p. ej. Proton SMTP). Analítica con cookies solo si se acuerda en P1 (ADR-0010).",
+    "Despliegue en Vercel/Netlify/Cloudflare con preview por fase (MITL) y producción desde rama protegida.",
     "Documentación técnica y guía de mantenimiento para que tu equipo siga evolucionando el sitio.",
   ],
   deliverables: [
@@ -34,7 +34,7 @@ export const desarrolloWeb = serviceSchema.parse({
     "Kickoff: definimos alcance, métricas de éxito, contenido disponible y calendario.",
     "Diseño de arquitectura: decisiones de stack, estructura de carpetas, modelo de contenido y validación.",
     "Implementación por fases: scaffold → design system → shell/SEO → contenido tipado → landing → portfolio → legal → hardening.",
-    "Revisiones en PR: el cliente revisa diffs y hace QA visual en previews de Vercel antes de fusionar.",
+    "Revisiones en PR: el cliente revisa diffs y hace QA visual en preview antes de fusionar.",
     "Lanzamiento: checklist de producción, rollback plan y monitorización inicial (logs Vercel).",
     "Entrega: repo público/privado, credenciales de despliegue, documentación y 30 días de soporte post-lanzamiento.",
   ],

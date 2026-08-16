@@ -39,27 +39,27 @@ Este archivo es el punto de entrada de lectura del proyecto. Te dice qué leer d
 
 # Estado en una mirada
 
-**Pulso:** 16 de agosto de 2026.
+**Pulso:** 16 de agosto de 2026 — cierre operativo v1.0 en curso.
 
-**Fase activa:** 8 — Hardening de calidad y lanzamiento (P8-1…P8-6). En paralelo: **Fase 7.z** — residuales y pipelines pre-hardening (P7z-1…P7z-6). Fases 5–7 código en `main`, estado Notion: implementadas (pendiente MITL + firma).
+**Fase activa:** 8 — Hardening (P8-1…P8-6). En paralelo: **Fase 7.z** (P7z-1…P7z-8). Fases 5–7 en `main`, pendientes MITL + firma.
 
-**Siguiente acción:** completar Fase 7.z (pipelines/docs) y unidades P8-1…P8-5; gate humano P8-6 (MITL Fases 5–7, smoke SMTP, `PROMOTE` + v1.0). Capturas DES-07 siguen pendientes.
+**Siguiente acción:** migrar dominio a este proyecto Vercel (ADR-0029), CI verde del SHA candidato, Deploy fase → MITL → smoke SMTP → firmas → `PROMOTE` → tag v1.0.0.
 
 **Objetivo de producto:** v1.0 el 24 de agosto de 2026.
 
 | Capa | Estado |
 | --- | --- |
 | Documentación canónica | Aprobada el 13-08-2026; pulso alineado 16-08 |
-| Código del sitio nuevo | Fases 1–7 en `main`; Fase 8 en curso (hardening → v1.0) |
-| Repositorio nuevo | Creado: `Iniciativas-Alexendros/nuevowebsite-alexendrosdev`. Público desde el 14-08-2026 (ADR-0017 revocada) |
-| Sitio anterior | Se archiva en solo lectura. Sin redirecciones (ADR-0013) |
-| Contenido editorial | Hechos firmados (REQ-GLOBAL-008); aviso legal y privacidad `published`; asesoría externa residual **post-v1.0** (ADR-0027); capturas DES-07 pendientes |
+| Código del sitio nuevo | Fases 1–7 en `main`; Fase 8 hardening en curso |
+| Repositorio nuevo | `Iniciativas-Alexendros/nuevowebsite-alexendrosdev` (público) |
+| Sitio anterior | Solo lectura; sin redirecciones legacy (ADR-0013) |
+| Contenido editorial | Hechos firmados; legales `published`; asesoría externa post-v1.0 (ADR-0027); DES-07 diferido (ADR-0028) |
 
 ---
 
 # Qué es este proyecto
 
-Portfolio técnico, presentación de servicios y canal de captación profesional de AlexendrosDev. Dominio previsto: `alexendros.dev` (**desviación P7z-5, 16-08:** aún no ligado al proyecto Vercel `nuevowebsite-alexendrosdev`; v1.0 puede ir en `*.vercel.app` hasta añadirlo en el panel).
+Portfolio técnico, presentación de servicios y canal de captación profesional de AlexendrosDev. Canónico: `https://alexendros.dev` (apex). **ADR-0029:** el dominio sigue ligado al proyecto Vercel legacy `website-alexendrosdev`; el decisor DEBE migrarlo a `nuevowebsite-alexendrosdev` antes del `PROMOTE` final. Redirect `www` → apex y headers de seguridad están en [`vercel.json`](./vercel.json).
 
 NO DEBE tratarse como plataforma SaaS ni como e-commerce.
 
@@ -156,27 +156,27 @@ El sitio lo implementa un agente de código. El humano dirige, revisa diffs, hac
 
 # Pendiente ahora
 
-Fases 1–7 en `main`. Fases 5–7: implementadas, pendientes de preview MITL + firma (ADR-0025 / DEC-ROADMAP-03). **Activa:** Fase 8 (hardening → v1.0 lun 24-08) + Fase 7.z (pipelines). Residuales: smoke SMTP, dominio (P7z-5), asesoría legal post-v1.0 (ADR-0027), capturas DES-07.
+Fases 1–7 en `main`. Fases 5–7: pendientes de preview MITL + firma. **Activa:** Fase 8 + 7.z. Bloqueos go-live: smoke SMTP, migración de dominio (ADR-0029), firmas humanas. DES-07 diferido (ADR-0028). Workflows: [Deploy fase](./.github/workflows/deploy-phase.yml) · [Smoke SMTP](./.github/workflows/smoke-smtp.yml) · [Release tag](./.github/workflows/release.yml).
 
 ## Fase 8 — Hardening y lanzamiento (activa)
 
-Unidades en Notion / ROADMAP §10: P8-1 `docs/release-checklist.md` · P8-2 a11y · P8-3 rendimiento · P8-4 SEO/seguridad/observabilidad · P8-5 E2E/responsive · P8-6 gate humano (MITL, SMTP, `PROMOTE`, tag v1.0; asesoría = post-v1.0).
+Unidades: P8-1 checklist · P8-2 a11y · P8-3 Lighthouse multipágina · P8-4 SEO/headers · P8-5 E2E · P8-6 gate humano.
 
-## Residuales humanos (no bloquean P8-1…P8-5)
+## Residuales humanos (bloquean go-live / PROMOTE)
 
 - [ ]  Preview MITL Fases 5–7 (`Deploy fase`) y firma de épicas.
-- [ ]  Smoke SMTP real tras sync-env + redeploy ([runbook](./docs/runbook-smoke-smtp.md)).
+- [ ]  Smoke SMTP real ([runbook](./docs/runbook-smoke-smtp.md)).
+- [ ]  Migrar `alexendros.dev` (+ `www`) de `website-alexendrosdev` → `nuevowebsite-alexendrosdev` (ADR-0029).
 - [ ]  Asesoría externa de textos legales **post-v1.0** (ADR-0027; no bloquea `PROMOTE`).
-- [ ]  Ligar `alexendros.dev` al proyecto Vercel `nuevowebsite-alexendrosdev` (desviación P7z-5: hoy solo `*.vercel.app`).
-- [ ]  Capturas DES-07 (omitir `images[]` hasta assets reales).
-- [ ]  Convertir cada fase en épica/issues (pospuesto 14-08-2026).
+- [ ]  Rotar `SMTP_TOKEN` y registrar operación (sin valor) — [SECURITY.md](./SECURITY.md).
+- [ ]  Activar secret scanning / Dependabot en GitHub si el plan lo permite.
 
-## Documentos de apoyo aún no creados
+## Documentos de apoyo
 
-- [ ]  [CONTRIBUTING.md](./CONTRIBUTING.md)
-- [ ]  [SECURITY.md](./SECURITY.md)
+- [x]  [CONTRIBUTING.md](./CONTRIBUTING.md) — **P7z-7**
+- [x]  [SECURITY.md](./SECURITY.md) — **P7z-8**
 - [x]  [docs/quality-gates.md](./docs/quality-gates.md) — **P7z-1**
-- [ ]  [docs/release-checklist.md](./docs/release-checklist.md) — **P8-1**
+- [x]  [docs/release-checklist.md](./docs/release-checklist.md) — **P8-1**
 - [x]  [docs/testing-strategy.md](./docs/testing-strategy.md) — **P7z-2**
 
 ---

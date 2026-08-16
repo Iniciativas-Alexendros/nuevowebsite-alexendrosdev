@@ -383,7 +383,7 @@ Con cuatro proyectos no se implementa filtro en el MVP (criterio de volumen insu
 | Nombre | Sí | Texto, 2–100 caracteres. |
 | Email | Sí | Formato de email válido, máximo 254 caracteres. |
 | Empresa u organización | No | Texto, máximo 100 caracteres. |
-| Asunto o tipo de consulta | No | Valor de una lista cerrada definida en contenido tipado. |
+| Asunto o tipo de consulta | No | Valor de una lista cerrada definida en contenido tipado (`src/content/contact-subjects.ts`). La lista es taxonomía comercial (seis asuntos) y **no** exige 1:1 con los cuatro servicios de DEC-SPECS-02; ver CONTENT §6. |
 | Mensaje | Sí | Texto, 20–2.000 caracteres. |
 | Consentimiento informado | Sí, si se tratan datos personales | Checkbox no premarcado; el envío se bloquea sin consentimiento. |
 | Honeypot | — | Campo invisible; si llega con valor, la petición se descarta con respuesta neutra. |
