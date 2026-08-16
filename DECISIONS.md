@@ -93,7 +93,7 @@ Ruta: ./DECISIONS.md
 - **ADR-0012** — Decisión de pagos/checkout, solo si se aprueba funcionalmente.
 - **ADR-0013** — Política de redirecciones y migración desde el sitio anterior. *(aceptada, 13-08-2026)*
 - **ADR-0014** — Idiomas del sitio. *(aceptada, 13-08-2026)*
-- **ADR-0015** — Marco legal del prestador y páginas legales. *(aceptada, 13-08-2026)*
+- **ADR-0015** — Marco legal del prestador y páginas legales. *(aceptada, 13-08-2026)* — cláusula «asesoría externa antes de producción» sustituida por ADR-0027 (16-08-2026).
 - **ADR-0016** — Identidad visual: tema, tipografía, iconografía y objetivo de accesibilidad. *(aceptada, 13-08-2026)*
 - **ADR-0017** — Vercel como plataforma de despliegue, con runtime Node.js. *(aceptada, 13-08-2026)* — cláusula «repositorio privado» sustituida por ADR-0020 (14-08-2026).
 - **ADR-0018** — Formato fuente y validación del contenido editorial. *(aceptada, 13-08-2026)*
@@ -104,6 +104,8 @@ Ruta: ./DECISIONS.md
 - **ADR-0023** — Autorebase en cadena de pull requests apiladas, sin auto-merge. *(aceptada, 14-08-2026)*
 - **ADR-0024** — Excepción puntual al gate de CI por rate limit de Vercel (14-08-2026). *(aceptada, 14-08-2026)*
 - **ADR-0025** — Despliegue Vercel por cierre de fase (preview MITL → firma → producción). *(aceptada, 15-08-2026; enmienda mismo día: preview previa a firma)* — sustituye las previews automáticas por PR de ADR-0017.
+- **ADR-0026** — Versionado por tag desde CI; versionado ≠ promoción a Production. *(aceptada, 16-08-2026)*
+- **ADR-0027** — Asesoría legal externa post-v1.0; no bloquea PROMOTE. *(aceptada, 16-08-2026)* — sustituye la cláusula de gate pre-producción de ADR-0015.
 
 ---
 
@@ -462,8 +464,9 @@ Ruta: ./DECISIONS.md
 
 - Estado: aceptada
 - Fecha: 2026-08-13
+- Enmienda: 2026-08-16 — la cláusula de asesoría externa como gate antes de producción queda sustituida por ADR-0027 (post-v1.0; no bloquea PROMOTE).
 - Decisores: Alexendros
-- Relacionado con: SPECS §6.9, DEC-SPECS-05
+- Relacionado con: SPECS §6.9, DEC-SPECS-05, ADR-0027
 - Contexto:
 	- La actividad se ejerce sin alta de autónomo hasta que la facturación supere el SMI anual.
 - Decisión:
@@ -474,15 +477,15 @@ Ruta: ./DECISIONS.md
 - Consecuencias positivas:
 	- Cumplimiento proporcional desde el lanzamiento.
 - Consecuencias negativas:
-	- El umbral del SMI es un criterio práctico habitual, no una exención normativa expresa; existe riesgo regulatorio residual que debe validarse con asesoría antes de producción.
+	- El umbral del SMI es un criterio práctico habitual, no una exención normativa expresa; existe riesgo regulatorio residual que debe validarse con asesoría (calendario: post-v1.0 según ADR-0027).
 - Plan de implementación:
-	- Redactar ambas páginas, enlazarlas desde el footer y revisarlas antes de producción (criterio 6.9).
+	- Redactar ambas páginas, enlazarlas desde el footer y revisarlas con firma del decisor antes de producción (criterio 6.9; ADR-0027).
 - Plan de reversión:
 	- Actualizar o sustituir los textos legales; no hay dependencia técnica.
 - Seguridad y privacidad:
 	- Registro mínimo de datos del formulario conforme a la política publicada.
 - Fecha de revisión:
-	- Al formalizar el alta de autónomo o antes del paso a producción.
+	- Al formalizar el alta de autónomo o tras la asesoría post-v1.0 (ADR-0027).
 
 </details>
 
@@ -842,5 +845,75 @@ Ruta: ./DECISIONS.md
 	- Secretos Vercel solo en Actions (ADR-0021); producción protegida por entorno y confirmación `PROMOTE`; sin secretos en el repo.
 - Fecha de revisión:
 	- Al evaluar plan Pro de Vercel, o a los 3 meses.
+
+</details>
+
+<details>
+<summary>**ADR-0026** — Versionado por tag desde CI (versionado ≠ promoción)</summary>
+
+- Estado: aceptada
+- Fecha: 2026-08-16
+- Decisores: Alexendros
+- Relacionado con: ADR-0025, DEC-GO-05, DEC-GO-07, Fase 7.z / P7z-4, P8-1, P8-6
+- Contexto:
+	- El decisor exige etiquetar v1.0 (y siguientes) desde pipeline, no a mano (DEC-GO-07).
+	- ADR-0025 ya separa preview MITL, firma y `PROMOTE` a Production; el tag no debe saltarse ese control.
+- Decisión:
+	- Los tags de versión (`vX.Y.Z`) y el GitHub Release se crean solo mediante el workflow `Release (tag)` (`workflow_dispatch`).
+	- **Prohibido** que el workflow de release invoque `deploy-phase` con `target=production`, ejecute `PROMOTE` o dispare cualquier despliegue a Vercel.
+	- Versionado ≠ promoción: el tag es un marcador de código; la publicación a Production sigue ADR-0025.
+	- Rollback operativo: redeploy del tag anterior (detalle en `docs/release-checklist.md`, P8-1).
+	- No se exige bump automático de `package.json` en este ADR (puede quedar `0.1.0` hasta decisión explícita).
+- Alternativas consideradas:
+	- Tag manual desde la máquina del decisor: rechazado (DEC-GO-07).
+	- Tag al fusionar a `main` o al hacer `PROMOTE`: rechazado; acoplaría versionado y despliegue.
+	- Semantic-release con auto-deploy: rechazado; viola ADR-0025.
+- Consecuencias positivas:
+	- Historial de versiones auditable; PROMOTE sigue siendo explícito y humano.
+- Consecuencias negativas:
+	- Dos workflows manuales en el go-live (tag + deploy); aceptable en Hobby / MITL.
+- Plan de implementación:
+	- `.github/workflows/release.yml` (solo `workflow_dispatch`).
+	- Documentar en quality-gates y ROADMAP P7z-4 / P8-6.
+- Plan de reversión:
+	- ADR sustituto; archivar el workflow.
+- Seguridad y privacidad:
+	- Permiso `contents: write` mínimo; sin secretos de Vercel ni SMTP en este workflow.
+- Fecha de revisión:
+	- Tras v1.0 o a los 3 meses.
+
+</details>
+
+<details>
+<summary>**ADR-0027** — Asesoría legal externa post-v1.0 (no bloquea PROMOTE)</summary>
+
+- Estado: aceptada
+- Fecha: 2026-08-16
+- Decisores: Alexendros
+- Relacionado con: ADR-0015 (sustituye la cláusula de gate pre-producción), DEC-GO-03, Fase 7 / 7.z P7z-6, P8-6, CONTENT §10/§12
+- Contexto:
+	- ADR-0015 exige validar con asesoría externa el riesgo residual del criterio SMI antes de producción.
+	- El decisor (DEC-GO-03, 16-08-2026) firma los textos `published` y decide que la asesoría externa **no** bloquea `PROMOTE`.
+- Decisión:
+	- La asesoría legal externa pasa a **post-v1.0** (residual de cumplimiento, no gate de lanzamiento).
+	- El decisor es quien firma los textos legales `published` (aviso legal y privacidad).
+	- **No** bloquea el workflow `Deploy fase` con `confirmation=PROMOTE` (ADR-0025 intacto en lo demás).
+	- El riesgo regulatorio del criterio SMI permanece documentado en ADR-0015; no se niega, se reprograma su mitigación externa.
+- Alternativas consideradas:
+	- Mantener asesoría como gate pre-PROMOTE: rechazado por DEC-GO-03.
+	- Retirar por completo la mención de asesoría: rechazado; el residual debe seguir visible post-v1.0.
+- Consecuencias positivas:
+	- Go-live no queda bloqueado por un tercero externo; responsabilidad de firma clara (decisor).
+- Consecuencias negativas:
+	- El riesgo residual SMI permanece hasta la asesoría post-lanzamiento.
+- Plan de implementación:
+	- Actualizar ROADMAP Fase 7 residual, CONTENT §10/§12, README y P8-6.
+	- No modificar el cuerpo histórico de ADR-0015; esta ADR lo sustituye en el punto del gate.
+- Plan de reversión:
+	- ADR sustituto que restablezca asesoría como gate pre-PROMOTE.
+- Seguridad y privacidad:
+	- Sin cambio de tratamientos; solo calendario de revisión externa.
+- Fecha de revisión:
+	- Tras v1.0 o al encargar la asesoría.
 
 </details>

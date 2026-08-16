@@ -53,13 +53,13 @@ Este archivo es el punto de entrada de lectura del proyecto. Te dice qué leer d
 | Código del sitio nuevo | Fases 1–7 en `main`; Fase 8 en curso (hardening → v1.0) |
 | Repositorio nuevo | Creado: `Iniciativas-Alexendros/nuevowebsite-alexendrosdev`. Público desde el 14-08-2026 (ADR-0017 revocada) |
 | Sitio anterior | Se archiva en solo lectura. Sin redirecciones (ADR-0013) |
-| Contenido editorial | Hechos firmados (REQ-GLOBAL-008); aviso legal y privacidad `published`; asesoría externa residual pre-PROMOTE; capturas DES-07 pendientes |
+| Contenido editorial | Hechos firmados (REQ-GLOBAL-008); aviso legal y privacidad `published`; asesoría externa residual **post-v1.0** (ADR-0027); capturas DES-07 pendientes |
 
 ---
 
 # Qué es este proyecto
 
-Portfolio técnico, presentación de servicios y canal de captación profesional de AlexendrosDev. Dominio previsto: `alexendros.dev`.
+Portfolio técnico, presentación de servicios y canal de captación profesional de AlexendrosDev. Dominio previsto: `alexendros.dev` (**desviación P7z-5, 16-08:** aún no ligado al proyecto Vercel `nuevowebsite-alexendrosdev`; v1.0 puede ir en `*.vercel.app` hasta añadirlo en el panel).
 
 NO DEBE tratarse como plataforma SaaS ni como e-commerce.
 
@@ -156,17 +156,18 @@ El sitio lo implementa un agente de código. El humano dirige, revisa diffs, hac
 
 # Pendiente ahora
 
-Fases 1–7 en `main`. Fases 5–7: implementadas, pendientes de preview MITL + firma (ADR-0025 / DEC-ROADMAP-03). **Activa:** Fase 8 (hardening → v1.0 lun 24-08). Residuales pre-PROMOTE: smoke SMTP, asesoría legal, capturas DES-07.
+Fases 1–7 en `main`. Fases 5–7: implementadas, pendientes de preview MITL + firma (ADR-0025 / DEC-ROADMAP-03). **Activa:** Fase 8 (hardening → v1.0 lun 24-08) + Fase 7.z (pipelines). Residuales: smoke SMTP, dominio (P7z-5), asesoría legal post-v1.0 (ADR-0027), capturas DES-07.
 
 ## Fase 8 — Hardening y lanzamiento (activa)
 
-Unidades en Notion / ROADMAP §10: P8-1 `docs/release-checklist.md` · P8-2 a11y · P8-3 rendimiento · P8-4 SEO/seguridad/observabilidad · P8-5 E2E/responsive · P8-6 gate humano (MITL, asesoría, SMTP, `PROMOTE`, tag v1.0).
+Unidades en Notion / ROADMAP §10: P8-1 `docs/release-checklist.md` · P8-2 a11y · P8-3 rendimiento · P8-4 SEO/seguridad/observabilidad · P8-5 E2E/responsive · P8-6 gate humano (MITL, SMTP, `PROMOTE`, tag v1.0; asesoría = post-v1.0).
 
 ## Residuales humanos (no bloquean P8-1…P8-5)
 
 - [ ]  Preview MITL Fases 5–7 (`Deploy fase`) y firma de épicas.
-- [ ]  Smoke SMTP real tras sync-env + redeploy.
-- [ ]  Asesoría externa de textos legales (ADR-0015) antes de `PROMOTE`.
+- [ ]  Smoke SMTP real tras sync-env + redeploy ([runbook](./docs/runbook-smoke-smtp.md)).
+- [ ]  Asesoría externa de textos legales **post-v1.0** (ADR-0027; no bloquea `PROMOTE`).
+- [ ]  Ligar `alexendros.dev` al proyecto Vercel `nuevowebsite-alexendrosdev` (desviación P7z-5: hoy solo `*.vercel.app`).
 - [ ]  Capturas DES-07 (omitir `images[]` hasta assets reales).
 - [ ]  Convertir cada fase en épica/issues (pospuesto 14-08-2026).
 
@@ -176,7 +177,7 @@ Unidades en Notion / ROADMAP §10: P8-1 `docs/release-checklist.md` · P8-2 a11y
 - [ ]  [SECURITY.md](./SECURITY.md)
 - [x]  [docs/quality-gates.md](./docs/quality-gates.md) — **P7z-1**
 - [ ]  [docs/release-checklist.md](./docs/release-checklist.md) — **P8-1**
-- [ ]  [docs/testing-strategy.md](./docs/testing-strategy.md) — **P7z-2**
+- [x]  [docs/testing-strategy.md](./docs/testing-strategy.md) — **P7z-2**
 
 ---
 

@@ -268,7 +268,7 @@ Camino crítico ~70 h con solape de Fase 4. Sin holgura humana de revisión. Rec
 - [x]  Crear guías de redacción y convenciones de slug: primera persona con tuteo, guía de tono de CONTENT §11. — **Resuelto:** `docs/guia-redaccion.md`.
 - [x]  Definir tratamiento de borradores: enum `status`, selectores `getPublished*()`, sitemap y rutas derivados, test bloqueante en CI (CONTENT §9; REQ-GLOBAL-007). — **Sitemap solo rutas estáticas P0 hasta activar `[slug]` P1 (#37).**
 - [x]  Revisar exactitud de afirmaciones profesionales y técnicas (REQ-GLOBAL-008). Tarea no delegable: firma humana obligatoria. — **Firmado por el decisor el 15-08-2026 (servicios, proyectos, stack, perfil y site). Legales cerrados en Fase 7.**
-- [x]  Preparar contenido legal según funcionalidades **P0** confirmadas: aviso legal y privacidad, sin cookies (ADR-0010, ADR-0015). — **Completado en Fase 7:** `published` con datos reales; asesoría externa residual pre-PROMOTE.
+- [x]  Preparar contenido legal según funcionalidades **P0** confirmadas: aviso legal y privacidad, sin cookies (ADR-0010, ADR-0015). — **Completado en Fase 7:** `published` con datos reales; asesoría externa residual **post-v1.0** (ADR-0027).
 
 **Entregable:** conjunto de contenido tipado, validado y listo para renderizar.
 
@@ -381,7 +381,7 @@ Camino crítico ~70 h con solape de Fase 4. Sin holgura humana de revisión. Rec
 
 **Calendario:** vie 21 – sáb 22 ago 2026. *(Adelantada: published en `main` vía #48 el 15-08.)*
 
-**Estado (16-08-2026):** implementada en `main` (#48); pendiente MITL + firma. Residual: asesoría externa pre-PROMOTE.
+**Estado (16-08-2026):** implementada en `main` (#48); pendiente MITL + firma. Residual: asesoría externa **post-v1.0** (ADR-0027; no bloquea PROMOTE).
 
 **Tareas:**
 
@@ -393,7 +393,7 @@ Camino crítico ~70 h con solape de Fase 4. Sin holgura humana de revisión. Rec
 - [x]  Verificar enlaces legales en footer y formularios (REQ-LAYOUT-FOOTER-001).
 - [x]  Revisar textos de consentimiento (checkbox no premarcado; REQ-FORM-CONTACT-001).
 - [x]  Definir proceso de actualización cuando se añada una integración (criterio SPECS 6.9). — **Documentado en CONTENT.md §10.1.**
-- [ ]  Validar los textos legales con asesoría antes de producción (riesgo regulatorio residual del criterio SMI, ADR-0015). — **RESIDUAL pre-PROMOTE:** no bloquea merge ni `published` en repo; sí bloquea promoción a producción (ADR-0025 / Fase 8).
+- [x]  Validar los textos legales con asesoría antes de producción (riesgo regulatorio residual del criterio SMI, ADR-0015). — **Desviado (ADR-0027 / DEC-GO-03):** el decisor firma los textos `published`; la asesoría externa es residual **post-v1.0** y **no** bloquea `PROMOTE`.
 - [ ]  **RESIDUAL:** preview MITL + firma del decisor (ADR-0025 / DEC-ROADMAP-03).
 
 **Entregable:** información legal coherente con la operación real del sitio.
@@ -403,7 +403,7 @@ Camino crítico ~70 h con solape de Fase 4. Sin holgura humana de revisión. Rec
 - No hay política genérica desconectada de las tecnologías reales.
 - Todos los tratamientos de datos implementados están reflejados.
 - El contacto y las cookies cumplen el flujo definido.
-- **Residual explícito:** asesoría externa antes de `PROMOTE` a producción.
+- **Residual explícito:** asesoría externa **post-v1.0** (ADR-0027); no bloquea `PROMOTE`.
 
 ---
 
@@ -424,11 +424,11 @@ Camino crítico ~70 h con solape de Fase 4. Sin holgura humana de revisión. Rec
 **Tareas:**
 
 - [x]  **P7z-1** `docs/quality-gates.md` — resume gates de merge; fuente AGENTS §8 (no relaja).
-- [ ]  **P7z-2** `docs/testing-strategy.md` — capas unit / integración / E2E; mock SMTP en CI.
-- [ ]  **P7z-3** Smoke SMTP en pipeline (workflow_dispatch + runbook; gate go-live, no cada PR).
-- [ ]  **P7z-4** Versionado/tag automático desde CI + ADR (versionado ≠ `PROMOTE`; ADR-0025 intacto).
-- [ ]  **P7z-5** Verificar dominio `alexendros.dev` en el proyecto Vercel o desviación escrita.
-- [ ]  **P7z-6** Desviación ADR-0015: asesoría externa post-v1.0; no bloquea `PROMOTE` (DEC-GO-03).
+- [x]  **P7z-2** `docs/testing-strategy.md` — capas unit / integración / E2E; mock SMTP en CI.
+- [x]  **P7z-3** Smoke SMTP en pipeline (workflow_dispatch + runbook; gate go-live, no cada PR).
+- [x]  **P7z-4** Versionado/tag automático desde CI + ADR-0026 (versionado ≠ `PROMOTE`; ADR-0025 intacto).
+- [x]  **P7z-5** Dominio `alexendros.dev` — **DESVIACIÓN (16-08-2026):** `get_project` del proyecto Vercel `nuevowebsite-alexendrosdev` (`prj_cZGp4fGW2WG9mAlkVWjNQIXwKjYt`) solo lista `nuevowebsite-alexendrosdev-alexendros-team.vercel.app` y `nuevowebsite-alexendrosdev-git-main-alexendros-team.vercel.app`. **No** aparece `alexendros.dev`. DEC-GO-11 lo da por conectado; verificación técnica falla. **v1.0 PUEDE publicarse en `*.vercel.app`** hasta que el decisor añada el dominio (y `www` si aplica) en el panel Vercel de este proyecto. `NEXT_PUBLIC_SITE_URL=https://alexendros.dev` en sync-env sigue siendo URL canónica de contenido/SEO; no implica DNS ligado.
+- [x]  **P7z-6** Desviación ADR-0015 → ADR-0027: asesoría externa post-v1.0; no bloquea `PROMOTE` (DEC-GO-03).
 - [ ]  **P7z-7** `CONTRIBUTING.md` + plantillas — **BLOQUEADA** (batería 9.3 abierta).
 - [ ]  **P7z-8** `SECURITY.md` — **BLOQUEADA** (batería 10.3 abierta).
 
@@ -471,7 +471,7 @@ Camino crítico ~70 h con solape de Fase 4. Sin holgura humana de revisión. Rec
 - [ ]  **P8-5** Revisión de responsive en dispositivos representativos.
 - [ ]  **P8-5** Revisión de contenido, enlaces y ortografía.
 - [x]  Configuración de redirecciones desde dominio o rutas anteriores. — **Resuelto:** no aplica, lanzamiento limpio (ADR-0013); tras el lanzamiento se revisan los 404 en los logs de plataforma.
-- [ ]  **P8-6** Preview MITL Fases 5–7 → firmas; asesoría legal; smoke SMTP; `Deploy fase` + `PROMOTE`; etiquetar versión inicial (v1.0). — **Solo decisor (ADR-0025).**
+- [ ]  **P8-6** Preview MITL Fases 5–7 → firmas; smoke SMTP; `Deploy fase` + `PROMOTE`; tag v1.0 vía pipeline (ADR-0026). Asesoría legal: residual post-v1.0 (ADR-0027; **no** bloquea PROMOTE). — **Solo decisor (ADR-0025).**
 
 **Entregable:** versión 1.0 lista para producción.
 

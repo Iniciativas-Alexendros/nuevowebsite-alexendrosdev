@@ -83,10 +83,10 @@ Son **siete** checks requeridos desde el scaffold de Fase 1 (histórico: gate Li
 | Ítem | Rol |
 | --- | --- |
 | Presupuesto JS “extra” | No es gate (DEC-AGENTS-04) |
-| Smoke SMTP real a Proton | Gate de **go-live** (DEC-GO-04); ver runbook / workflow manual |
+| Smoke SMTP real a Proton | Gate de **go-live** (DEC-GO-04); [runbook-smoke-smtp.md](./runbook-smoke-smtp.md) |
 | Preview MITL + firma de épica | Gate humano (ADR-0025 / DEC-ROADMAP-03) |
 | `PROMOTE` a Production | Confirmación explícita del decisor (ADR-0025) |
-| Tag / Release | Versionado ≠ promoción (ADR de versionado en Fase 7.z) |
+| Tag / Release | Versionado ≠ promoción ([ADR-0026](../DECISIONS.md)); workflow `Release (tag)` no despliega |
 
 ---
 
@@ -103,6 +103,6 @@ No se introducen gates “por si acasa” sin ancla canónica.
 ## 10. Relacionados
 
 - [AGENTS.md](../AGENTS.md) §8 — umbrales ejecutables
-- [docs/testing-strategy.md](./testing-strategy.md) — capas de prueba (cuando exista)
+- [docs/testing-strategy.md](./testing-strategy.md) — capas de prueba
 - [ARCHITECTURE.md](../ARCHITECTURE.md) — estructura `tests/`
 - [ADR-0025](../DECISIONS.md) — despliegue por fase; Lighthouse local
