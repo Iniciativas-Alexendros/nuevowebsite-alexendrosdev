@@ -148,8 +148,15 @@ jobs:
             done
             sleep 1
           done
+      # collect+assert+upload (no autorun): autorun healthcheck avisa
+      # "GitHub token not set" con upload filesystem, aunque LHCI no publique
+      # status a GitHub en ese target. El gate (≥0.9) sigue en assert.
       - name: Lighthouse contra servidor local (ADR-0025)
-        run: pnpm exec lhci autorun --config=./lighthouserc.json
+        run: |
+          set -euo pipefail
+          pnpm exec lhci collect --config=./lighthouserc.json
+          pnpm exec lhci assert --config=./lighthouserc.json
+          pnpm exec lhci upload --config=./lighthouserc.json
       - name: Parar servidor local
         if: always()
         run: |
