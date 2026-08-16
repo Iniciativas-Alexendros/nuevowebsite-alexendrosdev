@@ -5,7 +5,7 @@ export const desarrolloWeb = serviceSchema.parse({
   slug: "desarrollo-web",
   title: "Desarrollo web a medida",
   shortDescription:
-    "Sitios web diseñados en Next.js o Astro, optimizados para posicionarte en los índices de búsquedas, con accesibilidad certificada y funcional desde que se publica mientras seguimos desarrollando componentes y contenidos.",
+    "Sitios web en Next.js o Astro, optimizados para posicionarte en buscadores, con accesibilidad certificada y funcionales desde la publicación mientras seguimos desarrollando componentes y contenidos.",
   description:
     "Diseño y construyo webs a medida usando Next.js (App Router, Server Components) y Astro (islas, SSG). Cada proyecto parte de una base limpia: TypeScript estricto, Tailwind con tokens OKLCH, shadcn/ui como primitivas accesibles y CI con gates de calidad bloqueantes. No uso plantillas genéricas ni themes de mercado: el código se escribe para tu caso, no para el de todos.",
   audience:

@@ -14,13 +14,7 @@ export type HeroProps = {
  * Hero de captación (REQ-DOMAIN-HERO-001).
  * Único H1 de la página; contenido tipado; CTA operable con teclado.
  */
-export function Hero({
-  title,
-  description,
-  primaryCta,
-  secondaryCta,
-  className,
-}: HeroProps) {
+export function Hero({ title, description, primaryCta, secondaryCta, className }: HeroProps) {
   return (
     <header className={cn("flex flex-col justify-center py-12 md:py-16 lg:py-20", className)}>
       <Container className="flex flex-col gap-6 md:gap-8">
