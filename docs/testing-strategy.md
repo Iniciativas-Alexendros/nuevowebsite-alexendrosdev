@@ -30,7 +30,7 @@ La estructura recomendada en ARCHITECTURE §3 incluye también `tests/integratio
 
 - El endpoint `POST /api/contact` se prueba con el adaptador de correo **mockeado** (nunca SMTP real en CI).
 - Casos típicos: validación Zod, honeypot, rate limit, degradación 503 sin config, envío ok con mock.
-- El smoke real a Proton es **otro** proceso (go-live); ver [runbook-smoke-smtp.md](./runbook-smoke-smtp.md) cuando exista (P7z-3).
+- El smoke real a Proton es **otro** proceso (go-live); ver [runbook-smoke-smtp.md](./runbook-smoke-smtp.md) (P7z-3).
 
 ---
 
