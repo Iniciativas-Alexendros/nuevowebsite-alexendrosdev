@@ -426,7 +426,7 @@ Camino crítico ~70 h con solape de Fase 4. Sin holgura humana de revisión. Rec
 - [x]  **P7z-1** `docs/quality-gates.md` — resume gates de merge; fuente AGENTS §8 (no relaja).
 - [x]  **P7z-2** `docs/testing-strategy.md` — capas unit / integración / E2E; mock SMTP en CI.
 - [x]  **P7z-3** Smoke SMTP en pipeline (workflow_dispatch + runbook; gate go-live, no cada PR).
-- [ ]  **P7z-4** Versionado/tag automático desde CI + ADR (versionado ≠ `PROMOTE`; ADR-0025 intacto).
+- [x]  **P7z-4** Versionado/tag automático desde CI + ADR-0026 (versionado ≠ `PROMOTE`; ADR-0025 intacto).
 - [ ]  **P7z-5** Verificar dominio `alexendros.dev` en el proyecto Vercel o desviación escrita.
 - [ ]  **P7z-6** Desviación ADR-0015: asesoría externa post-v1.0; no bloquea `PROMOTE` (DEC-GO-03).
 - [ ]  **P7z-7** `CONTRIBUTING.md` + plantillas — **BLOQUEADA** (batería 9.3 abierta).

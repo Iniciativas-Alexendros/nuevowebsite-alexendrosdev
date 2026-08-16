@@ -86,7 +86,7 @@ Son **siete** checks requeridos desde el scaffold de Fase 1 (histórico: gate Li
 | Smoke SMTP real a Proton | Gate de **go-live** (DEC-GO-04); [runbook-smoke-smtp.md](./runbook-smoke-smtp.md) |
 | Preview MITL + firma de épica | Gate humano (ADR-0025 / DEC-ROADMAP-03) |
 | `PROMOTE` a Production | Confirmación explícita del decisor (ADR-0025) |
-| Tag / Release | Versionado ≠ promoción (ADR de versionado en Fase 7.z) |
+| Tag / Release | Versionado ≠ promoción ([ADR-0026](../DECISIONS.md)); workflow `Release (tag)` no despliega |
 
 ---
 
