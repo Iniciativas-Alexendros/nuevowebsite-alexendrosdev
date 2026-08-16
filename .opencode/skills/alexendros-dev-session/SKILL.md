@@ -56,7 +56,7 @@ Mapa de enrutado del canon. Cada documento es un archivo Markdown en la raíz de
 
 Los nueve documentos canónicos están en la raíz del repositorio. Notion es espejo de lectura.
 
-Apoyo (pendiente de crear): `CONTRIBUTING.md`, `SECURITY.md`, `docs/quality-gates.md`, `docs/release-checklist.md`, `docs/testing-strategy.md`.
+Apoyo (pendiente de crear): `CONTRIBUTING.md`, `SECURITY.md`, `docs/quality-gates.md`, `docs/release-checklist.md` (P8-1), `docs/testing-strategy.md`.
 
 ## 4. Procedimiento de trabajo
 

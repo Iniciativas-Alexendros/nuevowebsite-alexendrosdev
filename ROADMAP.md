@@ -290,25 +290,29 @@ Camino crítico ~70 h con solape de Fase 4. Sin holgura humana de revisión. Rec
 
 **Tamaño relativo:** L (~16 h).
 
-**Calendario:** mar 18 – jue 20 ago 2026. Landing mínima pública el jue 20.
+**Calendario:** mar 18 – jue 20 ago 2026. Landing mínima pública el jue 20. *(Adelantada: implementación 15-08; código en `main`.)*
+
+**Estado (16-08-2026):** implementada en `main` (#39, #40); pendiente MITL + firma (ADR-0025). Residual: smoke SMTP real.
 
 **Tareas:**
 
-- [ ]  Implementar inicio con propuesta de valor y CTA visibles sin scroll en 360×640 y 1280×800 (OBJ-001).
-- [ ]  Implementar Hero: único H1 de la página, propuesta de valor en texto y contenido desde entidades tipadas (REQ-DOMAIN-HERO-001).
-- [ ]  Implementar secciones de servicios, proyectos destacados, stack destacado y CTA (REQ-DOMAIN-CTA-001).
-- [ ]  Implementar `/servicios` con los 4 servicios aprobados (SPECS §6.2).
-- [ ]  Implementar ServiceCard y componentes relacionados (REQ-DOMAIN-SERVICECARD-001; sin precios, plazos ni garantías no confirmados).
-- [ ]  Implementar `/contacto` con canales, formulario y enlace a [Cal.com](https://cal.com) como alternativa de llamada (DEC-SPECS-06; si añade script de terceros, exige ADR propio).
-- [ ]  Implementar ContactForm (aprobado, DEC-SPECS-06) con los campos y validaciones de REQ-FORM-CONTACT-001: nombre, email, empresa, asunto, mensaje de 20–2.000 caracteres, consentimiento no premarcado y honeypot.
-- [ ]  Implementar validación cliente/servidor con esquema Zod único compartido; el servidor es la fuente de verdad (ARCHITECTURE §7).
-- [ ]  Implementar `POST /api/contact` como único punto dinámico del sitio; el resto es SSG puro con runtime Node.js 22 (ADR-0017).
-- [x]  Configurar proveedor de email solo si es necesario. — **Resuelto:** Proton Mail vía SMTP submission con token dedicado exclusivo de servidor y adaptador sustituible (ADR-0011; REQ-GLOBAL-010).
-- [ ]  Implementar antiabuso: honeypot con respuesta neutra + rate limit 5 envíos/IP/hora; sin CAPTCHA en el MVP (ARCHITECTURE §7; Turnstile solo ante spam real, vía ADR).
-- [ ]  Implementar estados de carga, éxito y error, con degradación clara ante fallo del proveedor (OBJ-007).
-- [ ]  Redactar y enlazar política de privacidad (`/privacidad`): el formulario trata datos personales (ADR-0015).
+- [x]  Implementar inicio con propuesta de valor y CTA visibles sin scroll en 360×640 y 1280×800 (OBJ-001). — **PR #40.**
+- [x]  Implementar Hero: único H1 de la página, propuesta de valor en texto y contenido desde entidades tipadas (REQ-DOMAIN-HERO-001). — **PR #40.**
+- [x]  Implementar secciones de servicios, proyectos destacados, stack destacado y CTA (REQ-DOMAIN-CTA-001). — **PR #40.**
+- [x]  Implementar `/servicios` con los 4 servicios aprobados (SPECS §6.2). — **PR #40.**
+- [x]  Implementar ServiceCard y componentes relacionados (REQ-DOMAIN-SERVICECARD-001; sin precios, plazos ni garantías no confirmados). — **PR #40.**
+- [x]  Implementar `/contacto` con canales, formulario y enlace a [Cal.com](https://cal.com/alexendros) como alternativa de llamada (DEC-SPECS-06; sin script de terceros). — **PR #40.**
+- [x]  Implementar ContactForm (aprobado, DEC-SPECS-06) con los campos y validaciones de REQ-FORM-CONTACT-001: nombre, email, empresa, asunto, mensaje de 20–2.000 caracteres, consentimiento no premarcado y honeypot. — **PR #40.**
+- [x]  Implementar validación cliente/servidor con esquema Zod único compartido; el servidor es la fuente de verdad (ARCHITECTURE §7). — **PR #39.**
+- [x]  Implementar `POST /api/contact` como único punto dinámico del sitio; el resto es SSG puro con runtime Node.js 22 (ADR-0017). — **PR #39.**
+- [x]  Configurar proveedor de email solo si es necesario. — **Resuelto:** Proton Mail vía SMTP submission con token dedicado exclusivo de servidor y adaptador sustituible (ADR-0011; REQ-GLOBAL-010; PRs #39/#49).
+- [x]  Implementar antiabuso: honeypot con respuesta neutra + rate limit 5 envíos/IP/hora; sin CAPTCHA en el MVP (ARCHITECTURE §7; Turnstile solo ante spam real, vía ADR). — **PR #39.**
+- [x]  Implementar estados de carga, éxito y error, con degradación clara ante fallo del proveedor (OBJ-007). — **PR #40.**
+- [x]  Redactar y enlazar política de privacidad (`/privacidad`): el formulario trata datos personales (ADR-0015). — **Enlazado en Fase 5; textos `published` en Fase 7 (#48).**
 - [x]  Añadir conversiones o eventos únicamente si existe consentimiento y decisión de analítica. — **Resuelto:** sin analítica ni cookies no esenciales en el MVP (ADR-0010).
-- [ ]  Crear pruebas E2E del flujo de contacto y tests de integración del endpoint en CI (OBJ-007; ADR-0009).
+- [x]  Crear pruebas E2E del flujo de contacto y tests de integración del endpoint en CI (OBJ-007; ADR-0009). — **PRs #39/#40.**
+- [ ]  **RESIDUAL:** smoke SMTP real tras sync-env + redeploy (pre-PROMOTE).
+- [ ]  **RESIDUAL:** preview MITL + firma del decisor (ADR-0025 / DEC-ROADMAP-03).
 
 **Entregable:** versión MVP capaz de presentar servicios y recibir contactos.
 
@@ -334,20 +338,24 @@ Camino crítico ~70 h con solape de Fase 4. Sin holgura humana de revisión. Rec
 
 **Tamaño relativo:** M (~8 h).
 
-**Calendario:** vie 21 ago 2026.
+**Calendario:** vie 21 ago 2026. *(Adelantada: implementación 15-08; código en `main`.)*
+
+**Estado (16-08-2026):** implementada en `main` (#42→#43→#44); pendiente MITL + firma. Residuales: confidencialidad humana; DES-07.
 
 **Tareas:**
 
-- [ ]  Implementar `/proyectos` con los 4 proyectos aprobados; sin filtro en el MVP por volumen insuficiente (DEC-SPECS-03, SPECS §6.4).
-- [ ]  Implementar ProjectCard y ProjectGrid (REQ-DOMAIN-PROJECTCARD-001; tarjetas operables con teclado, imágenes con texto alternativo).
+- [x]  Implementar `/proyectos` con los 4 proyectos aprobados; sin filtro en el MVP por volumen insuficiente (DEC-SPECS-03, SPECS §6.4). — **PR #42.**
+- [x]  Implementar ProjectCard y ProjectGrid (REQ-DOMAIN-PROJECTCARD-001; tarjetas operables con teclado, imágenes con texto alternativo). — **PR #42;** sin placeholders DES-07.
 - ~~Implementar `/proyectos/[slug]`, ProjectMeta, galerías, metadata por proyecto y pruebas de rutas dinámicas.~~ **Trasladado al bloque P1 de la Fase 9:** los casos de estudio completos (SPECS §6.5) son P1 y no debe adelantarse trabajo P1 en Fases 0–8 (regla de gobierno; MDX vía ADR, ADR-0018).
-- [ ]  Implementar `/stack` (SPECS §6.6).
-- [ ]  Implementar agrupación de tecnologías y TechnologyBadge (REQ-DOMAIN-TECHBADGE-001; sin porcentajes ni niveles subjetivos).
-- [ ]  Implementar `/sobre-mi` (SPECS §6.7).
-- [ ]  Implementar componentes de credibilidad solo con contenido verificable (REQ-GLOBAL-008).
-- [ ]  Validar imágenes, contenido confidencial y enlaces externos (revisión de confidencialidad antes de publicar cada proyecto).
-- [ ]  Añadir metadata específica por ruta: `/proyectos`, `/stack` y `/sobre-mi` (NFR-SEO-001).
-- [ ]  Revisar navegación cruzada entre servicios, proyectos y stack (OBJ-003: alcanzables en ≤2 interacciones).
+- [x]  Implementar `/stack` (SPECS §6.6). — **PR #43.**
+- [x]  Implementar agrupación de tecnologías y TechnologyBadge (REQ-DOMAIN-TECHBADGE-001; sin porcentajes ni niveles subjetivos). — **PR #43.**
+- [x]  Implementar `/sobre-mi` (SPECS §6.7). — **PR #44.**
+- [x]  Implementar componentes de credibilidad solo con contenido verificable (REQ-GLOBAL-008). — **PR #44.**
+- [ ]  Validar imágenes, contenido confidencial y enlaces externos (revisión de confidencialidad antes de publicar cada proyecto). — **RESIDUAL humano.**
+- [x]  Añadir metadata específica por ruta: `/proyectos`, `/stack` y `/sobre-mi` (NFR-SEO-001). — **PRs #42–#44.**
+- [x]  Revisar navegación cruzada entre servicios, proyectos y stack (OBJ-003: alcanzables en ≤2 interacciones). — **E2E PR #44.**
+- [ ]  **RESIDUAL:** capturas DES-07 (`images[]` omitidas hasta assets reales).
+- [ ]  **RESIDUAL:** preview MITL + firma del decisor (ADR-0025 / DEC-ROADMAP-03).
 
 **Entregable:** portfolio navegable y mantenible.
 
@@ -371,7 +379,9 @@ Camino crítico ~70 h con solape de Fase 4. Sin holgura humana de revisión. Rec
 
 **Tamaño relativo:** S (~4 h).
 
-**Calendario:** vie 21 – sáb 22 ago 2026.
+**Calendario:** vie 21 – sáb 22 ago 2026. *(Adelantada: published en `main` vía #48 el 15-08.)*
+
+**Estado (16-08-2026):** implementada en `main` (#48); pendiente MITL + firma. Residual: asesoría externa pre-PROMOTE.
 
 **Tareas:**
 
@@ -384,6 +394,7 @@ Camino crítico ~70 h con solape de Fase 4. Sin holgura humana de revisión. Rec
 - [x]  Revisar textos de consentimiento (checkbox no premarcado; REQ-FORM-CONTACT-001).
 - [x]  Definir proceso de actualización cuando se añada una integración (criterio SPECS 6.9). — **Documentado en CONTENT.md §10.1.**
 - [ ]  Validar los textos legales con asesoría antes de producción (riesgo regulatorio residual del criterio SMI, ADR-0015). — **RESIDUAL pre-PROMOTE:** no bloquea merge ni `published` en repo; sí bloquea promoción a producción (ADR-0025 / Fase 8).
+- [ ]  **RESIDUAL:** preview MITL + firma del decisor (ADR-0025 / DEC-ROADMAP-03).
 
 **Entregable:** información legal coherente con la operación real del sitio.
 
@@ -406,24 +417,26 @@ Camino crítico ~70 h con solape de Fase 4. Sin holgura humana de revisión. Rec
 
 **Tamaño relativo:** M (~10 h).
 
-**Calendario:** sáb 22 – lun 24 ago 2026. Etiqueta v1.0 el lun 24.
+**Calendario:** sáb 22 – lun 24 ago 2026. Etiqueta v1.0 el lun 24. *(Organización Notion adelantada 16-08; unidades P8-1…P8-6 en ficha de fase.)*
+
+**Estado (16-08-2026):** fase activa. Código de Fases 5–7 en `main`; hardening pendiente.
 
 **Tareas:**
 
-- [ ]  Auditoría manual de accesibilidad (AA global; AAA en cuerpo de texto largo; complementa axe-core, OBJ-006).
-- [ ]  Auditoría de navegación por teclado (NFR-A11Y-001/002).
-- [ ]  Auditoría de contraste (NFR-A11Y-003).
-- [ ]  Pruebas E2E de rutas y formularios críticos (OBJ-002, OBJ-003, OBJ-007).
-- [ ]  Revisión de rendimiento contra OBJ-005: Lighthouse ≥90 en las cuatro categorías en móvil, LCP <2,5 s, CLS <0,1, INP <200 ms (Lighthouse CI sobre preview).
-- [ ]  Revisión de imágenes (`next/image`, AVIF/WebP, self-hosted; ARCHITECTURE §6), fuentes y scripts de terceros.
-- [ ]  Revisión de SEO: títulos, descripciones, canonical, sitemap, robots, OG y enlaces.
-- [ ]  Revisión de seguridad: headers, secretos, endpoints y dependencias (NFR-SEC-001–006; `SMTP_TOKEN` exclusivo de servidor).
-- [ ]  Revisión de errores y observabilidad con logs y dashboards de Vercel (P0; ADR-0017).
-- [ ]  Revisión de responsive en dispositivos representativos.
-- [ ]  Revisión de contenido, enlaces y ortografía.
+- [ ]  **P8-1** Crear checklist de publicación y rollback (`docs/release-checklist.md`; ARCHITECTURE §14).
+- [ ]  **P8-2** Auditoría manual de accesibilidad (AA global; AAA en cuerpo de texto largo; complementa axe-core, OBJ-006).
+- [ ]  **P8-2** Auditoría de navegación por teclado (NFR-A11Y-001/002).
+- [ ]  **P8-2** Auditoría de contraste (NFR-A11Y-003).
+- [ ]  **P8-5** Pruebas E2E de rutas y formularios críticos (OBJ-002, OBJ-003, OBJ-007).
+- [ ]  **P8-3** Revisión de rendimiento contra OBJ-005: Lighthouse ≥90 en las cuatro categorías en móvil, LCP <2,5 s, CLS <0,1, INP <200 ms (Lighthouse CI **local** tras `pnpm build`; ADR-0025).
+- [ ]  **P8-3** Revisión de imágenes (`next/image`, AVIF/WebP, self-hosted; ARCHITECTURE §6), fuentes y scripts de terceros.
+- [ ]  **P8-4** Revisión de SEO: títulos, descripciones, canonical, sitemap, robots, OG y enlaces.
+- [ ]  **P8-4** Revisión de seguridad: headers, secretos, endpoints y dependencias (NFR-SEC-001–006; `SMTP_TOKEN` exclusivo de servidor).
+- [ ]  **P8-4** Revisión de errores y observabilidad con logs y dashboards de Vercel (P0; ADR-0017).
+- [ ]  **P8-5** Revisión de responsive en dispositivos representativos.
+- [ ]  **P8-5** Revisión de contenido, enlaces y ortografía.
 - [x]  Configuración de redirecciones desde dominio o rutas anteriores. — **Resuelto:** no aplica, lanzamiento limpio (ADR-0013); tras el lanzamiento se revisan los 404 en los logs de plataforma.
-- [ ]  Crear checklist de publicación y rollback.
-- [ ]  Etiquetar versión inicial (v1.0).
+- [ ]  **P8-6** Preview MITL Fases 5–7 → firmas; asesoría legal; smoke SMTP; `Deploy fase` + `PROMOTE`; etiquetar versión inicial (v1.0). — **Solo decisor (ADR-0025).**
 
 **Entregable:** versión 1.0 lista para producción.
 
