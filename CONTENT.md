@@ -277,7 +277,7 @@ El flujo Borrador → Revisión → Publicado → Archivado se aplica en código
 - **Formato del MVP:** TypeScript tipado en `src/content/` (coherente con ADR-0003, contenido en Git sin CMS, y ARCHITECTURE §4.6). Sin MDX ni loaders adicionales en P0.
 - **MDX diferido:** se incorporará únicamente con los casos de estudio `/proyectos/[slug]` (P1), mediante ADR propio.
 - **Validación:** un esquema Zod por entidad en `src/lib/validations/content/`, ejecutado al importar el módulo en build. Contenido inválido = build fallido; ningún contenido llega a producción sin pasar su esquema.
-- **Textos legales (ADR-0015):** módulos TS en `src/content/legal/` con el cuerpo en secciones tipadas renderizadas en servidor, hasta que exista MDX. Aviso legal y privacidad en `published` (Fase 7); asesoría externa residual antes de `PROMOTE` a producción.
+- **Textos legales (ADR-0015 / ADR-0027):** módulos TS en `src/content/legal/` con el cuerpo en secciones tipadas renderizadas en servidor, hasta que exista MDX. Aviso legal y privacidad en `published` (Fase 7); firma del decisor; asesoría externa residual **post-v1.0** (no bloquea `PROMOTE`).
 - **Enlaces:** comprobación en revisión editorial en P0; verificación automatizada de enlaces se valorará como gate al activar P1.
 
 ### 10.1 Actualización ante nuevas integraciones (SPECS §6.9)
@@ -289,7 +289,7 @@ Al añadir analítica, newsletter, pagos, CMS u otro encargado / destinatario:
 3. Si aparecen cookies no esenciales, activar política/banner según ADR-0010 (P1; fuera del MVP).
 4. Revisar footer, formulario de contacto y textos de consentimiento.
 5. Registrar o actualizar el ADR del proveedor en DECISIONS.md.
-6. NO promover a producción (`PROMOTE`, ADR-0025) sin revisión del decisor (y asesoría externa si el riesgo lo exige).
+6. NO promover a producción (`PROMOTE`, ADR-0025) sin revisión del decisor. La asesoría legal externa es residual post-v1.0 (ADR-0027) y no bloquea `PROMOTE`.
 
 ---
 
@@ -328,6 +328,6 @@ Al añadir analítica, newsletter, pagos, CMS u otro encargado / destinatario:
 | 4 proyectos (DEC-SPECS-03) | `projects/*.ts` | Tipado `published`; firmado por el decisor el 15-08-2026 (REQ-GLOBAL-008); sin capturas aún (DES-07) |
 | Stack y prácticas | `technologies/index.ts` | Tipado `published`; firmado por el decisor el 15-08-2026 (REQ-GLOBAL-008) |
 | Bio (/sobre-mi) | `profile.ts` | Tipado `published`; firmado por el decisor el 15-08-2026 (REQ-GLOBAL-008) |
-| Aviso legal y privacidad | `legal/*` | `published` (Fase 7); datos reales del prestador; asesoría externa residual pre-PROMOTE (ADR-0015) |
+| Aviso legal y privacidad | `legal/*` | `published` (Fase 7); datos reales del prestador; firma del decisor; asesoría externa residual **post-v1.0** (ADR-0027) |
 | Capturas de proyectos | `public/images/` | Por producir (DES-07: capturas reales); refs retiradas del contenido |
 | OG images | `opengraph-image.tsx` | Implementado: `src/app/opengraph-image.tsx` (ADR-0018; #37) |
