@@ -14,9 +14,9 @@ jobs:
     name: Typecheck
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: pnpm/action-setup@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+      - uses: pnpm/action-setup@b906affcce14559ad1aafd4ab0e942779e9f58b1 # v4
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
         with:
           node-version-file: .nvmrc
           cache: pnpm
@@ -27,9 +27,9 @@ jobs:
     name: Lint
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: pnpm/action-setup@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+      - uses: pnpm/action-setup@b906affcce14559ad1aafd4ab0e942779e9f58b1 # v4
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
         with:
           node-version-file: .nvmrc
           cache: pnpm
@@ -41,9 +41,9 @@ jobs:
     name: Test (Vitest + cobertura)
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: pnpm/action-setup@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+      - uses: pnpm/action-setup@b906affcce14559ad1aafd4ab0e942779e9f58b1 # v4
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
         with:
           node-version-file: .nvmrc
           cache: pnpm
@@ -54,9 +54,9 @@ jobs:
     name: Build
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: pnpm/action-setup@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+      - uses: pnpm/action-setup@b906affcce14559ad1aafd4ab0e942779e9f58b1 # v4
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
         with:
           node-version-file: .nvmrc
           cache: pnpm
@@ -67,9 +67,9 @@ jobs:
     name: E2E + axe-core
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: pnpm/action-setup@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+      - uses: pnpm/action-setup@b906affcce14559ad1aafd4ab0e942779e9f58b1 # v4
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
         with:
           node-version-file: .nvmrc
           cache: pnpm
@@ -84,16 +84,19 @@ jobs:
       contents: read
       pull-requests: read
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
         with:
           fetch-depth: 0
       - name: Escanear secretos
         run: |
+          set -euo pipefail
+          EXPECTED_SHA256="551f6fc83ea457d62a0d98237cbad105af8d557003051f41f3e7ca7b3f2470eb"
           curl -sSfL https://github.com/gitleaks/gitleaks/releases/download/v8.30.1/gitleaks_8.30.1_linux_x64.tar.gz -o gitleaks.tar.gz
+          echo "${EXPECTED_SHA256}  gitleaks.tar.gz" | sha256sum -c -
           tar -xzf gitleaks.tar.gz gitleaks
           ./gitleaks detect --source . --exit-code 1 --redact
-      - uses: pnpm/action-setup@v4
-      - uses: actions/setup-node@v4
+      - uses: pnpm/action-setup@b906affcce14559ad1aafd4ab0e942779e9f58b1 # v4
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
         with:
           node-version-file: .nvmrc
           cache: pnpm
@@ -105,9 +108,9 @@ jobs:
     runs-on: ubuntu-latest
     needs: [build]
     steps:
-      - uses: actions/checkout@v4
-      - uses: pnpm/action-setup@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+      - uses: pnpm/action-setup@b906affcce14559ad1aafd4ab0e942779e9f58b1 # v4
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
         with:
           node-version-file: .nvmrc
           cache: pnpm
@@ -116,6 +119,8 @@ jobs:
       - name: Arrancar y calentar servidor local
         run: |
           set -euo pipefail
+          # Rutas P0 alineadas con lighthouserc.json (evitar LCP frío en multipágina).
+          ROUTES="/ /servicios /proyectos /stack /sobre-mi /contacto /aviso-legal /privacidad"
           pnpm start > /tmp/next-start.log 2>&1 &
           echo $! > /tmp/next-start.pid
           for i in $(seq 1 60); do
@@ -130,8 +135,17 @@ jobs:
             cat /tmp/next-start.log >&2
             exit 1
           }
-          for i in 1 2 3 4 5; do
-            curl -sf -o /dev/null http://127.0.0.1:3000/
+          for path in $ROUTES; do
+            curl -sf -o /dev/null "http://127.0.0.1:3000${path}" || {
+              echo "Warmup falló en ${path}" >&2
+              cat /tmp/next-start.log >&2
+              exit 1
+            }
+          done
+          for i in 1 2 3; do
+            for path in $ROUTES; do
+              curl -sf -o /dev/null "http://127.0.0.1:3000${path}"
+            done
             sleep 1
           done
       - name: Lighthouse contra servidor local (ADR-0025)

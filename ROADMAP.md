@@ -427,17 +427,16 @@ Camino crítico ~70 h con solape de Fase 4. Sin holgura humana de revisión. Rec
 - [x]  **P7z-2** `docs/testing-strategy.md` — capas unit / integración / E2E; mock SMTP en CI.
 - [x]  **P7z-3** Smoke SMTP en pipeline (workflow_dispatch + runbook; gate go-live, no cada PR).
 - [x]  **P7z-4** Versionado/tag automático desde CI + ADR-0026 (versionado ≠ `PROMOTE`; ADR-0025 intacto).
-- [x]  **P7z-5** Dominio `alexendros.dev` — **DESVIACIÓN (16-08-2026):** `get_project` del proyecto Vercel `nuevowebsite-alexendrosdev` (`prj_cZGp4fGW2WG9mAlkVWjNQIXwKjYt`) solo lista `nuevowebsite-alexendrosdev-alexendros-team.vercel.app` y `nuevowebsite-alexendrosdev-git-main-alexendros-team.vercel.app`. **No** aparece `alexendros.dev`. DEC-GO-11 lo da por conectado; verificación técnica falla. **v1.0 PUEDE publicarse en `*.vercel.app`** hasta que el decisor añada el dominio (y `www` si aplica) en el panel Vercel de este proyecto. `NEXT_PUBLIC_SITE_URL=https://alexendros.dev` en sync-env sigue siendo URL canónica de contenido/SEO; no implica DNS ligado.
+- [x]  **P7z-5** Dominio `alexendros.dev` — trazabilidad en **ADR-0029** (16-08-2026): el dominio está en el proyecto legacy `website-alexendrosdev`; este repo declara canónico apex + redirect `www`→apex en `vercel.json`. **Pendiente decisor:** migrar dominio a `nuevowebsite-alexendrosdev` antes del `PROMOTE` final.
 - [x]  **P7z-6** Desviación ADR-0015 → ADR-0027: asesoría externa post-v1.0; no bloquea `PROMOTE` (DEC-GO-03).
-- [ ]  **P7z-7** `CONTRIBUTING.md` + plantillas — **BLOQUEADA** (batería 9.3 abierta).
-- [ ]  **P7z-8** `SECURITY.md` — **BLOQUEADA** (batería 10.3 abierta).
+- [x]  **P7z-7** `CONTRIBUTING.md` — autorizada con plan de cierre v1.0 (batería 9.3).
+- [x]  **P7z-8** `SECURITY.md` + pin SHA de Actions + checksum gitleaks — autorizada con plan de cierre v1.0 (batería 10.3).
 
-**Entregable:** docs de calidad/tests, smoke go-live, tag automático sin auto-PROMOTE, dominio verificado o desviado, ADR-0015 alineado.
+**Entregable:** docs de calidad/tests, smoke go-live, tag automático sin auto-PROMOTE, dominio documentado (ADR-0029), ADR-0015 alineado, CONTRIBUTING/SECURITY.
 
 **Criterio de salida:**
 
-- Unidades P7z-1…P7z-6 cerradas en repo (PR fusionados).
-- P7z-7/8 solo tras respuesta del decisor a baterías 9.3 y 10.3.
+- Unidades P7z-1…P7z-8 cerradas en repo (salvo migración DNS/panel = decisor ADR-0029).
 - Ningún umbral de AGENTS §8 relajado; ningún auto-`PROMOTE`.
 
 ---
@@ -458,15 +457,15 @@ Camino crítico ~70 h con solape de Fase 4. Sin holgura humana de revisión. Rec
 
 **Tareas:**
 
-- [ ]  **P8-1** Crear checklist de publicación y rollback (`docs/release-checklist.md`; ARCHITECTURE §14).
-- [ ]  **P8-2** Auditoría manual de accesibilidad (AA global; AAA en cuerpo de texto largo; complementa axe-core, OBJ-006).
+- [x]  **P8-1** Crear checklist de publicación y rollback (`docs/release-checklist.md`; ARCHITECTURE §14).
+- [ ]  **P8-2** Auditoría manual de accesibilidad (AA global; AAA en cuerpo de texto largo; complementa axe-core, OBJ-006) — matriz en `docs/p8-2-a11y-audit.md` (firma decisor).
 - [ ]  **P8-2** Auditoría de navegación por teclado (NFR-A11Y-001/002).
 - [ ]  **P8-2** Auditoría de contraste (NFR-A11Y-003).
-- [ ]  **P8-5** Pruebas E2E de rutas y formularios críticos (OBJ-002, OBJ-003, OBJ-007).
-- [ ]  **P8-3** Revisión de rendimiento contra OBJ-005: Lighthouse ≥90 en las cuatro categorías en móvil, LCP <2,5 s, CLS <0,1, INP <200 ms (Lighthouse CI **local** tras `pnpm build`; ADR-0025).
-- [ ]  **P8-3** Revisión de imágenes (`next/image`, AVIF/WebP, self-hosted; ARCHITECTURE §6), fuentes y scripts de terceros.
-- [ ]  **P8-4** Revisión de SEO: títulos, descripciones, canonical, sitemap, robots, OG y enlaces.
-- [ ]  **P8-4** Revisión de seguridad: headers, secretos, endpoints y dependencias (NFR-SEC-001–006; `SMTP_TOKEN` exclusivo de servidor).
+- [x]  **P8-5** Pruebas E2E de rutas y formularios críticos (OBJ-002, OBJ-003, OBJ-007) — `portfolio.spec.ts`, `launch.spec.ts`, specs existentes.
+- [x]  **P8-3** Lighthouse CI multipágina (8 rutas P0) + umbrales LCP/CLS en `lighthouserc.json` (verificar en CI del SHA candidato).
+- [x]  **P8-3** Imágenes: sin `images[]` / placeholders (ADR-0028 / DES-07 diferido).
+- [x]  **P8-4** Revisión de SEO: canonical/sitemap/robots/OG cubiertos por E2E + unit; Content-Type sitemap.
+- [x]  **P8-4** Headers de seguridad en `vercel.json` (HSTS, XCTO, Referrer-Policy, Permissions-Policy, CSP, X-Frame-Options).
 - [ ]  **P8-4** Revisión de errores y observabilidad con logs y dashboards de Vercel (P0; ADR-0017).
 - [ ]  **P8-5** Revisión de responsive en dispositivos representativos.
 - [ ]  **P8-5** Revisión de contenido, enlaces y ortografía.

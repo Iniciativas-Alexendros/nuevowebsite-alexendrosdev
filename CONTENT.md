@@ -193,6 +193,19 @@ Batería 5.3 respondida íntegramente, verificaciones del plan cumplidas y ADR-0
 
 **Fuente:** `src/content/contact.ts` — array TS tipado validado con `contactChannelsSchema`; consumida por `/contacto` y el footer (SPECS §6.8, ADR-0007). Asuntos del formulario: `src/content/contact-subjects.ts` (lista cerrada, REQ-FORM-CONTACT-001).
 
+**Taxonomía de asuntos (comercial, no 1:1 con servicios):** los seis asuntos son categorías de consulta más amplias que el catálogo de cuatro servicios (DEC-SPECS-02). Mapeo orientativo:
+
+| Asunto del formulario | Servicios / alcance relacionado |
+| --- | --- |
+| Proyecto de software · Programación de aplicaciones | Desarrollo web a medida |
+| Portal · Blog · Portafolio | Desarrollo web, landing pages |
+| Formación en Nuevas Tecnologías · Herramientas IA para la empresa | Automatización IA (formación/consultoría adyacente) |
+| Auditoría de seguridad y posicionamiento | Auditoría web |
+| Sistemas profesionales · Flujos de trabajos automatizables | Automatización y agentes IA |
+| Asesoramiento tecnológico · Consultor especializado | Transversal a los cuatro servicios |
+
+No se fuerza equivalencia slug↔asunto: el formulario captura intención comercial; el catálogo `/servicios` describe ofertas publicadas.
+
 **Campos:**
 
 - `type`

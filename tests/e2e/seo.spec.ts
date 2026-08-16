@@ -14,8 +14,11 @@ test.describe("SEO técnico", () => {
   test("sitemap.xml lista las ocho rutas estáticas", async ({ request }) => {
     const response = await request.get("/sitemap.xml");
     expect(response.status()).toBe(200);
+    expect(response.headers()["content-type"] ?? "").toMatch(/xml/i);
 
     const text = await response.text();
+    expect(text).toMatch(/<urlset[\s>]/);
+    expect(text).not.toContain("/catalog");
     for (const path of [
       "/",
       "/servicios",
@@ -27,6 +30,32 @@ test.describe("SEO técnico", () => {
       "/privacidad",
     ]) {
       expect(text).toContain(`https://alexendros.dev${path}`);
+    }
+  });
+
+  test("rutas P0 exponen title, description y canonical", async ({ page }) => {
+    const routes = [
+      { path: "/", titlePart: "Alexendros" },
+      { path: "/servicios", titlePart: "Servicios" },
+      { path: "/proyectos", titlePart: "Proyectos" },
+      { path: "/stack", titlePart: "Stack" },
+      { path: "/sobre-mi", titlePart: "Sobre mí" },
+      { path: "/contacto", titlePart: "Contacto" },
+      { path: "/aviso-legal", titlePart: "Aviso legal" },
+      { path: "/privacidad", titlePart: "Privacidad" },
+    ] as const;
+
+    for (const route of routes) {
+      await page.goto(route.path);
+      await expect(page).toHaveTitle(new RegExp(route.titlePart, "i"));
+      const description = page.locator('meta[name="description"]');
+      await expect(description).toHaveAttribute("content", /.+/);
+      const canonical = page.locator('link[rel="canonical"]');
+      const expected =
+        route.path === "/" ? "https://alexendros.dev/" : `https://alexendros.dev${route.path}`;
+      // home canonical may omit trailing slash depending on absoluteUrl
+      const href = await canonical.getAttribute("href");
+      expect(href?.replace(/\/$/, "")).toBe(expected.replace(/\/$/, ""));
     }
   });
 
