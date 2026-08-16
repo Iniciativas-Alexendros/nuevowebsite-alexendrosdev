@@ -407,6 +407,41 @@ Camino crítico ~70 h con solape de Fase 4. Sin holgura humana de revisión. Rec
 
 ---
 
+# 9.z. Fase 7.z — Residuales y pipelines pre-hardening
+
+**Depende de:** Fases 5, 6 y 7 (código en `main`; firma MITL sigue en esas fichas).
+
+**Objetivo:** cerrar residuales documentales/operativos y pipelines que no son hardening de producto, antes de (o en paralelo a) P8-1…P8-6.
+
+**Traza:** DEC-GO-01…12 (16-08-2026) · ADR-0015 · ADR-0025 · AGENTS §8 · ARCHITECTURE §3 · ficha Notion 7.z.
+
+**Tamaño relativo:** M (~6 h).
+
+**Calendario:** dom 16 – vie 21 ago 2026.
+
+**Estado (16-08-2026):** en curso. **No** firma el cierre de Fases 5–7 (sigue MITL + decisor).
+
+**Tareas:**
+
+- [x]  **P7z-1** `docs/quality-gates.md` — resume gates de merge; fuente AGENTS §8 (no relaja).
+- [ ]  **P7z-2** `docs/testing-strategy.md` — capas unit / integración / E2E; mock SMTP en CI.
+- [ ]  **P7z-3** Smoke SMTP en pipeline (workflow_dispatch + runbook; gate go-live, no cada PR).
+- [ ]  **P7z-4** Versionado/tag automático desde CI + ADR (versionado ≠ `PROMOTE`; ADR-0025 intacto).
+- [ ]  **P7z-5** Verificar dominio `alexendros.dev` en el proyecto Vercel o desviación escrita.
+- [ ]  **P7z-6** Desviación ADR-0015: asesoría externa post-v1.0; no bloquea `PROMOTE` (DEC-GO-03).
+- [ ]  **P7z-7** `CONTRIBUTING.md` + plantillas — **BLOQUEADA** (batería 9.3 abierta).
+- [ ]  **P7z-8** `SECURITY.md` — **BLOQUEADA** (batería 10.3 abierta).
+
+**Entregable:** docs de calidad/tests, smoke go-live, tag automático sin auto-PROMOTE, dominio verificado o desviado, ADR-0015 alineado.
+
+**Criterio de salida:**
+
+- Unidades P7z-1…P7z-6 cerradas en repo (PR fusionados).
+- P7z-7/8 solo tras respuesta del decisor a baterías 9.3 y 10.3.
+- Ningún umbral de AGENTS §8 relajado; ningún auto-`PROMOTE`.
+
+---
+
 # 10. Fase 8 — Hardening de calidad y lanzamiento
 
 **Depende de: Fase 5**, **Fase 6** y **Fase 7**
