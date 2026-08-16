@@ -176,7 +176,7 @@ Unidades en Notion / ROADMAP §10: P8-1 `docs/release-checklist.md` · P8-2 a11y
 - [ ]  [SECURITY.md](./SECURITY.md)
 - [x]  [docs/quality-gates.md](./docs/quality-gates.md) — **P7z-1**
 - [ ]  [docs/release-checklist.md](./docs/release-checklist.md) — **P8-1**
-- [ ]  [docs/testing-strategy.md](./docs/testing-strategy.md) — **P7z-2**
+- [x]  [docs/testing-strategy.md](./docs/testing-strategy.md) — **P7z-2**
 
 ---
 

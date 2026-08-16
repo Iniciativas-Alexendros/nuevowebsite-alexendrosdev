@@ -103,6 +103,6 @@ No se introducen gates “por si acasa” sin ancla canónica.
 ## 10. Relacionados
 
 - [AGENTS.md](../AGENTS.md) §8 — umbrales ejecutables
-- [docs/testing-strategy.md](./testing-strategy.md) — capas de prueba (cuando exista)
+- [docs/testing-strategy.md](./testing-strategy.md) — capas de prueba
 - [ARCHITECTURE.md](../ARCHITECTURE.md) — estructura `tests/`
 - [ADR-0025](../DECISIONS.md) — despliegue por fase; Lighthouse local
