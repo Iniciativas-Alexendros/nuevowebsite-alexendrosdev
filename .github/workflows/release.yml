@@ -19,8 +19,11 @@ jobs:
     name: Crear tag y Release
     runs-on: ubuntu-latest
     steps:
+      # Trunk-based (ADR-0026): siempre tip de main, nunca el ref del «Use workflow from».
+      # Misma pin que deploy-phase.yml. github.sha del dispatch puede ser otra rama.
       - uses: actions/checkout@v4
         with:
+          ref: main
           fetch-depth: 0
 
       - name: Validar semver y que el tag no exista
@@ -37,15 +40,18 @@ jobs:
             echo "::error::El tag ${tag} ya existe"
             exit 1
           fi
+          # SHA real del tip de main tras checkout (no github.sha del dispatch).
+          sha="$(git rev-parse HEAD)"
           echo "TAG=${tag}" >> "$GITHUB_ENV"
-          echo "Creará ${tag} en ${GITHUB_SHA} (sin deploy)."
+          echo "RELEASE_SHA=${sha}" >> "$GITHUB_ENV"
+          echo "Creará ${tag} en ${sha} (refs/heads/main; sin deploy)."
 
       - name: Crear tag anotado
         run: |
           set -euo pipefail
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git tag -a "$TAG" -m "Release ${TAG}
+          git tag -a "$TAG" "$RELEASE_SHA" -m "Release ${TAG}
 
           ADR-0026: versionado ≠ promoción. Este tag no despliega ni hace PROMOTE."
           git push origin "$TAG"
@@ -57,17 +63,17 @@ jobs:
           set -euo pipefail
           gh release create "$TAG" \
             --title "$TAG" \
+            --target "$RELEASE_SHA" \
             --notes "$(cat <<EOF
           ## ${TAG}
 
           Tag creado por el workflow **Release (tag)** (ADR-0026).
 
+          - Tip de \`main\` en el momento del tag (\`${RELEASE_SHA}\`).
           - **No** despliega a Vercel.
           - **No** ejecuta \`PROMOTE\` (ADR-0025).
           - Producción: workflow **Deploy fase (Vercel)** con \`confirmation=PROMOTE\` tras firma MITL.
           - Rollback: redeploy del tag anterior (checklist P8-1).
-
-          Commit: ${GITHUB_SHA}
           EOF
           )"
 
@@ -76,7 +82,7 @@ jobs:
           {
             echo "## Release ${TAG}"
             echo ""
-            echo "- Tag y GitHub Release creados."
+            echo "- Tag y GitHub Release en \`${RELEASE_SHA}\` (\`main\`)."
             echo "- **No** se ha invocado deploy-phase ni PROMOTE."
             echo "- Siguiente paso humano (si aplica): Deploy fase + confirmación explícita."
           } >> "$GITHUB_STEP_SUMMARY"
