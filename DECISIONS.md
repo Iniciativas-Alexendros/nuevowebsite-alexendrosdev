@@ -103,7 +103,7 @@ Ruta: ./DECISIONS.md
 - **ADR-0022** — Etiquetas temáticas en pull requests. *(aceptada, 14-08-2026)*
 - **ADR-0023** — Autorebase en cadena de pull requests apiladas, sin auto-merge. *(aceptada, 14-08-2026)*
 - **ADR-0024** — Excepción puntual al gate de CI por rate limit de Vercel (14-08-2026). *(aceptada, 14-08-2026)*
-- **ADR-0025** — Despliegue Vercel por cierre de fase (preview MITL → firma → producción). *(aceptada, 15-08-2026; enmienda mismo día: preview previa a firma)* — sustituye las previews automáticas por PR de ADR-0017.
+- **ADR-0025** — Despliegue Vercel por cierre de fase (preview MITL → firma → producción). *(aceptada, 15-08-2026; enmiendas: preview previa a firma; 16-08-2026 retira Environment `phase-preview`)* — sustituye las previews automáticas por PR de ADR-0017.
 - **ADR-0026** — Versionado por tag desde CI; versionado ≠ promoción a Production. *(aceptada, 16-08-2026)*
 - **ADR-0027** — Asesoría legal externa post-v1.0; no bloquea PROMOTE. *(aceptada, 16-08-2026)* — sustituye la cláusula de gate pre-producción de ADR-0015.
 
@@ -810,6 +810,7 @@ Ruta: ./DECISIONS.md
 - Estado: aceptada
 - Fecha: 2026-08-15
 - Enmienda: 2026-08-15 — preview MITL es **requisito previo** a la firma de cierre (DEC-ROADMAP-03); no posterior.
+- Enmienda: 2026-08-16 — se retira el Environment GitHub `phase-preview`; el preview MITL no usa Environment. Solo `Production` queda como Environment protegido (PROMOTE + required reviewers).
 - Decisores: Alexendros
 - Relacionado con: ADR-0017 (sustituye previews automáticas por PR), ADR-0020, ADR-0021, ADR-0024, OBJ-005, OBJ-008, DEC-ROADMAP-03, ARCHITECTURE §13–§14, [AGENTS.md](./AGENTS.md) §7–§9
 - Contexto:
@@ -818,7 +819,7 @@ Ruta: ./DECISIONS.md
 - Decisión:
 	- **No hay despliegue Vercel por PR ni por push automático a `main`.** Los builds disparados por la integración Git se ignoran (`vercel.json` → `ignoreCommand: exit 0`). El CLI/`workflow_dispatch` sigue pudiendo desplegar.
 	- **Momento de preview:** tras integrar en `main` todos los PR de la fase. **Antes** de firmar el criterio de salida (DEC-ROADMAP-03). No es posible cerrar la fase sin revisar y validar en preview.
-	- **Paso 1 — Preview MITL:** workflow `Deploy fase (Vercel)` con `target=preview` desde `main` (entorno GitHub `phase-preview`). El decisor revisa y valida la URL de preview.
+	- **Paso 1 — Preview MITL:** workflow `Deploy fase (Vercel)` con `target=preview` desde `main` (**sin** Environment GitHub). El decisor revisa y valida la URL de preview.
 	- **Paso 2 — Firma:** el decisor firma el criterio de salida de la fase (DEC-ROADMAP-03) solo si el preview es aceptable.
 	- **Paso 3 — Producción:** el mismo workflow con `target=production` y `confirmation=PROMOTE`, más aprobación del entorno GitHub `Production` (required reviewers). Sin `PROMOTE` el job aborta. Solo tras firma.
 	- **Lighthouse en PR (OBJ-005):** se mide contra servidor local post-`pnpm build` (`lighthouserc.json` + job `Lighthouse CI`). No consume cuota de Vercel. Los umbrales DEC-AGENTS-04 no se rebajan.
@@ -828,17 +829,19 @@ Ruta: ./DECISIONS.md
 	- Desplegar a producción automáticamente al fusionar a `main`: rechazado; salta la confirmación visual del decisor.
 	- Firmar el cierre antes del preview: rechazado; impide validar cambios y desarrollos integrados.
 	- Solo dashboard Vercel manual: rechazado; menos auditable y reproducible que Actions + CLI.
+	- Environment GitHub `phase-preview` para el job de preview: retirado; el gate MITL es la URL + firma humana, no un Environment extra.
 - Consecuencias positivas:
 	- Cuota Vercel bajo control; QA visual por fase **antes** de firmar; producción solo con firma + confirmación explícita; Lighthouse estable en CI sin depender del proveedor.
+	- Un solo Environment protegido (`Production`); sin `phase-preview` superfluo.
 - Consecuencias negativas:
 	- No hay URL de preview por PR individual (la revisión de PR es por diff + CI local).
-	- Requiere disparar el workflow de preview tras integrar la fase en `main`, y el de producción tras firmar; entornos GitHub `phase-preview` / `Production` configurados.
+	- Requiere disparar el workflow de preview tras integrar la fase en `main`, y el de producción tras firmar; entorno GitHub `Production` configurado.
 - Plan de implementación:
 	- `vercel.json` con `ignoreCommand: exit 0`.
 	- Job Lighthouse local en `.github/workflows/ci.yml`.
-	- Workflow `.github/workflows/deploy-phase.yml` (`workflow_dispatch`).
+	- Workflow `.github/workflows/deploy-phase.yml` (`workflow_dispatch`); preview sin `environment:`; production con `environment: Production`.
 	- Actualizar ARCHITECTURE §13–§14 y AGENTS §§7–9; anotar ADR-0017.
-	- Crear en GitHub Environments: `phase-preview` (opcional) y `production` con required reviewers = decisor.
+	- Crear en GitHub Environments solo `Production` (required reviewers = decisor). Eliminar `phase-preview` si existía.
 - Plan de reversión:
 	- ADR sustituto que restablezca previews por PR; quitar `ignoreCommand` y restaurar deploy en el job Lighthouse.
 - Seguridad y privacidad:
