@@ -23,7 +23,7 @@ export default function StackPage() {
         title="Stack"
         description="Contexto de uso por categoría. Nombres en texto; sin autoevaluación numérica."
       />
-      <Section>
+      <Section deferPaint>
         <Container>
           <StackGroup technologies={technologies} />
         </Container>
