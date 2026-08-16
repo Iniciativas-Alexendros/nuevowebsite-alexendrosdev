@@ -47,7 +47,7 @@
 | Item | Descripción | Estado | Comentario |
 |------|-------------|--------|------------|
 | **P8-3.1** | ≥90 en 4 categorías (8 rutas P0) | ☐ | `lighthouserc.json` |
-| **P8-3.2** | LCP &lt; 2,5 s; CLS &lt; 0,1 | ☐ | assertions LHCI |
+| **P8-3.2** | LCP ≤2,7 s lab (OBJ-005 &lt;2,5 s); CLS &lt; 0,1 | ☐ | assertions LHCI |
 | **P8-3.3** | DES-07 diferido | ✅ | ADR-0028 |
 
 ---

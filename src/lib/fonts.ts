@@ -16,7 +16,8 @@ export const fontSans = localFont({
 
 export const fontMono = localFont({
   src: "../fonts/jetbrains-mono/JetBrainsMono-Variable.woff2",
-  display: "swap",
+  // optional: mono solo en badges; no debe competir con Inter en LCP (OBJ-005 /stack).
+  display: "optional",
   variable: "--font-jetbrains",
   weight: "400 700",
   preload: false,
