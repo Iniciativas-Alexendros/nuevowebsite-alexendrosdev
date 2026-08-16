@@ -258,7 +258,7 @@ Batería 7.3 del [Plan de verificación y desarrollo de documentos pendientes �
 - Envío de contacto: Proton SMTP vía `nodemailer` en `src/lib/server/` (ADR-0011); org secrets `PROTON_SMTP_HOST`/`PORT`, `PROTON_MAIL_FROM` (`operaciones@` = To+From+SMTP_USER), `PROTON_SMTP_TOKEN` (no Bridge); mailto público `hola@` (catch-all); sync a Vercel con `sync-env-vercel.yml` (CLI Vercel fijada) → vars runtime `SMTP_*`.
 - Residual Fase 5: smoke SMTP real pendiente de sync-env + redeploy; sin config el formulario degrada a 503.
 - Despliegue Vercel (ADR-0025): sin preview por PR; `ignoreCommand` en `vercel.json`; Lighthouse CI local; tras integrar la fase en `main` → preview MITL → firma → production con `PROMOTE`.
-- Legales: aviso legal y privacidad `published` (Fase 7 / #48); asesoría externa residual pre-PROMOTE (ADR-0015). Fase activa: 8 (hardening → v1.0).
+- Legales: aviso legal y privacidad `published` (Fase 7 / #48); asesoría externa residual **post-v1.0** (ADR-0027; no bloquea PROMOTE). Fase activa: 8 (hardening → v1.0) + 7.z.
 
 ## Cursor Cloud specific instructions
 
