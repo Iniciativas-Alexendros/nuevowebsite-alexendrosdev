@@ -39,21 +39,21 @@ Este archivo es el punto de entrada de lectura del proyecto. Te dice qué leer d
 
 # Estado en una mirada
 
-**Pulso:** 15 de agosto de 2026.
+**Pulso:** 16 de agosto de 2026.
 
-**Fase activa:** 7 — Legal en implementación (aviso y privacidad `published`; Fases 0–6 en curso o firmadas según checklist).
+**Fase activa:** 8 — Hardening de calidad y lanzamiento (P8-1…P8-6). Fases 5–7 código en `main`, estado Notion: implementadas (pendiente MITL + firma).
 
-**Siguiente acción:** revisar y fusionar PR de Fase 7; residual asesoría externa antes de `PROMOTE` (Fase 8 / ADR-0025). Capturas DES-07 siguen pendientes.
+**Siguiente acción:** ejecutar unidades P8-1…P8-5; gate humano P8-6 (MITL Fases 5–7, smoke SMTP, asesoría pre-PROMOTE, `PROMOTE` + v1.0). Capturas DES-07 siguen pendientes.
 
 **Objetivo de producto:** v1.0 el 24 de agosto de 2026.
 
 | Capa | Estado |
 | --- | --- |
-| Documentación canónica | Aprobada el 13-08-2026 |
-| Código del sitio nuevo | Fases 1–6 en `main` o en PR; Fase 7: legales tipados `published` |
+| Documentación canónica | Aprobada el 13-08-2026; pulso alineado 16-08 |
+| Código del sitio nuevo | Fases 1–7 en `main`; Fase 8 en curso (hardening → v1.0) |
 | Repositorio nuevo | Creado: `Iniciativas-Alexendros/nuevowebsite-alexendrosdev`. Público desde el 14-08-2026 (ADR-0017 revocada) |
 | Sitio anterior | Se archiva en solo lectura. Sin redirecciones (ADR-0013) |
-| Contenido editorial | Hechos firmados (REQ-GLOBAL-008); aviso legal y privacidad publicados en contenido; asesoría externa residual pre-PROMOTE; capturas DES-07 pendientes |
+| Contenido editorial | Hechos firmados (REQ-GLOBAL-008); aviso legal y privacidad `published`; asesoría externa residual pre-PROMOTE; capturas DES-07 pendientes |
 
 ---
 
@@ -98,7 +98,7 @@ Lee solo lo que cierra la tarea. No leas los ocho documentos de cabo a rabo.
 
 1. Este README entero.
 2. Si vas a escribir código: [AGENTS.md](./AGENTS.md) §§1–6 y §9.
-3. La fase activa de [ROADMAP.md](./ROADMAP.md) (hoy: Fase 5 — MVP de captación; Fases 0–4 firmadas, REQ-GLOBAL-008 firmado el 15-08-2026).
+3. La fase activa de [ROADMAP.md](./ROADMAP.md) (hoy: Fase 8 — hardening y lanzamiento v1.0; Fases 5–7 implementadas pendientes de MITL + firma).
 4. Solo el ancla que cite la tarea: un `REQ`, un `NFR` o un `ADR`.
 5. [CONSTITUTION.md](./CONSTITUTION.md) solo si tocas alcance, integraciones, secretos o capacidades nuevas.
 
@@ -156,34 +156,26 @@ El sitio lo implementa un agente de código. El humano dirige, revisa diffs, hac
 
 # Pendiente ahora
 
-Fases 0–4 en `main` (residual #37 fusionado). REQ-GLOBAL-008 firmado por el decisor el 15-08-2026 (hechos de servicios/proyectos/stack/perfil/site). Placeholders legales y capturas DES-07 quedan fuera. **Siguiente:** Fase 5 (landing mínima; hito público 20-08).
+Fases 1–7 en `main`. Fases 5–7: implementadas, pendientes de preview MITL + firma (ADR-0025 / DEC-ROADMAP-03). **Activa:** Fase 8 (hardening → v1.0 lun 24-08). Residuales pre-PROMOTE: smoke SMTP, asesoría legal, capturas DES-07.
 
-## Cierre de Fase 0 — 14 de agosto de 2026, ~4 h
+## Fase 8 — Hardening y lanzamiento (activa)
 
-- [x]  Crear el repositorio en GitHub (público desde el 14-08-2026, ADR-0020).
-- [x]  Configurar propiedad, visibilidad, licencia (MIT) y `main` protegida con CI en verde (7 checks).
-- [x]  Crear `.env.example` con las 10 variables de ARCHITECTURE §9.2 (ADR-0008).
-- [x]  Copiar la ficha de AGENTS §3 a la plantilla de issue/PR.
-- [ ]  Convertir cada fase en épica/issues (pospuesto por el decisor el 14-08-2026). Cada issue DEBE usar la ficha §3, no un título suelto.
+Unidades en Notion / ROADMAP §10: P8-1 `docs/release-checklist.md` · P8-2 a11y · P8-3 rendimiento · P8-4 SEO/seguridad/observabilidad · P8-5 E2E/responsive · P8-6 gate humano (MITL, asesoría, SMTP, `PROMOTE`, tag v1.0).
 
-## Inmediatamente después — Fase 1, 14–15 ago
+## Residuales humanos (no bloquean P8-1…P8-5)
 
-Scaffold de Next.js App Router, TypeScript estricto, pnpm 10, CI verde y preview en Vercel. Sin código de producto heredado.
-
-## Fase 2 (design system) — implementada el 14-08-2026
-
-Tokens primitivos y semánticos OKLCH, tipografía self-hosted, iconos Lucide, primitivos UI y de layout, catálogo `/catalog` y pruebas. Pendiente de firma del decisor: contraste AAA en cuerpo largo y QA visual (claro/oscuro, teclado, responsive). Excluidos justificadamente: Dialog, Sheet, Tooltip, Toast y Navigation.
-
-## Fase 3 (shell, navegación y SEO técnico) — implementada el 14-08-2026
-
-Cabecera y pie de sitio, navegación accesible (escritorio y móvil con Escape), wordmark «Alexendros.dev», página 404 con enlaces sugeridos, error boundary, metadata y SEO técnico (favicon, JSON-LD WebSite, robots.txt, sitemap.xml). Pendiente de firma del decisor. Excluido: contenido real (Fase 5) y textos legales finales (Fase 7).
+- [ ]  Preview MITL Fases 5–7 (`Deploy fase`) y firma de épicas.
+- [ ]  Smoke SMTP real tras sync-env + redeploy.
+- [ ]  Asesoría externa de textos legales (ADR-0015) antes de `PROMOTE`.
+- [ ]  Capturas DES-07 (omitir `images[]` hasta assets reales).
+- [ ]  Convertir cada fase en épica/issues (pospuesto 14-08-2026).
 
 ## Documentos de apoyo aún no creados
 
 - [ ]  [CONTRIBUTING.md](./CONTRIBUTING.md)
 - [ ]  [SECURITY.md](./SECURITY.md)
 - [ ]  [docs/quality-gates.md](./docs/quality-gates.md)
-- [ ]  [docs/release-checklist.md](./docs/release-checklist.md)
+- [ ]  [docs/release-checklist.md](./docs/release-checklist.md) — **P8-1**
 - [ ]  [docs/testing-strategy.md](./docs/testing-strategy.md)
 
 ---
