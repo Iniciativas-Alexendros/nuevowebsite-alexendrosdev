@@ -41,9 +41,9 @@ Este archivo es el punto de entrada de lectura del proyecto. Te dice qué leer d
 
 **Pulso:** 16 de agosto de 2026.
 
-**Fase activa:** 8 — Hardening de calidad y lanzamiento (P8-1…P8-6). Fases 5–7 código en `main`, estado Notion: implementadas (pendiente MITL + firma).
+**Fase activa:** 8 — Hardening de calidad y lanzamiento (P8-1…P8-6). En paralelo: **Fase 7.z** — residuales y pipelines pre-hardening (P7z-1…P7z-6). Fases 5–7 código en `main`, estado Notion: implementadas (pendiente MITL + firma).
 
-**Siguiente acción:** ejecutar unidades P8-1…P8-5; gate humano P8-6 (MITL Fases 5–7, smoke SMTP, asesoría pre-PROMOTE, `PROMOTE` + v1.0). Capturas DES-07 siguen pendientes.
+**Siguiente acción:** completar Fase 7.z (pipelines/docs) y unidades P8-1…P8-5; gate humano P8-6 (MITL Fases 5–7, smoke SMTP, `PROMOTE` + v1.0). Capturas DES-07 siguen pendientes.
 
 **Objetivo de producto:** v1.0 el 24 de agosto de 2026.
 
@@ -174,9 +174,9 @@ Unidades en Notion / ROADMAP §10: P8-1 `docs/release-checklist.md` · P8-2 a11y
 
 - [ ]  [CONTRIBUTING.md](./CONTRIBUTING.md)
 - [ ]  [SECURITY.md](./SECURITY.md)
-- [ ]  [docs/quality-gates.md](./docs/quality-gates.md)
+- [x]  [docs/quality-gates.md](./docs/quality-gates.md) — **P7z-1**
 - [ ]  [docs/release-checklist.md](./docs/release-checklist.md) — **P8-1**
-- [ ]  [docs/testing-strategy.md](./docs/testing-strategy.md)
+- [ ]  [docs/testing-strategy.md](./docs/testing-strategy.md) — **P7z-2**
 
 ---
 
