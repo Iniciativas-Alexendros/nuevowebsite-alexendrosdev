@@ -104,6 +104,7 @@ Ruta: ./DECISIONS.md
 - **ADR-0023** — Autorebase en cadena de pull requests apiladas, sin auto-merge. *(aceptada, 14-08-2026)*
 - **ADR-0024** — Excepción puntual al gate de CI por rate limit de Vercel (14-08-2026). *(aceptada, 14-08-2026)*
 - **ADR-0025** — Despliegue Vercel por cierre de fase (preview MITL → firma → producción). *(aceptada, 15-08-2026; enmienda mismo día: preview previa a firma)* — sustituye las previews automáticas por PR de ADR-0017.
+- **ADR-0026** — Versionado por tag desde CI; versionado ≠ promoción a Production. *(aceptada, 16-08-2026)*
 
 ---
 
@@ -842,5 +843,41 @@ Ruta: ./DECISIONS.md
 	- Secretos Vercel solo en Actions (ADR-0021); producción protegida por entorno y confirmación `PROMOTE`; sin secretos en el repo.
 - Fecha de revisión:
 	- Al evaluar plan Pro de Vercel, o a los 3 meses.
+
+</details>
+
+<details>
+<summary>**ADR-0026** — Versionado por tag desde CI (versionado ≠ promoción)</summary>
+
+- Estado: aceptada
+- Fecha: 2026-08-16
+- Decisores: Alexendros
+- Relacionado con: ADR-0025, DEC-GO-05, DEC-GO-07, Fase 7.z / P7z-4, P8-1, P8-6
+- Contexto:
+	- El decisor exige etiquetar v1.0 (y siguientes) desde pipeline, no a mano (DEC-GO-07).
+	- ADR-0025 ya separa preview MITL, firma y `PROMOTE` a Production; el tag no debe saltarse ese control.
+- Decisión:
+	- Los tags de versión (`vX.Y.Z`) y el GitHub Release se crean solo mediante el workflow `Release (tag)` (`workflow_dispatch`).
+	- **Prohibido** que el workflow de release invoque `deploy-phase` con `target=production`, ejecute `PROMOTE` o dispare cualquier despliegue a Vercel.
+	- Versionado ≠ promoción: el tag es un marcador de código; la publicación a Production sigue ADR-0025.
+	- Rollback operativo: redeploy del tag anterior (detalle en `docs/release-checklist.md`, P8-1).
+	- No se exige bump automático de `package.json` en este ADR (puede quedar `0.1.0` hasta decisión explícita).
+- Alternativas consideradas:
+	- Tag manual desde la máquina del decisor: rechazado (DEC-GO-07).
+	- Tag al fusionar a `main` o al hacer `PROMOTE`: rechazado; acoplaría versionado y despliegue.
+	- Semantic-release con auto-deploy: rechazado; viola ADR-0025.
+- Consecuencias positivas:
+	- Historial de versiones auditable; PROMOTE sigue siendo explícito y humano.
+- Consecuencias negativas:
+	- Dos workflows manuales en el go-live (tag + deploy); aceptable en Hobby / MITL.
+- Plan de implementación:
+	- `.github/workflows/release.yml` (solo `workflow_dispatch`).
+	- Documentar en quality-gates y ROADMAP P7z-4 / P8-6.
+- Plan de reversión:
+	- ADR sustituto; archivar el workflow.
+- Seguridad y privacidad:
+	- Permiso `contents: write` mínimo; sin secretos de Vercel ni SMTP en este workflow.
+- Fecha de revisión:
+	- Tras v1.0 o a los 3 meses.
 
 </details>
