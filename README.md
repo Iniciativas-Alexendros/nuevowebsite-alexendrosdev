@@ -59,7 +59,7 @@ Este archivo es el punto de entrada de lectura del proyecto. Te dice qué leer d
 
 # Qué es este proyecto
 
-Portfolio técnico, presentación de servicios y canal de captación profesional de AlexendrosDev. Dominio previsto: `alexendros.dev`.
+Portfolio técnico, presentación de servicios y canal de captación profesional de AlexendrosDev. Dominio previsto: `alexendros.dev` (**desviación P7z-5, 16-08:** aún no ligado al proyecto Vercel `nuevowebsite-alexendrosdev`; v1.0 puede ir en `*.vercel.app` hasta añadirlo en el panel).
 
 NO DEBE tratarse como plataforma SaaS ni como e-commerce.
 
@@ -165,8 +165,9 @@ Unidades en Notion / ROADMAP §10: P8-1 `docs/release-checklist.md` · P8-2 a11y
 ## Residuales humanos (no bloquean P8-1…P8-5)
 
 - [ ]  Preview MITL Fases 5–7 (`Deploy fase`) y firma de épicas.
-- [ ]  Smoke SMTP real tras sync-env + redeploy.
+- [ ]  Smoke SMTP real tras sync-env + redeploy ([runbook](./docs/runbook-smoke-smtp.md)).
 - [ ]  Asesoría externa de textos legales (ADR-0015) antes de `PROMOTE`.
+- [ ]  Ligar `alexendros.dev` al proyecto Vercel `nuevowebsite-alexendrosdev` (desviación P7z-5: hoy solo `*.vercel.app`).
 - [ ]  Capturas DES-07 (omitir `images[]` hasta assets reales).
 - [ ]  Convertir cada fase en épica/issues (pospuesto 14-08-2026).
 

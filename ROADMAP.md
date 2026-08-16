@@ -427,7 +427,7 @@ Camino crítico ~70 h con solape de Fase 4. Sin holgura humana de revisión. Rec
 - [x]  **P7z-2** `docs/testing-strategy.md` — capas unit / integración / E2E; mock SMTP en CI.
 - [x]  **P7z-3** Smoke SMTP en pipeline (workflow_dispatch + runbook; gate go-live, no cada PR).
 - [x]  **P7z-4** Versionado/tag automático desde CI + ADR-0026 (versionado ≠ `PROMOTE`; ADR-0025 intacto).
-- [ ]  **P7z-5** Verificar dominio `alexendros.dev` en el proyecto Vercel o desviación escrita.
+- [x]  **P7z-5** Dominio `alexendros.dev` — **DESVIACIÓN (16-08-2026):** `get_project` del proyecto Vercel `nuevowebsite-alexendrosdev` (`prj_cZGp4fGW2WG9mAlkVWjNQIXwKjYt`) solo lista `nuevowebsite-alexendrosdev-alexendros-team.vercel.app` y `nuevowebsite-alexendrosdev-git-main-alexendros-team.vercel.app`. **No** aparece `alexendros.dev`. DEC-GO-11 lo da por conectado; verificación técnica falla. **v1.0 PUEDE publicarse en `*.vercel.app`** hasta que el decisor añada el dominio (y `www` si aplica) en el panel Vercel de este proyecto. `NEXT_PUBLIC_SITE_URL=https://alexendros.dev` en sync-env sigue siendo URL canónica de contenido/SEO; no implica DNS ligado.
 - [ ]  **P7z-6** Desviación ADR-0015: asesoría externa post-v1.0; no bloquea `PROMOTE` (DEC-GO-03).
 - [ ]  **P7z-7** `CONTRIBUTING.md` + plantillas — **BLOQUEADA** (batería 9.3 abierta).
 - [ ]  **P7z-8** `SECURITY.md` — **BLOQUEADA** (batería 10.3 abierta).
