@@ -61,6 +61,25 @@ jobs:
           mkdir -p .vercel
           printf '{"projectId":"%s","orgId":"%s"}\n' "$VERCEL_PROJECT_ID" "$VERCEL_ORG_ID" > .vercel/project.json
           npx "$VERCEL_CLI" pull --yes --environment=preview --token "$VERCEL_TOKEN"
+          # ARCHITECTURE §9.2 / CONTENT: URL canónica de build. Si Preview en Vercel
+          # tiene NEXT_PUBLIC_SITE_URL corrupto (p. ej. email SMTP), new URL() rompe el build.
+          ENV_FILE=.vercel/.env.preview.local
+          if [ -f "$ENV_FILE" ]; then
+            grep -Ev '^NEXT_PUBLIC_SITE_(URL|NAME)=' "$ENV_FILE" > "${ENV_FILE}.tmp" || true
+            mv "${ENV_FILE}.tmp" "$ENV_FILE"
+          fi
+          {
+            echo 'NEXT_PUBLIC_SITE_URL=https://alexendros.dev'
+            echo 'NEXT_PUBLIC_SITE_NAME=Alexendros'
+          } >> "$ENV_FILE"
+          raw=$(grep '^NEXT_PUBLIC_SITE_URL=' "$ENV_FILE" | tail -n1 | cut -d= -f2- | tr -d '"' || true)
+          case "$raw" in
+            https://*) echo "NEXT_PUBLIC_SITE_URL ok (https, len=${#raw})" ;;
+            *)
+              echo "NEXT_PUBLIC_SITE_URL inválida tras forzar (len=${#raw})." >&2
+              exit 1
+              ;;
+          esac
           npx "$VERCEL_CLI" build --token "$VERCEL_TOKEN"
           set +e
           npx "$VERCEL_CLI" deploy --prebuilt --token "$VERCEL_TOKEN" | tee /tmp/vercel-out.txt
@@ -113,6 +132,23 @@ jobs:
           mkdir -p .vercel
           printf '{"projectId":"%s","orgId":"%s"}\n' "$VERCEL_PROJECT_ID" "$VERCEL_ORG_ID" > .vercel/project.json
           npx "$VERCEL_CLI" pull --yes --environment=production --token "$VERCEL_TOKEN"
+          ENV_FILE=.vercel/.env.production.local
+          if [ -f "$ENV_FILE" ]; then
+            grep -Ev '^NEXT_PUBLIC_SITE_(URL|NAME)=' "$ENV_FILE" > "${ENV_FILE}.tmp" || true
+            mv "${ENV_FILE}.tmp" "$ENV_FILE"
+          fi
+          {
+            echo 'NEXT_PUBLIC_SITE_URL=https://alexendros.dev'
+            echo 'NEXT_PUBLIC_SITE_NAME=Alexendros'
+          } >> "$ENV_FILE"
+          raw=$(grep '^NEXT_PUBLIC_SITE_URL=' "$ENV_FILE" | tail -n1 | cut -d= -f2- | tr -d '"' || true)
+          case "$raw" in
+            https://*) echo "NEXT_PUBLIC_SITE_URL ok (https, len=${#raw})" ;;
+            *)
+              echo "NEXT_PUBLIC_SITE_URL inválida tras forzar (len=${#raw})." >&2
+              exit 1
+              ;;
+          esac
           npx "$VERCEL_CLI" build --prod --token "$VERCEL_TOKEN"
           set +e
           npx "$VERCEL_CLI" deploy --prebuilt --prod --token "$VERCEL_TOKEN" | tee /tmp/vercel-out.txt
