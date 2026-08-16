@@ -119,6 +119,8 @@ jobs:
       - name: Arrancar y calentar servidor local
         run: |
           set -euo pipefail
+          # Rutas P0 alineadas con lighthouserc.json (evitar LCP frío en multipágina).
+          ROUTES="/ /servicios /proyectos /stack /sobre-mi /contacto /aviso-legal /privacidad"
           pnpm start > /tmp/next-start.log 2>&1 &
           echo $! > /tmp/next-start.pid
           for i in $(seq 1 60); do
@@ -133,8 +135,17 @@ jobs:
             cat /tmp/next-start.log >&2
             exit 1
           }
-          for i in 1 2 3 4 5; do
-            curl -sf -o /dev/null http://127.0.0.1:3000/
+          for path in $ROUTES; do
+            curl -sf -o /dev/null "http://127.0.0.1:3000${path}" || {
+              echo "Warmup falló en ${path}" >&2
+              cat /tmp/next-start.log >&2
+              exit 1
+            }
+          done
+          for i in 1 2 3; do
+            for path in $ROUTES; do
+              curl -sf -o /dev/null "http://127.0.0.1:3000${path}"
+            done
             sleep 1
           done
       - name: Lighthouse contra servidor local (ADR-0025)

@@ -39,8 +39,8 @@ export default function SobreMiPage() {
           </div>
 
           <div className="flex flex-col gap-5">
-            {profile.bio.map((paragraph) => (
-              <p key={paragraph.slice(0, 48)} className="text-lg leading-relaxed text-foreground">
+            {profile.bio.map((paragraph, index) => (
+              <p key={`bio-${index}`} className="text-lg leading-relaxed text-foreground">
                 {paragraph}
               </p>
             ))}

@@ -14,6 +14,11 @@ export type LinkProps = Omit<AnchorHTMLAttributes<HTMLAnchorElement>, "href"> & 
   size?: ButtonSize;
 };
 
+/** Protocolos que DEBEN usar <a> nativo (no NextLink). */
+export function isNativeProtocolHref(href: string): boolean {
+  return /^(mailto|tel|sms):/i.test(href);
+}
+
 export function Link({
   href,
   variant = "inline",
@@ -25,6 +30,7 @@ export function Link({
   ...props
 }: LinkProps) {
   const isExternal = /^https?:\/\//i.test(href);
+  const isNativeProtocol = isNativeProtocolHref(href);
   const classes =
     variant === "inline"
       ? cn(inlineClasses, className)
@@ -42,6 +48,14 @@ export function Link({
       >
         {children}
         {opensInNewTab ? <span className="sr-only">(abre en una pestaña nueva)</span> : null}
+      </a>
+    );
+  }
+
+  if (isNativeProtocol) {
+    return (
+      <a href={href} className={classes} {...props}>
+        {children}
       </a>
     );
   }
