@@ -154,7 +154,7 @@ Hasta existir el repo, estos nombres son el contrato. El scaffold de Fase 1 DEBE
 Umbrales ejecutables (DEC-AGENTS-04; no los rebajes):
 
 - Lighthouse ≥90 en las cuatro categorías en móvil (OBJ-005), medido en CI **local** tras `pnpm build` (ADR-0025; no despliega Vercel por PR).
-- axe-core sin violaciones bloqueantes en CI.
+- axe-core sin violaciones bloqueantes en CI (8 rutas P0).
 - Cobertura mínima 70 % en `src/lib/` y validaciones, medida por Vitest en CI, bloqueante de merge.
 
 ---
@@ -250,7 +250,7 @@ Batería 7.3 del [Plan de verificación y desarrollo de documentos pendientes �
 - En `/stack`: agrupar por categoría sin porcentajes subjetivos.
 - Email de autor/firma en commits y GitHub: `operaciones@alexendros.dev` (no Proton personal, noreply ni `hola@` en commits). Mailto público: `hola@` (catch-all). From/To/auth SMTP y commits: `operaciones@`.
 - Tests/gates con validadores y métricas reales; no falsear umbrales ni “easy green”; cambiar un umbral canónico (p. ej. LCP) requiere ADR del decisor.
-- Preview MITL / Deploy fase: validar tip o SHA aprobado de `main`; no dar por bueno un alias Vercel stale.
+- E2E: Chromium + Pixel 5 en cada PR; WebKit en CI; Firefox semanal (`e2e-firefox.yml`), no bloquea merge (P1-9).
 
 ## Learned Workspace Facts
 

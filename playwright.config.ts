@@ -2,6 +2,19 @@ import { defineConfig, devices } from "@playwright/test";
 
 const baseURL = "http://localhost:3000";
 
+const projects: { name: string; use: (typeof devices)[string] }[] = [
+  { name: "chromium", use: { ...devices["Desktop Chrome"] } },
+  { name: "mobile-chrome", use: { ...devices["Pixel 5"] } },
+];
+
+if (process.env.CI || process.env.E2E_WEBKIT) {
+  projects.push({ name: "webkit", use: { ...devices["Desktop Safari"] } });
+}
+
+if (process.env.E2E_FIREFOX) {
+  projects.push({ name: "firefox", use: { ...devices["Desktop Firefox"] } });
+}
+
 export default defineConfig({
   testDir: "./tests/e2e",
   fullyParallel: true,
@@ -12,12 +25,7 @@ export default defineConfig({
     baseURL,
     trace: "on-first-retry",
   },
-  projects: [
-    {
-      name: "chromium",
-      use: { ...devices["Desktop Chrome"] },
-    },
-  ],
+  projects,
   webServer: {
     command: "pnpm build && pnpm start",
     url: baseURL,

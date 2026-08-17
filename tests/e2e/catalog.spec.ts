@@ -1,6 +1,7 @@
 import { expect, test } from "@playwright/test";
 
 import { assertNoBlockingAxe } from "./helpers/axe";
+import { headerTokens } from "./helpers/expect";
 
 test.describe("catálogo de componentes (/catalog)", () => {
   test("sin violaciones de accesibilidad críticas o serias", async ({ page }) => {
@@ -15,8 +16,9 @@ test.describe("catálogo de componentes (/catalog)", () => {
 
     const external = page.locator('a[href^="https://"]').first();
     await expect(external).toHaveAttribute("target", "_blank");
-    await expect(external).toHaveAttribute("rel", /noopener/);
-    await expect(external).toHaveAttribute("rel", /noreferrer/);
+    const rel = headerTokens(await external.getAttribute("rel"), " ");
+    expect(rel).toContain("noopener");
+    expect(rel).toContain("noreferrer");
     await expect(external.locator("span")).toContainText("abre en una pestaña nueva");
   });
 
@@ -49,4 +51,13 @@ test.describe("catálogo de componentes (/catalog)", () => {
       expect(overflow).toBe(false);
     });
   }
+
+  test("Select y Checkbox del design system están en el banco visual", async ({ page }) => {
+    await page.goto("/catalog");
+
+    await expect(page.getByRole("combobox", { name: "Asunto" })).toBeVisible();
+    await expect(
+      page.getByRole("checkbox", { name: "Acepto el tratamiento de datos de ejemplo (catálogo)." })
+    ).toBeVisible();
+  });
 });

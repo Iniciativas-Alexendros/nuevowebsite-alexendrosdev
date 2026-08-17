@@ -1,13 +1,16 @@
 import { expect, test } from "@playwright/test";
 
+import { expectPathname } from "./helpers/expect";
+
 test.describe("captación OBJ-002", () => {
-  test("contacto alcanzable en un clic desde inicio", async ({ page }) => {
+  test("contacto alcanzable en un clic desde inicio", async ({ page, isMobile }) => {
+    test.skip(isMobile, "en móvil el enlace Contacto vive en el menú desplegable");
     await page.goto("/");
 
     const headerContact = page.getByRole("banner").getByRole("link", { name: "Contacto" });
     await expect(headerContact).toBeVisible();
     await headerContact.click();
-    await expect(page).toHaveURL(/\/contacto$/);
+    await expectPathname(page, "/contacto");
     await expect(page.getByRole("heading", { level: 1, name: "Contacto" })).toBeVisible();
   });
 

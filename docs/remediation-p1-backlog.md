@@ -15,10 +15,10 @@ Tras cerrar R-P0-01…R-P0-05 y **antes** de ampliar post-v1. Un PR = una unidad
 | 6 | Revisar `includeSubDomains` + `preload` HSTS antes de definitivo | Confirmado; no hstspreload.org hasta ADR-0029 | ✅ código / residual dominio |
 | 7 | Legales: schema Zod estructurado + firma humana | Además de firma; no sustituye ADR-0027 | ☐ |
 | 8 | Revisar alta/SMI, base jurídica, DPF/SCC, exposición datos personales | Humano / asesoría residual post-v1 | ☐ |
-| 9 | E2E WebKit + perfil móvil real; Firefox periódico | `playwright.config.ts` | ☐ |
+| 9 | E2E WebKit + perfil móvil real; Firefox periódico | Chromium + Pixel 5 en cada PR; WebKit en CI; Firefox semanal/`workflow_dispatch` | ✅ |
 | 10 | Scripts `ci:fast` y `ci:full` | `package.json`; umbrales §8 intactos | ✅ |
 | 11 | Crawlability sobre producción (no solo LHCI local) | Hoy `skipAudits: is-crawlable` en lab | ☐ |
-| 12 | Sustituir pruebas regex débiles por validaciones semánticas | Tests API/E2E | ☐ |
+| 12 | Sustituir pruebas regex débiles por validaciones semánticas | Tests API/E2E | ✅ |
 
 ## P2 (proceso / docs)
 

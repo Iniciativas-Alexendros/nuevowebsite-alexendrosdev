@@ -1,5 +1,7 @@
 import { expect, test } from "@playwright/test";
 
+import { mediaType } from "./helpers/expect";
+
 test.describe("SEO técnico", () => {
   test("robots.txt permite el rastreo y excluye el catálogo", async ({ request }) => {
     const response = await request.get("/robots.txt");
@@ -14,10 +16,12 @@ test.describe("SEO técnico", () => {
   test("sitemap.xml lista las ocho rutas estáticas", async ({ request }) => {
     const response = await request.get("/sitemap.xml");
     expect(response.status()).toBe(200);
-    expect(response.headers()["content-type"] ?? "").toMatch(/xml/i);
+    expect(["application/xml", "text/xml"]).toContain(
+      mediaType(response.headers()["content-type"] ?? null)
+    );
 
     const text = await response.text();
-    expect(text).toMatch(/<urlset[\s>]/);
+    expect(text.includes("<urlset")).toBe(true);
     expect(text).not.toContain("/catalog");
     for (const path of [
       "/",
@@ -49,7 +53,8 @@ test.describe("SEO técnico", () => {
       await page.goto(route.path);
       await expect(page).toHaveTitle(new RegExp(route.titlePart, "i"));
       const description = page.locator('meta[name="description"]');
-      await expect(description).toHaveAttribute("content", /.+/);
+      const descriptionContent = await description.getAttribute("content");
+      expect(descriptionContent && descriptionContent.length > 0).toBe(true);
       const canonical = page.locator('link[rel="canonical"]');
       const expected =
         route.path === "/" ? "https://alexendros.dev/" : `https://alexendros.dev${route.path}`;
