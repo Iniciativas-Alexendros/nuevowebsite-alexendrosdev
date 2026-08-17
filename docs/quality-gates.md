@@ -2,7 +2,7 @@
 
 Este documento **resume** los umbrales que bloquean merge a `main`. La fuente normativa de umbrales es [AGENTS.md](../AGENTS.md) §8 (DEC-AGENTS-04). **No** relaja ni sustituye AGENTS, SPECS ni los ADR citados.
 
-**Traza:** AGENTS §8 · DEC-AGENTS-04 · OBJ-005 · OBJ-006 · NFR-SEC-005 · ADR-0025 · DEC-GO (batería 11) · Fase 7.z / P7z-1.
+**Traza:** AGENTS §8 · DEC-AGENTS-04 · OBJ-005 · OBJ-006 · NFR-SEC-005 · ADR-0025 · ADR-0030 · DEC-GO (batería 11) · Fase 7.z / P7z-1.
 
 ---
 
@@ -23,6 +23,8 @@ Este documento **resume** los umbrales que bloquean merge a `main`. La fuente no
 | `pnpm test:e2e` | Playwright + axe-core |
 | `pnpm build` | Build de producción |
 | `pnpm ci` | check + test + build |
+| `pnpm ci:fast` | alias de `pnpm ci` (P1-10; no relaja umbrales) |
+| `pnpm ci:full` | `ci` + `test:e2e` (Lighthouse sigue solo en GHA) |
 
 Antes de pedir revisión: typecheck, lint, tests afectados y build en verde (AGENTS §5–§6).
 
@@ -35,7 +37,7 @@ Workflow: [`.github/workflows/ci.yml`](../.github/workflows/ci.yml). Dispara en 
 | # | Job | Criterio bloqueante |
 | --- | --- | --- |
 | 1 | Typecheck | `pnpm typecheck` |
-| 2 | Lint | `pnpm lint` + `pnpm format:check` |
+| 2 | Lint | `pnpm lint` (ESLint + `scripts/check-design-tokens.mjs`, ADR-0030) + `pnpm format:check` |
 | 3 | Test (Vitest + cobertura) | Vitest con cobertura; umbrales §4 |
 | 4 | Build | `pnpm build` |
 | 5 | E2E + axe-core | Playwright; violaciones axe `critical`/`serious` fallan |
@@ -66,8 +68,9 @@ Son **siete** checks requeridos desde el scaffold de Fase 1 (histórico: gate Li
 
 ## 6. Accesibilidad automatizada (OBJ-006)
 
-- **axe-core** integrado en E2E Playwright sobre las rutas **P0** en **cada PR**.
+- **axe-core** integrado en E2E Playwright sobre las **8 rutas P0** en **cada PR** (`tests/e2e/a11y.spec.ts`; mismas URLs que [`lighthouserc.json`](../lighthouserc.json)): `/`, `/servicios`, `/proyectos`, `/stack`, `/sobre-mi`, `/contacto`, `/aviso-legal`, `/privacidad`.
 - Violaciones de severidad `critical` o `serious` bloquean el job E2E.
+- `/catalog` se escanea además como banco visual (noindex; no es P0).
 - Complementa (no sustituye) auditorías manuales AA/AAA de Fase 8.
 
 ---
@@ -76,6 +79,8 @@ Son **siete** checks requeridos desde el scaffold de Fase 1 (histórico: gate Li
 
 - **Secretos:** gitleaks (`detect --exit-code 1 --redact`).
 - **Dependencias:** `pnpm audit --prod --audit-level=high`.
+- **Design tokens (ADR-0030):** cero hex/rgb/hsl ni px/color arbitrarios de Tailwind en `src/components/**` y `src/app/**`.
+- **CSP / HSTS (ADR-0030):** producción sin `unsafe-eval`; HSTS con `includeSubDomains; preload`. Evidencia en e2e de cabeceras y en el smoke post-deploy.
 
 ---
 
@@ -85,6 +90,7 @@ Son **siete** checks requeridos desde el scaffold de Fase 1 (histórico: gate Li
 | --- | --- |
 | Presupuesto JS “extra” | No es gate (DEC-AGENTS-04) |
 | Smoke SMTP real a Proton | Gate de **go-live** (DEC-GO-04); [runbook-smoke-smtp.md](./runbook-smoke-smtp.md) |
+| Smoke post-deploy (rutas/headers/SEO/contacto) | Gate de **go-live** (P1-3); [runbook-smoke-post-deploy.md](./runbook-smoke-post-deploy.md); no es check de PR |
 | Preview MITL + firma de épica | Gate humano (ADR-0025 / DEC-ROADMAP-03) |
 | `PROMOTE` a Production | Confirmación explícita del decisor (ADR-0025) |
 | Tag / Release | Versionado ≠ promoción ([ADR-0026](../DECISIONS.md)); workflow `Release (tag)` no despliega |
@@ -107,3 +113,4 @@ No se introducen gates “por si acasa” sin ancla canónica.
 - [docs/testing-strategy.md](./testing-strategy.md) — capas de prueba
 - [ARCHITECTURE.md](../ARCHITECTURE.md) — estructura `tests/`
 - [ADR-0025](../DECISIONS.md) — despliegue por fase; Lighthouse local
+- [ADR-0030](../DECISIONS.md) — anti-hex, CSP sin eval, HSTS preload

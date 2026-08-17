@@ -1,0 +1,28 @@
+# Smoke post-deploy (rutas, headers, SEO, endpoint).
+# NO es gate de PR. Sin secretos ni cuerpos de petición en logs (NFR-SEC-002/006).
+# Traza: P1-3 · ADR-0030 · docs/runbook-smoke-post-deploy.md
+
+name: Smoke post-deploy
+
+on:
+  workflow_dispatch:
+    inputs:
+      target_url:
+        description: "Origen allowlisteado (alexendros.dev | *.alexendros-team.vercel.app | nuevowebsite-alexendrosdev.vercel.app), sin path"
+        required: true
+        type: string
+
+permissions:
+  contents: read
+
+jobs:
+  smoke:
+    name: Rutas, headers, SEO y /api/contact
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+      - name: Ejecutar smoke
+        env:
+          TARGET_URL: ${{ github.event.inputs.target_url }}
+          VERCEL_AUTOMATION_BYPASS_SECRET: ${{ secrets.VERCEL_AUTOMATION_BYPASS_SECRET }}
+        run: bash scripts/smoke-post-deploy.sh

@@ -148,6 +148,8 @@ Hasta existir el repo, estos nombres son el contrato. El scaffold de Fase 1 DEBE
 - `pnpm test:e2e` — Playwright
 - `pnpm build` — build de producción
 - `pnpm ci` — check + test + build
+- `pnpm ci:fast` — alias de `pnpm ci` (P1-10)
+- `pnpm ci:full` — `ci` + `test:e2e` (Lighthouse permanece en GHA; no relaja umbrales)
 
 Umbrales ejecutables (DEC-AGENTS-04; no los rebajes):
 
@@ -260,11 +262,12 @@ Batería 7.3 del [Plan de verificación y desarrollo de documentos pendientes �
 - Envío de contacto: Proton SMTP vía `nodemailer` en `src/lib/server/` (ADR-0011); org secrets `PROTON_SMTP_HOST`/`PORT`, `PROTON_MAIL_FROM` (`operaciones@` = To+From+SMTP_USER), `PROTON_SMTP_TOKEN` (no Bridge); mailto público `hola@` (catch-all); sync a Vercel con `sync-env-vercel.yml` → vars runtime `SMTP_*`. Smoke MITL requiere bypass de protección Vercel (`VERCEL_AUTOMATION_BYPASS_SECRET`); sin SMTP el formulario degrada a 503.
 - Despliegue Vercel (ADR-0025): sin preview por PR; Environments GitHub solo `Preview` + `Production` (nunca `phase-preview`); Deploy fase con `expected_sha`; Lighthouse CI local; tras integrar la fase en `main` → preview MITL → firma → production con `PROMOTE`. Los aliases estables (`*.vercel.app` / `git-main`) no siempre siguen al preview de fase.
 - Dominio canónico apex `https://alexendros.dev` (ADR-0029); puede seguir en el proyecto Vercel legacy `website-alexendrosdev` hasta migrar.
-- Legales: aviso legal y privacidad `published` (Fase 7 / #48); asesoría externa residual **post-v1.0** (ADR-0027). Fase 7.z integrada; Fase 8 activa con P8-6 go-live pendiente; **no firmar Fase 8 ni PROMOTE** hasta remediación P0 (expected_sha, rollback, SMTP bypass, LCP lab ≤2500 ms OBJ-005, secuencia única de lanzamiento).
+- Legales: aviso legal y privacidad `published` (Fase 7 / #48); asesoría externa residual **post-v1.0** (ADR-0027). Fase 7.z integrada; Fase 8 activa con P8-6 go-live pendiente; **no firmar Fase 8 ni PROMOTE** hasta el SHA de `main` posterior a los PRs de cierre (dedup/gates/polish), con CI verde, smoke post-deploy y secuencia ADR-0025. El SHA `0cee846` queda invalidado al fusionar esos PRs.
+- Gates: axe 8/8 rutas P0; `pnpm lint` incluye anti-hex (ADR-0030); CSP producción sin `unsafe-eval`; HSTS `includeSubDomains; preload` (no hstspreload.org hasta migrar dominio). `pnpm ci:fast` / `ci:full` no relajan AGENTS §8.
 
 ## Cursor Cloud specific instructions
 
-Servicio único: app Next.js 16 (App Router) + React 19 + TypeScript, pnpm 10 / Node 22. Comandos canónicos en `package.json` (referencia; no duplicar): `pnpm check`, `pnpm test`, `pnpm build`, `pnpm test:e2e`, `pnpm ci`. El update script del entorno ya ejecuta `pnpm install --frozen-lockfile` al arrancar el pod.
+Servicio único: app Next.js 16 (App Router) + React 19 + TypeScript, pnpm 10 / Node 22. Comandos canónicos en `package.json` (referencia; no duplicar): `pnpm check`, `pnpm test`, `pnpm build`, `pnpm test:e2e`, `pnpm ci`, `pnpm ci:fast`, `pnpm ci:full`. El update script del entorno ya ejecuta `pnpm install --frozen-lockfile` al arrancar el pod.
 
 Notas no obvias para arrancar/probar:
 
