@@ -1,0 +1,29 @@
+# E2E Firefox periódico (P1-9). NO es check de PR.
+name: E2E Firefox
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "0 6 * * 1"
+
+permissions:
+  contents: read
+
+jobs:
+  e2e-firefox:
+    name: Playwright Firefox
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+      - uses: pnpm/action-setup@b906affcce14559ad1aafd4ab0e942779e9f58b1 # v4
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+        with:
+          node-version-file: .nvmrc
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm exec playwright install --with-deps firefox
+      - name: E2E Firefox
+        env:
+          E2E_FIREFOX: "1"
+          CI: "true"
+        run: pnpm exec playwright test --project=firefox

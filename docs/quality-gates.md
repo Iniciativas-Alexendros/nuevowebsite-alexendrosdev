@@ -40,7 +40,7 @@ Workflow: [`.github/workflows/ci.yml`](../.github/workflows/ci.yml). Dispara en 
 | 2 | Lint | `pnpm lint` (ESLint + `scripts/check-design-tokens.mjs`, ADR-0030) + `pnpm format:check` |
 | 3 | Test (Vitest + cobertura) | Vitest con cobertura; umbrales §4 |
 | 4 | Build | `pnpm build` |
-| 5 | E2E + axe-core | Playwright; violaciones axe `critical`/`serious` fallan |
+| 5 | E2E + axe-core | Playwright (Chromium + Pixel 5 + WebKit en CI); violaciones axe `critical`/`serious` fallan |
 | 6 | Secretos + auditoría | gitleaks + `pnpm audit --prod --audit-level=high` |
 | 7 | Lighthouse CI | ≥90 en las cuatro categorías (móvil); §5 |
 

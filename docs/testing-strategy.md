@@ -36,7 +36,7 @@ La estructura recomendada en ARCHITECTURE §3 incluye también `tests/integratio
 
 ## 4. E2E (MVP)
 
-Playwright corre en **cada PR** (check requerido en `ci.yml`).
+Playwright corre en **cada PR** (check requerido en `ci.yml`): Chromium escritorio + perfil **Pixel 5**. **WebKit** se añade en CI (`CI=1`). Firefox es periódico (`E2E_FIREFOX=1`, workflow semanal / `workflow_dispatch`); no bloquea merge.
 
 Alcance E2E del MVP (DEC-GO / batería 13):
 

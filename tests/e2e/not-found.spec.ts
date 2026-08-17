@@ -1,5 +1,7 @@
 import { expect, test } from "@playwright/test";
 
+import { headerTokens } from "./helpers/expect";
+
 test.describe("página 404", () => {
   test("responde con estado 404 y conserva el cascarón", async ({ page }) => {
     const response = await page.goto("/ruta-inexistente");
@@ -27,6 +29,9 @@ test.describe("página 404", () => {
   test("no debe indexarse", async ({ page }) => {
     await page.goto("/ruta-inexistente");
 
-    await expect(page.locator('meta[name="robots"]').first()).toHaveAttribute("content", /noindex/);
+    const robots = headerTokens(
+      await page.locator('meta[name="robots"]').first().getAttribute("content")
+    );
+    expect(robots).toContain("noindex");
   });
 });

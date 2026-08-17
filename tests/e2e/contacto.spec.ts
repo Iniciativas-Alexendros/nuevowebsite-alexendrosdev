@@ -74,6 +74,10 @@ test.describe("contacto", () => {
     await page.getByRole("checkbox").check();
     await page.getByRole("button", { name: "Enviar mensaje" }).click();
 
-    await expect(page.getByText(/No he podido enviar el mensaje/i)).toBeVisible();
+    await expect(
+      page.getByText(
+        "No he podido enviar el mensaje. Inténtalo de nuevo o usa otro canal de contacto."
+      )
+    ).toBeVisible();
   });
 });

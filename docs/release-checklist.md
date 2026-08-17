@@ -5,11 +5,11 @@
 **Objetivo:** Validar que todo está listo para `PROMOTE` a producción y tag `v1.0.0`  
 **Responsable:** Decisor (aprobación final) + Agente (preparación)
 
-**Dictamen:** No firmar Fase 8 ni ejecutar `PROMOTE` hasta cerrar R-P0-01…R-P0-05.
+**Dictamen:** No firmar Fase 8 ni ejecutar `PROMOTE` hasta cerrar R-P0-01…R-P0-05 **y** fusionar los PRs de cierre backend (#68 dedup, #69 gates, #70 polish). El SHA `0cee846` queda **invalidado** al integrar esos PRs; el candidato de go-live es el tip de `main` con CI verde **después** del merge.
 
-**SHA candidato (40 hex):** _(rellenar tras fusionar remediación a `main`)_  
+**SHA candidato (40 hex):** _(rellenar tras fusionar #68–#70 a `main`; no usar `0cee846`)_  
 **Issue de seguimiento:** [#64 Release v1.0.0](https://github.com/Iniciativas-Alexendros/nuevowebsite-alexendrosdev/issues/64)  
-**Workflows:** [CI](../.github/workflows/ci.yml) · [Deploy fase](../.github/workflows/deploy-phase.yml) · [Smoke SMTP](../.github/workflows/smoke-smtp.yml) · [Release tag](../.github/workflows/release.yml)
+**Workflows:** [CI](../.github/workflows/ci.yml) · [Deploy fase](../.github/workflows/deploy-phase.yml) · [Smoke SMTP](../.github/workflows/smoke-smtp.yml) · [Smoke post-deploy](../.github/workflows/smoke-post-deploy.yml) · [Release tag](../.github/workflows/release.yml)
 
 ### Evidencias (rellenar en go-live)
 

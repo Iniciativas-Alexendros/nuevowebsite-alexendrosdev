@@ -1,5 +1,7 @@
 import { expect, test } from "@playwright/test";
 
+import { expectPathname, headerTokens } from "./helpers/expect";
+
 const PUBLISHED_PROJECTS = [
   "FRONT Valencia",
   "Gráficas Nasve",
@@ -31,26 +33,29 @@ test.describe("portfolio OBJ-003", () => {
       await expect(page.getByRole("heading", { level: 3, name: title })).toBeVisible();
     }
 
-    await expect(page.getByText(/borrador|draft/i)).toHaveCount(0);
+    await expect(page.getByText("borrador", { exact: false })).toHaveCount(0);
+    await expect(page.getByText("draft", { exact: false })).toHaveCount(0);
   });
 
   test("servicios, proyectos y stack alcanzables en ≤2 interacciones desde nav", async ({
     page,
+    isMobile,
   }) => {
+    test.skip(isMobile, "en móvil la nav principal está en el desplegable");
     await page.goto("/");
 
     const nav = page.getByRole("navigation", { name: "Principal" });
 
     await nav.getByRole("link", { name: "Servicios" }).click();
-    await expect(page).toHaveURL(/\/servicios$/);
+    await expectPathname(page, "/servicios");
     await expect(page.getByRole("heading", { level: 1, name: "Servicios" })).toBeVisible();
 
     await nav.getByRole("link", { name: "Proyectos" }).click();
-    await expect(page).toHaveURL(/\/proyectos$/);
+    await expectPathname(page, "/proyectos");
     await expect(page.getByRole("heading", { level: 1, name: "Proyectos" })).toBeVisible();
 
     await nav.getByRole("link", { name: "Stack" }).click();
-    await expect(page).toHaveURL(/\/stack$/);
+    await expectPathname(page, "/stack");
     await expect(page.getByRole("heading", { level: 1, name: "Stack" })).toBeVisible();
   });
 
@@ -64,9 +69,12 @@ test.describe("portfolio OBJ-003", () => {
     for (let i = 0; i < count; i += 1) {
       const link = externalLinks.nth(i);
       const href = await link.getAttribute("href");
-      expect(href).toMatch(/^https?:\/\//);
+      expect(href, "href de enlace externo").toBeTruthy();
+      const parsed = new URL(href ?? "");
+      expect(["http:", "https:"]).toContain(parsed.protocol);
       await expect(link).toHaveAttribute("target", "_blank");
-      await expect(link).toHaveAttribute("rel", /noopener/);
+      const rel = headerTokens(await link.getAttribute("rel"), " ");
+      expect(rel).toContain("noopener");
     }
   });
 });

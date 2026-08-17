@@ -1,5 +1,7 @@
 import { expect, test } from "@playwright/test";
 
+import { expectPathname } from "./helpers/expect";
+
 test.describe("cascarón de navegación", () => {
   test("muestra cabecera, pie y wordmark enlazado al inicio", async ({ page }) => {
     await page.goto("/");
@@ -12,7 +14,11 @@ test.describe("cascarón de navegación", () => {
     await expect(wordmark).toHaveAttribute("href", "/");
   });
 
-  test("la navegación de escritorio marca la página activa con aria-current", async ({ page }) => {
+  test("la navegación de escritorio marca la página activa con aria-current", async ({
+    page,
+    isMobile,
+  }) => {
+    test.skip(isMobile, "nav de escritorio oculta bajo Pixel 5");
     await page.goto("/servicios");
 
     const nav = page.getByRole("navigation", { name: "Principal" });
@@ -104,12 +110,9 @@ test.describe("navegación móvil", () => {
     await summary.click();
     await expect(page.getByRole("navigation", { name: "Principal" })).toBeVisible();
 
-    await page
-      .getByRole("navigation", { name: "Principal" })
-      .getByRole("link", { name: "Servicios" })
-      .click();
+    await page.getByRole("group").getByRole("link", { name: "Servicios" }).click();
 
-    await expect(page).toHaveURL(/\/servicios/);
+    await expectPathname(page, "/servicios");
     await expect(page.getByRole("navigation", { name: "Principal" })).toBeHidden();
   });
 });
