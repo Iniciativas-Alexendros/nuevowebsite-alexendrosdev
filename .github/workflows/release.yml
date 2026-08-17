@@ -1,5 +1,6 @@
 # Tag y GitHub Release desde CI. NO despliega ni hace PROMOTE (ADR-0025 / ADR-0026).
 # Solo workflow_dispatch. Versionado ≠ promoción.
+# R-P0-01: expected_sha obligatorio — el tag DEBE apuntar exactamente a ese SHA en main.
 
 name: Release (tag)
 
@@ -8,6 +9,10 @@ on:
     inputs:
       version:
         description: "Semver sin prefijo v (ej. 1.0.0). Se crea el tag vX.Y.Z"
+        required: true
+        type: string
+      expected_sha:
+        description: "SHA completo (40 hex) aprobado — DEBE existir en main y coincidir con preview/PROMOTE"
         required: true
         type: string
 
@@ -19,16 +24,29 @@ jobs:
     name: Crear tag y Release
     runs-on: ubuntu-latest
     steps:
-      # Trunk-based (ADR-0026): siempre tip de main, nunca el ref del «Use workflow from».
-      # Misma pin que deploy-phase.yml. github.sha del dispatch puede ser otra rama.
+      - name: Validar expected_sha
+        id: sha
+        env:
+          EXPECTED_SHA: ${{ github.event.inputs.expected_sha }}
+        run: |
+          set -euo pipefail
+          EXPECTED_SHA="$(printf '%s' "$EXPECTED_SHA" | tr -d '[:space:]' | tr '[:upper:]' '[:lower:]')"
+          if [[ ! "$EXPECTED_SHA" =~ ^[0-9a-f]{40}$ ]]; then
+            echo "::error::expected_sha DEBE ser SHA completo de 40 hex (R-P0-01)."
+            exit 1
+          fi
+          echo "expected_sha=$EXPECTED_SHA" >> "$GITHUB_OUTPUT"
+
+      # Trunk-based (ADR-0026): pin al SHA aprobado, no al tip móvil de main.
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
         with:
-          ref: main
+          ref: ${{ steps.sha.outputs.expected_sha }}
           fetch-depth: 0
 
-      - name: Validar semver y que el tag no exista
+      - name: Validar semver, SHA en main y que el tag no exista
         env:
           VERSION: ${{ github.event.inputs.version }}
+          EXPECTED_SHA: ${{ steps.sha.outputs.expected_sha }}
         run: |
           set -euo pipefail
           if [[ ! "$VERSION" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
@@ -40,11 +58,19 @@ jobs:
             echo "::error::El tag ${tag} ya existe"
             exit 1
           fi
-          # SHA real del tip de main tras checkout (no github.sha del dispatch).
-          sha="$(git rev-parse HEAD)"
+          head_sha="$(git rev-parse HEAD)"
+          if [ "$head_sha" != "$EXPECTED_SHA" ]; then
+            echo "::error::HEAD ($head_sha) ≠ expected_sha ($EXPECTED_SHA)."
+            exit 1
+          fi
+          git fetch origin main --depth=1 2>/dev/null || git fetch origin main
+          if ! git merge-base --is-ancestor "$EXPECTED_SHA" origin/main; then
+            echo "::error::expected_sha $EXPECTED_SHA no está en origin/main (trunk-based)."
+            exit 1
+          fi
           echo "TAG=${tag}" >> "$GITHUB_ENV"
-          echo "RELEASE_SHA=${sha}" >> "$GITHUB_ENV"
-          echo "Creará ${tag} en ${sha} (refs/heads/main; sin deploy)."
+          echo "RELEASE_SHA=${EXPECTED_SHA}" >> "$GITHUB_ENV"
+          echo "Creará ${tag} en ${EXPECTED_SHA} (R-P0-01; sin deploy)."
 
       - name: Crear tag anotado
         run: |
@@ -53,7 +79,8 @@ jobs:
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git tag -a "$TAG" "$RELEASE_SHA" -m "Release ${TAG}
 
-          ADR-0026: versionado ≠ promoción. Este tag no despliega ni hace PROMOTE."
+          ADR-0026: versionado ≠ promoción. Este tag no despliega ni hace PROMOTE.
+          R-P0-01: expected_sha=${RELEASE_SHA}."
           git push origin "$TAG"
 
       - name: Publicar GitHub Release
@@ -67,13 +94,14 @@ jobs:
             --notes "$(cat <<EOF
           ## ${TAG}
 
-          Tag creado por el workflow **Release (tag)** (ADR-0026).
+          Tag creado por el workflow **Release (tag)** (ADR-0026 / R-P0-01).
 
-          - Tip de \`main\` en el momento del tag (\`${RELEASE_SHA}\`).
+          - SHA inmutable: \`${RELEASE_SHA}\` (mismo que preview MITL y PROMOTE).
           - **No** despliega a Vercel.
           - **No** ejecuta \`PROMOTE\` (ADR-0025).
-          - Producción: workflow **Deploy fase (Vercel)** con \`confirmation=PROMOTE\` tras firma MITL.
-          - Rollback: redeploy del tag anterior (checklist P8-1).
+          - Producción: workflow **Deploy fase (Vercel)** con \`expected_sha\` + \`confirmation=PROMOTE\` tras firma MITL.
+          - Rollback: ver [docs/runbook-rollback.md](../docs/runbook-rollback.md).
+          - \`package.json\` version puede permanecer en \`0.1.0\` (ADR-0026: independencia npm ↔ tag).
           EOF
           )"
 
@@ -82,7 +110,7 @@ jobs:
           {
             echo "## Release ${TAG}"
             echo ""
-            echo "- Tag y GitHub Release en \`${RELEASE_SHA}\` (\`main\`)."
+            echo "- Tag y GitHub Release en \`${RELEASE_SHA}\` (\`expected_sha\`)."
             echo "- **No** se ha invocado deploy-phase ni PROMOTE."
             echo "- Siguiente paso humano (si aplica): Deploy fase + confirmación explícita."
           } >> "$GITHUB_STEP_SUMMARY"

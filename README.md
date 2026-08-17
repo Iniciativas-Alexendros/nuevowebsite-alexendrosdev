@@ -39,11 +39,11 @@ Este archivo es el punto de entrada de lectura del proyecto. Te dice qué leer d
 
 # Estado en una mirada
 
-**Pulso:** 16 de agosto de 2026 — cierre operativo v1.0 en curso.
+**Pulso:** 17 de agosto de 2026 — remediación P0 go-live; **no firmar Fase 8 ni PROMOTE** hasta cerrar R-P0 + secuencia canónica.
 
 **Fase activa:** 8 — Hardening (P8-1…P8-6). En paralelo: **Fase 7.z** (P7z-1…P7z-8). Fases 5–7 en `main`, pendientes MITL + firma.
 
-**Siguiente acción:** migrar dominio a este proyecto Vercel (ADR-0029), CI verde del SHA candidato, Deploy fase → MITL → smoke SMTP → firmas → `PROMOTE` → tag v1.0.0.
+**Siguiente acción (secuencia única):** cerrar R-P0-01…05 → registrar SHA candidato → CI verde → dominio ADR-0029 → Deploy preview (`expected_sha`) → MITL + a11y → smoke SMTP → firmas → `PROMOTE` (mismo SHA) → smoke postprod → tag `v1.0.0` (mismo SHA). Detalle: [docs/handoff-p8-6.md](./docs/handoff-p8-6.md).
 
 **Objetivo de producto:** v1.0 el 24 de agosto de 2026.
 
@@ -156,17 +156,20 @@ El sitio lo implementa un agente de código. El humano dirige, revisa diffs, hac
 
 # Pendiente ahora
 
-Fases 1–7 en `main`. Fases 5–7: pendientes de preview MITL + firma. **Activa:** Fase 8 + 7.z. Bloqueos go-live: smoke SMTP, migración de dominio (ADR-0029), firmas humanas. DES-07 diferido (ADR-0028). Workflows: [Deploy fase](./.github/workflows/deploy-phase.yml) · [Smoke SMTP](./.github/workflows/smoke-smtp.yml) · [Release tag](./.github/workflows/release.yml).
+Fases 1–7 en `main`. Fases 5–7: pendientes de preview MITL + firma. **Activa:** Fase 8 + 7.z. **No PROMOTE / no firma Fase 8** hasta R-P0 cerrados + secuencia canónica. DES-07 diferido (ADR-0028). Workflows: [Deploy fase](./.github/workflows/deploy-phase.yml) · [Smoke SMTP](./.github/workflows/smoke-smtp.yml) · [Release tag](./.github/workflows/release.yml) · [Rollback](./docs/runbook-rollback.md).
 
 ## Fase 8 — Hardening y lanzamiento (activa)
 
-Unidades: P8-1 checklist · P8-2 a11y · P8-3 Lighthouse multipágina · P8-4 SEO/headers · P8-5 E2E · P8-6 gate humano.
+Unidades: P8-1 checklist · P8-2 a11y · P8-3 Lighthouse multipágina · P8-4 SEO/headers · P8-5 E2E · P8-6 gate humano. Remediación P0: [docs/release-checklist.md](./docs/release-checklist.md).
 
 ## Residuales humanos (bloquean go-live / PROMOTE)
 
-- [ ]  Preview MITL Fases 5–7 (`Deploy fase`) y firma de épicas.
-- [ ]  Smoke SMTP real ([runbook](./docs/runbook-smoke-smtp.md)).
-- [ ]  Migrar `alexendros.dev` (+ `www`) de `website-alexendrosdev` → `nuevowebsite-alexendrosdev` (ADR-0029).
+- [ ]  Secreto Actions `VERCEL_AUTOMATION_BYPASS_SECRET` (R-P0-03; [runbook SMTP](./docs/runbook-smoke-smtp.md)).
+- [ ]  Simulacro rollback en preview (R-P0-02; [runbook](./docs/runbook-rollback.md)).
+- [ ]  SHA candidato registrado + CI verde + Deploy preview (`expected_sha`) MITL Fases 5–8.
+- [ ]  Smoke SMTP real + correo en `operaciones@`.
+- [ ]  Migrar `alexendros.dev` (+ `www`) de `website-alexendrosdev` → `nuevowebsite-alexendrosdev` (ADR-0029) — **antes** del preview go-live.
+- [ ]  Firmas Fases 5, 6, 7, 7.z, 8 → luego `PROMOTE` → smoke postprod → tag `v1.0.0` (mismo SHA).
 - [ ]  Asesoría externa de textos legales **post-v1.0** (ADR-0027; no bloquea `PROMOTE`).
 - [ ]  Rotar `SMTP_TOKEN` y registrar operación (sin valor) — [SECURITY.md](./SECURITY.md).
 - [ ]  Activar secret scanning / Dependabot en GitHub si el plan lo permite.
@@ -177,6 +180,10 @@ Unidades: P8-1 checklist · P8-2 a11y · P8-3 Lighthouse multipágina · P8-4 SE
 - [x]  [SECURITY.md](./SECURITY.md) — **P7z-8**
 - [x]  [docs/quality-gates.md](./docs/quality-gates.md) — **P7z-1**
 - [x]  [docs/release-checklist.md](./docs/release-checklist.md) — **P8-1**
+- [x]  [docs/handoff-p8-6.md](./docs/handoff-p8-6.md) — secuencia canónica go-live
+- [x]  [docs/runbook-rollback.md](./docs/runbook-rollback.md) — R-P0-02
+- [x]  [docs/runbook-smoke-smtp.md](./docs/runbook-smoke-smtp.md) — R-P0-03
+- [x]  [docs/remediation-p1-backlog.md](./docs/remediation-p1-backlog.md) — P1 ordenado
 - [x]  [docs/testing-strategy.md](./docs/testing-strategy.md) — **P7z-2**
 
 ---

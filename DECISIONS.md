@@ -866,7 +866,7 @@ Ruta: ./DECISIONS.md
 	- **Prohibido** que el workflow de release invoque `deploy-phase` con `target=production`, ejecute `PROMOTE` o dispare cualquier despliegue a Vercel.
 	- Versionado ≠ promoción: el tag es un marcador de código; la publicación a Production sigue ADR-0025.
 	- Rollback operativo: redeploy del tag anterior (detalle en `docs/release-checklist.md`, P8-1).
-	- No se exige bump automático de `package.json` en este ADR (puede quedar `0.1.0` hasta decisión explícita).
+	- No se exige bump automático de `package.json` en este ADR (puede quedar `0.1.0` hasta decisión explícita). **Enmienda 17-08-2026 (R-P0 remediación):** el campo `version` de `package.json` es **independiente** del tag GitHub `vX.Y.Z`; el artefacto de lanzamiento se identifica por SHA + tag, no por npm version.
 - Alternativas consideradas:
 	- Tag manual desde la máquina del decisor: rechazado (DEC-GO-07).
 	- Tag al fusionar a `main` o al hacer `PROMOTE`: rechazado; acoplaría versionado y despliegue.

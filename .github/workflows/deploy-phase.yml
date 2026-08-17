@@ -2,6 +2,8 @@ name: Deploy fase (Vercel)
 
 # ADR-0025 — Preview MITL tras integrar la fase en main (antes de firmar cierre).
 # Firma DEC-ROADMAP-03 solo tras validar preview. Production: PROMOTE + entorno `Production`.
+# R-P0-01: expected_sha obligatorio (mismo SHA en preview / PROMOTE / release).
+# R-P0-02: rollback_ref opcional (tag vX.Y.Z o deployment ID Vercel).
 # CLI fijada (no @latest) en rutas con secretos — supply-chain (mismo criterio que sync-env).
 
 on:
@@ -18,6 +20,15 @@ on:
         options:
           - preview
           - production
+      expected_sha:
+        description: "SHA completo (40 hex) aprobado — DEBE existir en main"
+        required: true
+        type: string
+      rollback_ref:
+        description: "Opcional: tag vX.Y.Z o deployment ID/URL Vercel. Vacío = build desde expected_sha"
+        required: false
+        type: string
+        default: ""
       confirmation:
         description: "Solo production: PROMOTE tras QA del preview y firma de cierre de fase"
         required: false
@@ -42,65 +53,144 @@ jobs:
     # Sin Environment GitHub: el gate MITL es humano (URL + firma). Solo Production
     # usa Environment protegido + PROMOTE (ADR-0025 enmienda 16-08-2026).
     steps:
+      - name: Validar expected_sha
+        id: sha
+        env:
+          EXPECTED_SHA: ${{ github.event.inputs.expected_sha }}
+          ROLLBACK_REF: ${{ github.event.inputs.rollback_ref }}
+        run: |
+          set -euo pipefail
+          EXPECTED_SHA="$(printf '%s' "$EXPECTED_SHA" | tr -d '[:space:]' | tr '[:upper:]' '[:lower:]')"
+          if [[ ! "$EXPECTED_SHA" =~ ^[0-9a-f]{40}$ ]]; then
+            echo "::error::expected_sha DEBE ser SHA completo de 40 hex (R-P0-01)."
+            exit 1
+          fi
+          echo "expected_sha=$EXPECTED_SHA" >> "$GITHUB_OUTPUT"
+          echo "rollback_ref=$(printf '%s' "$ROLLBACK_REF" | tr -d '[:space:]')" >> "$GITHUB_OUTPUT"
+
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
         with:
-          ref: main
+          ref: ${{ steps.sha.outputs.expected_sha }}
+          fetch-depth: 0
+
+      - name: Verificar SHA en main
+        env:
+          EXPECTED_SHA: ${{ steps.sha.outputs.expected_sha }}
+          ROLLBACK_REF: ${{ steps.sha.outputs.rollback_ref }}
+        run: |
+          set -euo pipefail
+          head_sha="$(git rev-parse HEAD)"
+          if [ "$head_sha" != "$EXPECTED_SHA" ]; then
+            echo "::error::HEAD ($head_sha) ≠ expected_sha ($EXPECTED_SHA)."
+            exit 1
+          fi
+          git fetch origin main --depth=1 2>/dev/null || git fetch origin main
+          if ! git merge-base --is-ancestor "$EXPECTED_SHA" origin/main; then
+            echo "::error::expected_sha $EXPECTED_SHA no está en origin/main (trunk-based)."
+            exit 1
+          fi
+          if [ -n "$ROLLBACK_REF" ] && [[ "$ROLLBACK_REF" =~ ^v[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+            tag_sha="$(git rev-parse "$ROLLBACK_REF^{commit}")"
+            if [ "$tag_sha" != "$EXPECTED_SHA" ]; then
+              echo "::error::Tag $ROLLBACK_REF apunta a $tag_sha, no a expected_sha $EXPECTED_SHA."
+              exit 1
+            fi
+            echo "Rollback por tag $ROLLBACK_REF → $EXPECTED_SHA"
+          fi
+          echo "SHA verificado en main: $EXPECTED_SHA"
+
       - uses: pnpm/action-setup@b906affcce14559ad1aafd4ab0e942779e9f58b1 # v4
       - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
         with:
           node-version-file: .nvmrc
           cache: pnpm
-      - name: Desplegar preview desde main
+
+      - name: Desplegar preview (expected_sha / rollback)
         id: deploy
         env:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
           VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
           VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+          EXPECTED_SHA: ${{ steps.sha.outputs.expected_sha }}
+          ROLLBACK_REF: ${{ steps.sha.outputs.rollback_ref }}
+          PHASE: ${{ github.event.inputs.phase }}
         run: |
           set -euo pipefail
           VERCEL_TOKEN="$(printf '%s' "$VERCEL_TOKEN" | tr -d '\r\n' | sed 's/^[[:space:]]*//;s/[[:space:]]*$//')"
           mkdir -p .vercel
           printf '{"projectId":"%s","orgId":"%s"}\n' "$VERCEL_PROJECT_ID" "$VERCEL_ORG_ID" > .vercel/project.json
-          npx "$VERCEL_CLI" pull --yes --environment=preview --token "$VERCEL_TOKEN"
-          # ARCHITECTURE §9.2 / CONTENT: URL canónica de build. Si Preview en Vercel
-          # tiene NEXT_PUBLIC_SITE_URL corrupto (p. ej. email SMTP), new URL() rompe el build.
-          ENV_FILE=.vercel/.env.preview.local
-          if [ -f "$ENV_FILE" ]; then
-            grep -Ev '^NEXT_PUBLIC_SITE_(URL|NAME)=' "$ENV_FILE" > "${ENV_FILE}.tmp" || true
-            mv "${ENV_FILE}.tmp" "$ENV_FILE"
+
+          is_dpl_rollback=0
+          if [ -n "$ROLLBACK_REF" ] && { [[ "$ROLLBACK_REF" == dpl_* ]] || [[ "$ROLLBACK_REF" == *".vercel.app"* ]]; }; then
+            is_dpl_rollback=1
           fi
-          {
-            echo 'NEXT_PUBLIC_SITE_URL=https://alexendros.dev'
-            echo 'NEXT_PUBLIC_SITE_NAME=Alexendros'
-          } >> "$ENV_FILE"
-          raw=$(grep '^NEXT_PUBLIC_SITE_URL=' "$ENV_FILE" | tail -n1 | cut -d= -f2- | tr -d '"' || true)
-          case "$raw" in
-            https://*) echo "NEXT_PUBLIC_SITE_URL ok (https, len=${#raw})" ;;
-            *)
-              echo "NEXT_PUBLIC_SITE_URL inválida tras forzar (len=${#raw})." >&2
-              exit 1
-              ;;
-          esac
-          npx "$VERCEL_CLI" build --token "$VERCEL_TOKEN"
-          set +e
-          npx "$VERCEL_CLI" deploy --prebuilt --token "$VERCEL_TOKEN" | tee /tmp/vercel-out.txt
-          deploy_ec=${PIPESTATUS[0]}
-          set -e
-          if [ "$deploy_ec" -ne 0 ]; then
-            echo "vercel deploy falló (exit $deploy_ec). Últimas líneas:" >&2
-            tail -n 40 /tmp/vercel-out.txt >&2 || true
-            exit "$deploy_ec"
+
+          if [ "$is_dpl_rollback" -eq 1 ]; then
+            echo "Rollback por deployment: $ROLLBACK_REF"
+            set +e
+            npx "$VERCEL_CLI" redeploy "$ROLLBACK_REF" --token "$VERCEL_TOKEN" | tee /tmp/vercel-out.txt
+            deploy_ec=${PIPESTATUS[0]}
+            set -e
+            if [ "$deploy_ec" -ne 0 ]; then
+              echo "vercel redeploy falló (exit $deploy_ec). Últimas líneas:" >&2
+              tail -n 40 /tmp/vercel-out.txt >&2 || true
+              exit "$deploy_ec"
+            fi
+          else
+            npx "$VERCEL_CLI" pull --yes --environment=preview --token "$VERCEL_TOKEN"
+            # ARCHITECTURE §9.2 / CONTENT: URL canónica de build. Si Preview en Vercel
+            # tiene NEXT_PUBLIC_SITE_URL corrupto (p. ej. email SMTP), new URL() rompe el build.
+            ENV_FILE=.vercel/.env.preview.local
+            if [ -f "$ENV_FILE" ]; then
+              grep -Ev '^NEXT_PUBLIC_SITE_(URL|NAME)=' "$ENV_FILE" > "${ENV_FILE}.tmp" || true
+              mv "${ENV_FILE}.tmp" "$ENV_FILE"
+            fi
+            {
+              echo 'NEXT_PUBLIC_SITE_URL=https://alexendros.dev'
+              echo 'NEXT_PUBLIC_SITE_NAME=Alexendros'
+            } >> "$ENV_FILE"
+            raw=$(grep '^NEXT_PUBLIC_SITE_URL=' "$ENV_FILE" | tail -n1 | cut -d= -f2- | tr -d '"' || true)
+            case "$raw" in
+              https://*) echo "NEXT_PUBLIC_SITE_URL ok (https, len=${#raw})" ;;
+              *)
+                echo "NEXT_PUBLIC_SITE_URL inválida tras forzar (len=${#raw})." >&2
+                exit 1
+                ;;
+            esac
+            npx "$VERCEL_CLI" build --token "$VERCEL_TOKEN"
+            set +e
+            npx "$VERCEL_CLI" deploy --prebuilt --token "$VERCEL_TOKEN" | tee /tmp/vercel-out.txt
+            deploy_ec=${PIPESTATUS[0]}
+            set -e
+            if [ "$deploy_ec" -ne 0 ]; then
+              echo "vercel deploy falló (exit $deploy_ec). Últimas líneas:" >&2
+              tail -n 40 /tmp/vercel-out.txt >&2 || true
+              exit "$deploy_ec"
+            fi
           fi
+
           url=$(grep -Eo 'https://[a-zA-Z0-9.-]+\.vercel\.app[^[:space:]]*' /tmp/vercel-out.txt | tail -n 1 || true)
           if [ -z "$url" ]; then
             url=$(tail -n 1 /tmp/vercel-out.txt)
           fi
+          dpl_id=$(grep -Eo 'dpl_[A-Za-z0-9]+' /tmp/vercel-out.txt | tail -n 1 || true)
           echo "url=$url" >> "$GITHUB_OUTPUT"
-          echo "### Preview Fase ${{ github.event.inputs.phase }}" >> "$GITHUB_STEP_SUMMARY"
-          echo "" >> "$GITHUB_STEP_SUMMARY"
-          echo "- **URL:** $url" >> "$GITHUB_STEP_SUMMARY"
-          echo "- **Commit:** \`$(git rev-parse --short HEAD)\`" >> "$GITHUB_STEP_SUMMARY"
-          echo "- **Siguiente:** QA visual MITL → si OK, firmar cierre de fase (DEC-ROADMAP-03) → relanzar con target \`production\` y confirmation \`PROMOTE\`." >> "$GITHUB_STEP_SUMMARY"
+          echo "deployment_id=$dpl_id" >> "$GITHUB_OUTPUT"
+
+          {
+            echo "### Preview Fase ${PHASE}"
+            echo ""
+            echo "- **URL:** $url"
+            echo "- **expected_sha:** \`${EXPECTED_SHA}\`"
+            echo "- **Commit:** \`$(git rev-parse --short HEAD)\`"
+            if [ -n "$dpl_id" ]; then
+              echo "- **deployment_id:** \`${dpl_id}\`"
+            fi
+            if [ -n "$ROLLBACK_REF" ]; then
+              echo "- **rollback_ref:** \`${ROLLBACK_REF}\`"
+            fi
+            echo "- **Siguiente:** QA visual MITL → si OK, firmar cierre de fase (DEC-ROADMAP-03) → relanzar con target \`production\`, mismo \`expected_sha\` y confirmation \`PROMOTE\`."
+          } >> "$GITHUB_STEP_SUMMARY"
 
   deploy-production:
     name: Producción tras MITL (fase ${{ github.event.inputs.phase }})
@@ -114,58 +204,138 @@ jobs:
             echo "Abortado: para production el input confirmation DEBE ser exactamente PROMOTE (ADR-0025)." >&2
             exit 1
           fi
+
+      - name: Validar expected_sha
+        id: sha
+        env:
+          EXPECTED_SHA: ${{ github.event.inputs.expected_sha }}
+          ROLLBACK_REF: ${{ github.event.inputs.rollback_ref }}
+        run: |
+          set -euo pipefail
+          EXPECTED_SHA="$(printf '%s' "$EXPECTED_SHA" | tr -d '[:space:]' | tr '[:upper:]' '[:lower:]')"
+          if [[ ! "$EXPECTED_SHA" =~ ^[0-9a-f]{40}$ ]]; then
+            echo "::error::expected_sha DEBE ser SHA completo de 40 hex (R-P0-01)."
+            exit 1
+          fi
+          echo "expected_sha=$EXPECTED_SHA" >> "$GITHUB_OUTPUT"
+          echo "rollback_ref=$(printf '%s' "$ROLLBACK_REF" | tr -d '[:space:]')" >> "$GITHUB_OUTPUT"
+
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
         with:
-          ref: main
+          ref: ${{ steps.sha.outputs.expected_sha }}
+          fetch-depth: 0
+
+      - name: Verificar SHA en main
+        env:
+          EXPECTED_SHA: ${{ steps.sha.outputs.expected_sha }}
+          ROLLBACK_REF: ${{ steps.sha.outputs.rollback_ref }}
+        run: |
+          set -euo pipefail
+          head_sha="$(git rev-parse HEAD)"
+          if [ "$head_sha" != "$EXPECTED_SHA" ]; then
+            echo "::error::HEAD ($head_sha) ≠ expected_sha ($EXPECTED_SHA)."
+            exit 1
+          fi
+          git fetch origin main --depth=1 2>/dev/null || git fetch origin main
+          if ! git merge-base --is-ancestor "$EXPECTED_SHA" origin/main; then
+            echo "::error::expected_sha $EXPECTED_SHA no está en origin/main (trunk-based)."
+            exit 1
+          fi
+          if [ -n "$ROLLBACK_REF" ] && [[ "$ROLLBACK_REF" =~ ^v[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+            tag_sha="$(git rev-parse "$ROLLBACK_REF^{commit}")"
+            if [ "$tag_sha" != "$EXPECTED_SHA" ]; then
+              echo "::error::Tag $ROLLBACK_REF apunta a $tag_sha, no a expected_sha $EXPECTED_SHA."
+              exit 1
+            fi
+            echo "Rollback por tag $ROLLBACK_REF → $EXPECTED_SHA"
+          fi
+          echo "SHA verificado en main: $EXPECTED_SHA"
+
       - uses: pnpm/action-setup@b906affcce14559ad1aafd4ab0e942779e9f58b1 # v4
       - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
         with:
           node-version-file: .nvmrc
           cache: pnpm
-      - name: Desplegar producción desde main
+
+      - name: Desplegar producción (expected_sha / rollback)
         env:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
           VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
           VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+          EXPECTED_SHA: ${{ steps.sha.outputs.expected_sha }}
+          ROLLBACK_REF: ${{ steps.sha.outputs.rollback_ref }}
+          PHASE: ${{ github.event.inputs.phase }}
         run: |
           set -euo pipefail
           VERCEL_TOKEN="$(printf '%s' "$VERCEL_TOKEN" | tr -d '\r\n' | sed 's/^[[:space:]]*//;s/[[:space:]]*$//')"
           mkdir -p .vercel
           printf '{"projectId":"%s","orgId":"%s"}\n' "$VERCEL_PROJECT_ID" "$VERCEL_ORG_ID" > .vercel/project.json
-          npx "$VERCEL_CLI" pull --yes --environment=production --token "$VERCEL_TOKEN"
-          ENV_FILE=.vercel/.env.production.local
-          if [ -f "$ENV_FILE" ]; then
-            grep -Ev '^NEXT_PUBLIC_SITE_(URL|NAME)=' "$ENV_FILE" > "${ENV_FILE}.tmp" || true
-            mv "${ENV_FILE}.tmp" "$ENV_FILE"
+
+          is_dpl_rollback=0
+          if [ -n "$ROLLBACK_REF" ] && { [[ "$ROLLBACK_REF" == dpl_* ]] || [[ "$ROLLBACK_REF" == *".vercel.app"* ]]; }; then
+            is_dpl_rollback=1
           fi
-          {
-            echo 'NEXT_PUBLIC_SITE_URL=https://alexendros.dev'
-            echo 'NEXT_PUBLIC_SITE_NAME=Alexendros'
-          } >> "$ENV_FILE"
-          raw=$(grep '^NEXT_PUBLIC_SITE_URL=' "$ENV_FILE" | tail -n1 | cut -d= -f2- | tr -d '"' || true)
-          case "$raw" in
-            https://*) echo "NEXT_PUBLIC_SITE_URL ok (https, len=${#raw})" ;;
-            *)
-              echo "NEXT_PUBLIC_SITE_URL inválida tras forzar (len=${#raw})." >&2
-              exit 1
-              ;;
-          esac
-          npx "$VERCEL_CLI" build --prod --token "$VERCEL_TOKEN"
-          set +e
-          npx "$VERCEL_CLI" deploy --prebuilt --prod --token "$VERCEL_TOKEN" | tee /tmp/vercel-out.txt
-          deploy_ec=${PIPESTATUS[0]}
-          set -e
-          if [ "$deploy_ec" -ne 0 ]; then
-            echo "vercel deploy falló (exit $deploy_ec). Últimas líneas:" >&2
-            tail -n 40 /tmp/vercel-out.txt >&2 || true
-            exit "$deploy_ec"
+
+          if [ "$is_dpl_rollback" -eq 1 ]; then
+            echo "Rollback por deployment a production: $ROLLBACK_REF"
+            set +e
+            # --target production exige PROMOTE ya validado arriba (ADR-0025).
+            npx "$VERCEL_CLI" redeploy "$ROLLBACK_REF" --target production --token "$VERCEL_TOKEN" | tee /tmp/vercel-out.txt
+            deploy_ec=${PIPESTATUS[0]}
+            set -e
+            if [ "$deploy_ec" -ne 0 ]; then
+              echo "vercel redeploy falló (exit $deploy_ec). Últimas líneas:" >&2
+              tail -n 40 /tmp/vercel-out.txt >&2 || true
+              exit "$deploy_ec"
+            fi
+          else
+            npx "$VERCEL_CLI" pull --yes --environment=production --token "$VERCEL_TOKEN"
+            ENV_FILE=.vercel/.env.production.local
+            if [ -f "$ENV_FILE" ]; then
+              grep -Ev '^NEXT_PUBLIC_SITE_(URL|NAME)=' "$ENV_FILE" > "${ENV_FILE}.tmp" || true
+              mv "${ENV_FILE}.tmp" "$ENV_FILE"
+            fi
+            {
+              echo 'NEXT_PUBLIC_SITE_URL=https://alexendros.dev'
+              echo 'NEXT_PUBLIC_SITE_NAME=Alexendros'
+            } >> "$ENV_FILE"
+            raw=$(grep '^NEXT_PUBLIC_SITE_URL=' "$ENV_FILE" | tail -n1 | cut -d= -f2- | tr -d '"' || true)
+            case "$raw" in
+              https://*) echo "NEXT_PUBLIC_SITE_URL ok (https, len=${#raw})" ;;
+              *)
+                echo "NEXT_PUBLIC_SITE_URL inválida tras forzar (len=${#raw})." >&2
+                exit 1
+                ;;
+            esac
+            npx "$VERCEL_CLI" build --prod --token "$VERCEL_TOKEN"
+            set +e
+            npx "$VERCEL_CLI" deploy --prebuilt --prod --token "$VERCEL_TOKEN" | tee /tmp/vercel-out.txt
+            deploy_ec=${PIPESTATUS[0]}
+            set -e
+            if [ "$deploy_ec" -ne 0 ]; then
+              echo "vercel deploy falló (exit $deploy_ec). Últimas líneas:" >&2
+              tail -n 40 /tmp/vercel-out.txt >&2 || true
+              exit "$deploy_ec"
+            fi
           fi
+
           url=$(grep -Eo 'https://[a-zA-Z0-9.-]+\.vercel\.app[^[:space:]]*' /tmp/vercel-out.txt | tail -n 1 || true)
           if [ -z "$url" ]; then
             url=$(tail -n 1 /tmp/vercel-out.txt)
           fi
-          echo "### Producción Fase ${{ github.event.inputs.phase }}" >> "$GITHUB_STEP_SUMMARY"
-          echo "" >> "$GITHUB_STEP_SUMMARY"
-          echo "- **URL:** $url" >> "$GITHUB_STEP_SUMMARY"
-          echo "- **Commit:** \`$(git rev-parse --short HEAD)\`" >> "$GITHUB_STEP_SUMMARY"
-          echo "- Confirmación MITL + firma de fase: PROMOTE" >> "$GITHUB_STEP_SUMMARY"
+          dpl_id=$(grep -Eo 'dpl_[A-Za-z0-9]+' /tmp/vercel-out.txt | tail -n 1 || true)
+
+          {
+            echo "### Producción Fase ${PHASE}"
+            echo ""
+            echo "- **URL:** $url"
+            echo "- **expected_sha:** \`${EXPECTED_SHA}\`"
+            echo "- **Commit:** \`$(git rev-parse --short HEAD)\`"
+            if [ -n "$dpl_id" ]; then
+              echo "- **deployment_id:** \`${dpl_id}\`"
+            fi
+            if [ -n "$ROLLBACK_REF" ]; then
+              echo "- **rollback_ref:** \`${ROLLBACK_REF}\`"
+            fi
+            echo "- Confirmación MITL + firma de fase: PROMOTE"
+          } >> "$GITHUB_STEP_SUMMARY"

@@ -470,7 +470,7 @@ Camino crítico ~70 h con solape de Fase 4. Sin holgura humana de revisión. Rec
 - [ ]  **P8-5** Revisión de responsive en dispositivos representativos.
 - [ ]  **P8-5** Revisión de contenido, enlaces y ortografía.
 - [x]  Configuración de redirecciones desde dominio o rutas anteriores. — **Resuelto:** no aplica, lanzamiento limpio (ADR-0013); tras el lanzamiento se revisan los 404 en los logs de plataforma.
-- [ ]  **P8-6** Preview MITL Fases 5–7 → firmas; smoke SMTP; `Deploy fase` + `PROMOTE`; tag v1.0 vía pipeline (ADR-0026). Asesoría legal: residual post-v1.0 (ADR-0027; **no** bloquea PROMOTE). — **Solo decisor (ADR-0025).**
+- [ ]  **P8-6** Secuencia canónica (R-P0-05): R-P0 cerrados → SHA + CI → ADR-0029 → preview `expected_sha` → MITL/a11y → smoke SMTP → firmas 5–8 → `PROMOTE` mismo SHA → smoke postprod → tag `v1.0.0` mismo SHA. Asesoría legal residual post-v1.0 (ADR-0027; **no** bloquea PROMOTE). — **Solo decisor tras remediación P0 (ADR-0025).** Ver [docs/handoff-p8-6.md](./docs/handoff-p8-6.md).
 
 **Entregable:** versión 1.0 lista para producción.
 
