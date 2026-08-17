@@ -32,7 +32,9 @@ Sin (2), el gate de go-live **no** está cumplido aunque el job sea verde.
 ## Cómo ejecutar
 
 1. Actions → **Smoke SMTP (go-live)** → Run workflow.
-2. Input `target_url`: origen del deployment, p. ej. `https://….vercel.app` (sin barra final obligatoria; el job normaliza).
+2. Input `target_url`: **solo origen** allowlisteado (sin path/query/credenciales), p. ej. `https://….alexendros-team.vercel.app` o `https://alexendros.dev`.
+   - Permitidos: `alexendros.dev`, `www.alexendros.dev`, `nuevowebsite-alexendrosdev.vercel.app`, `*.alexendros-team.vercel.app`.
+   - Cualquier otro host **aborta** antes de enviar el bypass (evita exfiltración del secreto).
 3. El job envía `x-vercel-protection-bypass` (header; no query string) usando el secreto. No imprime el valor.
 4. Revisar el summary del job: status HTTP y `ok`.
 5. Abrir la bandeja de `operaciones@` y confirmar el mensaje sintético.
@@ -51,6 +53,7 @@ Campos mínimos válidos (Zod): nombre, email de prueba, asunto de la lista cerr
 
 | HTTP | Significado habitual | Acción |
 | --- | --- | --- |
+| Job aborta: host no allowlisteado | `target_url` fuera del proyecto/equipo | Usar URL del deployment del proyecto o apex |
 | Job aborta: falta secreto | Bypass no configurado (R-P0-03) | Crear bypass en Vercel → secret Actions |
 | 401 / 403 | Protección Vercel; bypass inválido o ausente en runtime | Rotar/regenerar bypass; verificar nombre del secret |
 | 503 `unavailable` | Vars SMTP ausentes en el runtime | Sync-env + redeploy |

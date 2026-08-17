@@ -9,7 +9,7 @@ on:
   workflow_dispatch:
     inputs:
       target_url:
-        description: "URL base del deployment READY (preview MITL o production), sin path"
+        description: "Origen allowlisteado (alexendros.dev | *.alexendros-team.vercel.app | nuevowebsite-alexendrosdev.vercel.app), sin path"
         required: true
         type: string
 
@@ -28,11 +28,30 @@ jobs:
         run: |
           set -euo pipefail
 
-          base="${TARGET_URL%/}"
-          if [[ ! "$base" =~ ^https:// ]]; then
-            echo "::error::target_url debe ser https://"
+          # Solo origen https; sin userinfo, query ni fragmento (evita exfiltración del bypass).
+          raw="$(printf '%s' "$TARGET_URL" | tr -d '[:space:]')"
+          if [[ ! "$raw" =~ ^https://[A-Za-z0-9.-]+(:443)?/?$ ]]; then
+            echo "::error::target_url DEBE ser origen https://host[/] sin path, query, fragmento ni credenciales."
             exit 1
           fi
+          host="$(printf '%s' "$raw" | sed -E 's|^https://||; s|/$||; s|:443$||' | tr '[:upper:]' '[:lower:]')"
+          # Allowlist: apex canónico + deployments del proyecto/equipo (NFR-SEC-002).
+          # NO enviar el bypass a orígenes arbitrarios (quien dispara workflow_dispatch no lee secretos en UI).
+          allowed=0
+          case "$host" in
+            alexendros.dev|www.alexendros.dev|nuevowebsite-alexendrosdev.vercel.app)
+              allowed=1
+              ;;
+          esac
+          if [[ "$host" == *.alexendros-team.vercel.app ]]; then
+            allowed=1
+          fi
+          if [ "$allowed" -ne 1 ]; then
+            echo "::error::host '${host}' no está en la allowlist del smoke SMTP."
+            echo "::error::Permitidos: alexendros.dev, www.alexendros.dev, nuevowebsite-alexendrosdev.vercel.app, *.alexendros-team.vercel.app"
+            exit 1
+          fi
+          base="https://${host}"
 
           if [ -z "${VERCEL_AUTOMATION_BYPASS_SECRET:-}" ]; then
             echo "::error::Falta el secreto Actions VERCEL_AUTOMATION_BYPASS_SECRET (R-P0-03)."

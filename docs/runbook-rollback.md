@@ -17,9 +17,9 @@ Preview, Production y el tag `vX.Y.Z` DEBEN usar el **mismo** `expected_sha` (40
 | --- | --- | --- | --- |
 | Deploy normal | SHA candidato | _(vacío)_ | Checkout del SHA → build → deploy |
 | Rollback por tag | SHA al que apunta el tag | `vX.Y.Z` | Verifica que el tag = SHA → build → deploy |
-| Rollback por deployment | SHA del artefacto a restaurar | `dpl_…` o URL `*.vercel.app` | `vercel redeploy` del deployment (sin rebuild) |
+| Rollback por deployment | SHA del artefacto a restaurar | `dpl_…` o URL `*.vercel.app` | `vercel redeploy --target <preview\|production>` (sin rebuild) |
 
-Production **siempre** exige `confirmation=PROMOTE` (ADR-0025), también en rollback.
+Production **siempre** exige `confirmation=PROMOTE` (ADR-0025), también en rollback. El job `preview` fuerza `--target preview` para que un `dpl_*` de Production no se redeploye a production sin gate.
 
 ---
 

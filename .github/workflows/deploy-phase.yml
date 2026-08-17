@@ -84,7 +84,9 @@ jobs:
             echo "::error::HEAD ($head_sha) ≠ expected_sha ($EXPECTED_SHA)."
             exit 1
           fi
-          git fetch origin main --depth=1 2>/dev/null || git fetch origin main
+          # Fetch completo de main: --depth=1 truncaría el historial y rompería
+          # merge-base --is-ancestor cuando expected_sha no es el tip (R-P0-01).
+          git fetch origin main
           if ! git merge-base --is-ancestor "$EXPECTED_SHA" origin/main; then
             echo "::error::expected_sha $EXPECTED_SHA no está en origin/main (trunk-based)."
             exit 1
@@ -126,9 +128,11 @@ jobs:
           fi
 
           if [ "$is_dpl_rollback" -eq 1 ]; then
-            echo "Rollback por deployment: $ROLLBACK_REF"
+            echo "Rollback por deployment a preview: $ROLLBACK_REF"
             set +e
-            npx "$VERCEL_CLI" redeploy "$ROLLBACK_REF" --token "$VERCEL_TOKEN" | tee /tmp/vercel-out.txt
+            # --target preview obliga entorno Preview; sin él, un dpl_* de Production
+            # reutilizaría production y saltaría PROMOTE / Environment GitHub (ADR-0025).
+            npx "$VERCEL_CLI" redeploy "$ROLLBACK_REF" --target preview --token "$VERCEL_TOKEN" | tee /tmp/vercel-out.txt
             deploy_ec=${PIPESTATUS[0]}
             set -e
             if [ "$deploy_ec" -ne 0 ]; then
@@ -236,7 +240,9 @@ jobs:
             echo "::error::HEAD ($head_sha) ≠ expected_sha ($EXPECTED_SHA)."
             exit 1
           fi
-          git fetch origin main --depth=1 2>/dev/null || git fetch origin main
+          # Fetch completo de main: --depth=1 truncaría el historial y rompería
+          # merge-base --is-ancestor cuando expected_sha no es el tip (R-P0-01).
+          git fetch origin main
           if ! git merge-base --is-ancestor "$EXPECTED_SHA" origin/main; then
             echo "::error::expected_sha $EXPECTED_SHA no está en origin/main (trunk-based)."
             exit 1
