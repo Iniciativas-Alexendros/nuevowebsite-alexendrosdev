@@ -184,6 +184,7 @@ Unidades: P8-1 checklist · P8-2 a11y · P8-3 Lighthouse multipágina · P8-4 SE
 - [x]  [docs/runbook-rollback.md](./docs/runbook-rollback.md) — R-P0-02
 - [x]  [docs/runbook-smoke-smtp.md](./docs/runbook-smoke-smtp.md) — R-P0-03
 - [x]  [docs/remediation-p1-backlog.md](./docs/remediation-p1-backlog.md) — P1 ordenado
+- [x]  [docs/vercel-build-warnings.md](./docs/vercel-build-warnings.md) — warnings Vercel y fixes
 - [x]  [docs/testing-strategy.md](./docs/testing-strategy.md) — **P7z-2**
 
 ---
