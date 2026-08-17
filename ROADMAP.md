@@ -136,7 +136,7 @@ Camino crítico ~70 h con solape de Fase 4. Sin holgura humana de revisión. Rec
 **Tareas:**
 
 - [ ]  Inicializar Next.js con App Router y TypeScript estricto (`strict: true`, sin `any` implícito; ADR-0001, ADR-0002). El agente ejecuta el scaffold; el humano no pega plantillas a mano.
-- [ ]  Configurar pnpm 10 y lockfile; fijar Node 22 LTS con `.nvmrc`, `engines` y `packageManager` (ADR-0002, ADR-0017).
+- [ ]  Configurar pnpm 10 y lockfile; fijar Node 24 LTS con `.nvmrc`, `engines` y `packageManager` (ADR-0002, ADR-0017; runtime 24.x — ADR-0031).
 - [ ]  Configurar Tailwind CSS (ADR-0004).
 - [ ]  Inicializar shadcn/ui sin importar componentes innecesarios (ADR-0004).
 - [ ]  Configurar alias de importación.

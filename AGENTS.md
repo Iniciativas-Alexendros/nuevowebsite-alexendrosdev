@@ -267,7 +267,7 @@ Batería 7.3 del [Plan de verificación y desarrollo de documentos pendientes �
 
 ## Cursor Cloud specific instructions
 
-Servicio único: app Next.js 16 (App Router) + React 19 + TypeScript, pnpm 10 / Node 22. Comandos canónicos en `package.json` (referencia; no duplicar): `pnpm check`, `pnpm test`, `pnpm build`, `pnpm test:e2e`, `pnpm ci`, `pnpm ci:fast`, `pnpm ci:full`. El update script del entorno ya ejecuta `pnpm install --frozen-lockfile` al arrancar el pod.
+Servicio único: app Next.js 16 (App Router) + React 19 + TypeScript, pnpm 10 / Node 24. Comandos canónicos en `package.json` (referencia; no duplicar): `pnpm check`, `pnpm test`, `pnpm build`, `pnpm test:e2e`, `pnpm ci`, `pnpm ci:fast`, `pnpm ci:full`. El update script del entorno ya ejecuta `pnpm install --frozen-lockfile` al arrancar el pod.
 
 Notas no obvias para arrancar/probar:
 

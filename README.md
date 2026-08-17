@@ -69,7 +69,7 @@ NO DEBE tratarse como plataforma SaaS ni como e-commerce.
 
 **Proyectos P0:** FRONT Valencia, Gráficas Nasve, vcf-cribador, [alexendros.me](https://alexendros.me).
 
-**Stack cerrado:** Next.js App Router, TypeScript estricto, pnpm 10, Node 22, Tailwind + tokens OKLCH + shadcn/ui, Vitest + Playwright, Vercel, Proton SMTP para el único endpoint.
+**Stack cerrado:** Next.js App Router, TypeScript estricto, pnpm 10, Node 24, Tailwind + tokens OKLCH + shadcn/ui, Vitest + Playwright, Vercel, Proton SMTP para el único endpoint.
 
 El MVP NO incluye autenticación, base de datos, CMS, checkout, Prisma, Supabase, newsletter ni analítica.
 

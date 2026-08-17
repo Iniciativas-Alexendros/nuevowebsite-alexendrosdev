@@ -109,7 +109,7 @@ Ruta: ./DECISIONS.md
 - **ADR-0028** — Diferir capturas de proyecto (DES-07) a Fase 10. *(aceptada, 16-08-2026)*
 - **ADR-0029** — Dominio canónico apex y migración al proyecto Vercel correcto. *(aceptada, 16-08-2026)*
 - **ADR-0030** — Gate anti-hex en CI, CSP de producción sin `unsafe-eval`, HSTS `includeSubDomains`+`preload`. *(aceptada, 17-08-2026)*
-- **ADR-0031** — Runtime Node y majors de Actions fijados. *(aceptada, 18-08-2026)*
+- **ADR-0031** — Runtime Node 24 LTS y majors de Actions fijados. *(aceptada, 18-08-2026; enmienda app 24.x mismo día)*
 
 ---
 
@@ -1029,27 +1029,28 @@ Ruta: ./DECISIONS.md
 </details>
 
 <details>
-<summary>**ADR-0031** — Runtime Node y majors de Actions fijados</summary>
+<summary>**ADR-0031** — Runtime Node 24 LTS y majors de Actions fijados</summary>
 
-- Estado: Aceptada (18-08-2026)
+- Estado: aceptada
+- Fecha: 2026-08-18
 - Decisores: Alexendros (con contraste del asistente IA)
-- Relacionado con: ADR-0025, DEC-AGENTS-04, AGENTS §8, `.github/workflows/*`
+- Relacionado con: ADR-0002, ADR-0025, DEC-AGENTS-04, AGENTS §8, `.github/workflows/*`, `.nvmrc`
 - Contexto:
 	- GitHub depreca node20 en runners; las actions v4 generan warnings en cada run.
-	- App en Node 22 LTS (hasta 04-2027). ADR prevista como post-v1.0; se adelanta al cierre pre-v1.0 por decisión del 18-08.
+	- Node 24 LTS es el default actual de GitHub y Vercel; mantener Node 22 en app generaba desalineación panel↔repo (VW-2).
 - Decisión:
 	1. **Actions:** checkout v7.0.1 / setup-node v7.0.0 / pnpm-action-setup v6.0.10 pineadas por SHA en todos los workflows; revisión trimestral o Dependabot solo para `.github/workflows`.
-	2. **App:** Node 22.x hasta post-v1.0; salto a Node 24 LTS como primera tarea post-release (`.nvmrc` = fuente única; `engines`, Vercel y `@types/node` son espejos en el mismo commit).
-	3. **Prohibido** mezclar bump de actions y bump de Node app en un mismo PR.
+	2. **App:** Node **24.x** LTS en `.nvmrc` (fuente única), `engines`, `@types/node`, CI (`node-version-file: .nvmrc`) y panel Vercel → **24.x** (espejos en el mismo commit/PR).
+	3. **Enmienda 18-08-2026:** el salto de app a Node 24 se adelanta al cierre pre-v1.0 (mismo PR que actions bump); sustituye la cláusula «post-v1.0» de la redacción inicial.
 - Alternativas consideradas:
-	- Bump simultáneo app + actions: rechazado; aumenta riesgo en ventana de go-live.
+	- App en 22 + Actions en node24: rechazado tras enmienda; mismatch Vercel y doble estándar local/CI/producción.
 	- Mantener v4 con warnings: rechazado; ruido en CI y deprecación inminente.
 - Consecuencias positivas:
-	- Cero warnings de runtime en Actions hasta ~2028; futuros warnings de deprecación = P1 con ADR.
+	- Un solo major Node en Actions, CI, local y Vercel; cero warnings de runtime en Actions hasta ~2028.
 - Consecuencias negativas:
-	- Dos PRs separados para actions vs app Node; coordinación post-v1.0.
+	- Validación extra pre-PROMOTE (CI + preview MITL) por cambio de runtime app.
 - Verificación:
-	- CI 9/9 verde sin anotaciones de deprecación + build Vercel sin aviso de versión Node.
+	- CI 9/9 verde sin anotaciones de deprecación + build Vercel sin aviso de versión Node + `node -v` = 24 en runners.
 - Fecha de revisión:
 	- Trimestral o al primer warning de deprecación en workflows.
 
