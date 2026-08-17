@@ -19,13 +19,15 @@ export default function StackPage() {
 
   return (
     <>
+      {/* Padding acotado: el h1 es LCP en lab móvil; py-16/24 empujaba pintura (OBJ-005). */}
       <PageHeader
+        className="py-12 lg:py-16"
         title="Stack"
         description="Contexto de uso por categoría. Nombres en texto; sin autoevaluación numérica."
       />
-      <Section deferPaint>
+      <Section className="py-8 lg:py-12">
         <Container>
-          <StackGroup technologies={technologies} />
+          <StackGroup technologies={technologies} deferBelowFold />
         </Container>
       </Section>
     </>

@@ -7,7 +7,8 @@ import localFont from "next/font/local";
  */
 export const fontSans = localFont({
   src: "../fonts/inter/InterVariable.woff2",
-  display: "swap",
+  // optional: el LCP de rutas densas (/stack) es el h1 Inter; swap retrasaba ~100 ms lab (OBJ-005).
+  display: "optional",
   variable: "--font-inter",
   weight: "400 700",
   adjustFontFallback: "Arial",
