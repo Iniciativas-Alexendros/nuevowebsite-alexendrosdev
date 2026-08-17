@@ -41,9 +41,9 @@ Fuente: API `GET /v9/projects/…` (Build & Deployment / Framework Settings).
 | Ignore Build Step (API proyecto) | `null` | — | OK: manda `vercel.json` → `ignoreCommand: exit 0` (ADR-0025); CANCELED en PR lo confirma |
 | Production Branch | `main` | `main` | OK |
 | Function region | `iad1` | cualquiera estable | OK |
-| **Web Analytics** | **habilitado** (id presente) | MVP: sin analítica | **Desviar / apagar** (CONSTITUTION / SPECS) |
-| **Speed Insights** | **habilitado** (id presente, sin datos) | MVP: sin analítica | **Desviar / apagar** |
+| **Web Analytics** | **desactivado** vía `POST /web/insights/toggle` `{value:false}` (17-08) | MVP: sin analítica | OK (id puede permanecer en API; sin paquete `@vercel/analytics` en repo) |
+| **Speed Insights** | **desactivado** vía `POST /speed-insights/toggle` `{value:false}` (17-08) | MVP: sin analítica | OK (id puede permanecer; sin `@vercel/speed-insights`) |
 
 ### Acción residual (decisor)
 
-En el mismo panel (o Product → Analytics / Speed Insights): **desactivar** Web Analytics y Speed Insights hasta que exista disparador P1 + ADR. No son Framework Settings estrictos, pero viven en el proyecto y contradicen el alcance P0.
+Si el panel sigue mostrando «Awaiting Data», confirmar con **Disable** en Analytics / Speed Insights (UI). En código no hay paquetes de analítica; los toggles API ya están en `false`.
