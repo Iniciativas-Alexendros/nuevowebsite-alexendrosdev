@@ -242,23 +242,25 @@ Batería 7.3 del [Plan de verificación y desarrollo de documentos pendientes �
 - En modo plan: entregar ficha AGENTS §3 y plan; no implementar hasta confirmación explícita del decisor.
 - Ante dependencias nuevas, presentar alternativas viables antes de pedir autorización.
 - Tras cerrar trabajo de fase, documentar en el hub Notion del proyecto con el formato/estructura existentes y actualizar el calendario de fases.
-- En entidades de proyecto: omitir `images[]` hasta tener capturas reales; no dejar rutas placeholder.
+- En entidades de proyecto: omitir `images[]` hasta tener capturas reales; no dejar rutas placeholder (DES-07 diferido vía ADR-0028).
 - Asuntos cerrados del formulario de contacto: «Proyecto de software · Programación de aplicaciones», «Portal · Blog · Portafolio», «Formación en Nuevas Tecnologías · Herramientas IA para la empresa», «Auditoría de seguridad y posicionamiento», «Asesoramiento tecnológico · Consultor especializado», «Sistemas profesionales · Flujos de trabajos automatizables».
 - Si un bloqueo es un secreto o token de terceros que solo el decisor puede crear, dejar residual pendiente y continuar a la siguiente fase con prompt de handoff; no estancar la sesión.
 - En `/stack`: agrupar por categoría sin porcentajes subjetivos.
 - Email de autor/firma en commits y GitHub: `operaciones@alexendros.dev` (no Proton personal, noreply ni `hola@` en commits). Mailto público: `hola@` (catch-all). From/To/auth SMTP y commits: `operaciones@`.
+- Tests/gates con validadores y métricas reales; no falsear umbrales ni “easy green”; cambiar un umbral canónico (p. ej. LCP) requiere ADR del decisor.
+- Preview MITL / Deploy fase: validar tip o SHA aprobado de `main`; no dar por bueno un alias Vercel stale.
 
 ## Learned Workspace Facts
 
-- Hub Notion del proyecto: https://app.notion.com/p/3bb7ded224cb807c9101e14ef41e6dc5 ; ficha Fase 5: https://app.notion.com/p/1965e7f8eb784df0ac7d8490f833fed8 ; ficha Fase 6: https://app.notion.com/p/901e1eba9e874304af08f5a10daddf54 ; ficha Fase 7: https://app.notion.com/p/7d6d6b9cad00464d8425cdcd25c34efe ; ficha Fase 8: https://app.notion.com/p/3be7ded224cb81a79932f6630cbc648f
+- Hub Notion del proyecto: https://app.notion.com/p/3bb7ded224cb807c9101e14ef41e6dc5 ; ficha Fase 5: https://app.notion.com/p/1965e7f8eb784df0ac7d8490f833fed8 ; ficha Fase 6: https://app.notion.com/p/901e1eba9e874304af08f5a10daddf54 ; ficha Fase 7: https://app.notion.com/p/7d6d6b9cad00464d8425cdcd25c34efe ; ficha Fase 7.z: https://app.notion.com/p/3be7ded224cb818ba8ced8c3b69fad6f ; ficha Fase 8: https://app.notion.com/p/3be7ded224cb81a79932f6630cbc648f
 - Contenido tipado en `src/content/*` (servicios, proyectos, stack, perfil, site, legal); las páginas marketing se alimentan desde ahí.
-- Portfolio P0: rutas `/proyectos`, `/stack`, `/sobre-mi` desde contenido published; `/proyectos/[slug]` y MDX son P1 (Fase 9).
+- Portfolio P0: rutas `/proyectos`, `/stack`, `/sobre-mi` (consume `profile.ts` published); `/proyectos/[slug]` y MDX son P1 (Fase 9).
 - Home: `FeaturedProjects` / `FeaturedStack` deben permanecer ligeros (OBJ-005); cards/badges de dominio completos viven en las páginas de portfolio.
 - Reserva Cal.com: solo enlace a `https://cal.com/alexendros` (sin script de terceros).
-- Envío de contacto: Proton SMTP vía `nodemailer` en `src/lib/server/` (ADR-0011); org secrets `PROTON_SMTP_HOST`/`PORT`, `PROTON_MAIL_FROM` (`operaciones@` = To+From+SMTP_USER), `PROTON_SMTP_TOKEN` (no Bridge); mailto público `hola@` (catch-all); sync a Vercel con `sync-env-vercel.yml` (CLI Vercel fijada) → vars runtime `SMTP_*`.
-- Residual Fase 5: smoke SMTP real pendiente de sync-env + redeploy; sin config el formulario degrada a 503.
-- Despliegue Vercel (ADR-0025): sin preview por PR; `ignoreCommand` en `vercel.json`; Lighthouse CI local; tras integrar la fase en `main` → preview MITL → firma → production con `PROMOTE`.
-- Legales: aviso legal y privacidad `published` (Fase 7 / #48); asesoría externa residual **post-v1.0** (ADR-0027; no bloquea PROMOTE). Fase activa: 8 (hardening → v1.0) + 7.z.
+- Envío de contacto: Proton SMTP vía `nodemailer` en `src/lib/server/` (ADR-0011); org secrets `PROTON_SMTP_HOST`/`PORT`, `PROTON_MAIL_FROM` (`operaciones@` = To+From+SMTP_USER), `PROTON_SMTP_TOKEN` (no Bridge); mailto público `hola@` (catch-all); sync a Vercel con `sync-env-vercel.yml` → vars runtime `SMTP_*`. Smoke MITL requiere bypass de protección Vercel (`VERCEL_AUTOMATION_BYPASS_SECRET`); sin SMTP el formulario degrada a 503.
+- Despliegue Vercel (ADR-0025): sin preview por PR; Environments GitHub solo `Preview` + `Production` (nunca `phase-preview`); Deploy fase con `expected_sha`; Lighthouse CI local; tras integrar la fase en `main` → preview MITL → firma → production con `PROMOTE`. Los aliases estables (`*.vercel.app` / `git-main`) no siempre siguen al preview de fase.
+- Dominio canónico apex `https://alexendros.dev` (ADR-0029); puede seguir en el proyecto Vercel legacy `website-alexendrosdev` hasta migrar.
+- Legales: aviso legal y privacidad `published` (Fase 7 / #48); asesoría externa residual **post-v1.0** (ADR-0027). Fase 7.z integrada; Fase 8 activa con P8-6 go-live pendiente; **no firmar Fase 8 ni PROMOTE** hasta remediación P0 (expected_sha, rollback, SMTP bypass, LCP lab ≤2500 ms OBJ-005, secuencia única de lanzamiento).
 
 ## Cursor Cloud specific instructions
 
