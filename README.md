@@ -164,7 +164,6 @@ Unidades: P8-1 checklist · P8-2 a11y · P8-3 Lighthouse multipágina · P8-4 SE
 
 ## Residuales humanos (bloquean go-live / PROMOTE)
 
-- [ ]  Secreto Actions `VERCEL_AUTOMATION_BYPASS_SECRET` (R-P0-03; [runbook SMTP](./docs/runbook-smoke-smtp.md)).
 - [ ]  Simulacro rollback en preview (R-P0-02; [runbook](./docs/runbook-rollback.md)).
 - [ ]  SHA candidato registrado + CI verde + Deploy preview (`expected_sha`) MITL Fases 5–8.
 - [ ]  Smoke SMTP real + correo en `operaciones@`.

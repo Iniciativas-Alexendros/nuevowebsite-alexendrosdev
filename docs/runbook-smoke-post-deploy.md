@@ -11,9 +11,8 @@ Comprueba un deployment ya publicado: ocho rutas P0 (200), cabeceras de segurida
 1. Preview MITL o producción con SHA conocido.
 2. GitHub Actions → **Smoke post-deploy** → `workflow_dispatch`.
 3. `target_url`: origen `https://host` **sin path** (misma allowlist que el smoke SMTP).
-4. Requiere el secreto `VERCEL_AUTOMATION_BYPASS_SECRET` (Protection Bypass for Automation).
 
-El job no imprime el bypass ni el cuerpo de `POST /api/contact`.
+El job no imprime el cuerpo de `POST /api/contact`.
 
 ## Criterio de OK
 
@@ -27,7 +26,7 @@ El job no imprime el bypass ni el cuerpo de `POST /api/contact`.
 
 | Señal | Qué revisar |
 | --- | --- |
-| 401/403 | Bypass secret o Deployment Protection |
+| 401/403 | Deployment Protection activa; deshabilitar o usar URL pública |
 | CSP con `unsafe-eval` | `vercel.json` / `src/lib/security-headers.ts` (ADR-0030) |
 | HSTS incompleto | Mismo módulo; no enviar a hstspreload.org hasta migrar el dominio (ADR-0029) |
 | Contacto ≠ 200/503 | Logs de función **sin** pegar PII; no es el smoke SMTP |

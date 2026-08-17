@@ -33,7 +33,6 @@
 
 ## Pendiente decisor (bloquea go-live)
 
-- [ ] Crear Protection Bypass for Automation → secret Actions `VERCEL_AUTOMATION_BYPASS_SECRET`
 - [ ] Completar simulacro rollback en preview ([runbook-rollback.md](./runbook-rollback.md))
 - [ ] Migración dominio ADR-0029
 - [ ] MITL + firmas + PROMOTE (nunca auto)

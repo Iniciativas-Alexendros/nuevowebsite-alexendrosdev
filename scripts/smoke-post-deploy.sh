@@ -4,7 +4,6 @@
 set -euo pipefail
 
 TARGET_URL="${TARGET_URL:-}"
-VERCEL_AUTOMATION_BYPASS_SECRET="${VERCEL_AUTOMATION_BYPASS_SECRET:-}"
 
 if [ -z "$TARGET_URL" ]; then
   echo "::error::TARGET_URL es obligatorio (origen https://host[/] sin path)."
@@ -34,14 +33,8 @@ fi
 
 base="https://${host}"
 
-if [ -z "${VERCEL_AUTOMATION_BYPASS_SECRET}" ]; then
-  echo "::error::Falta VERCEL_AUTOMATION_BYPASS_SECRET (R-P0-03)."
-  exit 1
-fi
-auth_header=(-H "x-vercel-protection-bypass: ${VERCEL_AUTOMATION_BYPASS_SECRET}")
-
 header_dump() {
-  # Lista nombres de cabecera; nunca el valor del bypass.
+  # Lista nombres de cabecera; nunca valores sensibles.
   tr -d '\r' | awk -F': ' 'tolower($1) ~ /^(strict-transport-security|content-security-policy|x-content-type-options|referrer-policy|permissions-policy|x-frame-options|content-type|location)$/ { print tolower($1) "=" $2 }'
 }
 
@@ -52,7 +45,7 @@ echo "Smoke post-deploy contra ${base}"
 
 for path in "${routes[@]}"; do
   tmp="$(mktemp)"
-  http_code="$(curl -sS -D "$tmp" -o /dev/null -w '%{http_code}' "${auth_header[@]}" "${base}${path}")"
+  http_code="$(curl -sS -D "$tmp" -o /dev/null -w '%{http_code}' "${base}${path}")"
   echo "GET ${path} → HTTP ${http_code}"
   if [ "$http_code" != "200" ]; then
     echo "::error::${path} esperaba 200"
@@ -88,7 +81,7 @@ done
 
 # Redirect www → apex solo cuando el target es producción.
 if [ "$host" = "alexendros.dev" ]; then
-  www_code="$(curl -sS -o /dev/null -w '%{http_code}' "${auth_header[@]}" -I "https://www.alexendros.dev/")"
+  www_code="$(curl -sS -o /dev/null -w '%{http_code}' -I "https://www.alexendros.dev/")"
   echo "HEAD https://www.alexendros.dev/ → HTTP ${www_code}"
   if [[ "$www_code" != "301" && "$www_code" != "308" && "$www_code" != "307" && "$www_code" != "302" ]]; then
     echo "::error::www no redirige al apex (HTTP ${www_code})"
@@ -97,7 +90,7 @@ if [ "$host" = "alexendros.dev" ]; then
 fi
 
 home_tmp="$(mktemp)"
-curl -sS "${auth_header[@]}" -o "$home_tmp" "${base}/"
+curl -sS -o "$home_tmp" "${base}/"
 if ! grep -q 'lang="es"' "$home_tmp"; then
   echo "::error::home sin lang=es"
   fail=1
@@ -109,7 +102,7 @@ fi
 rm -f "$home_tmp"
 
 sitemap_tmp="$(mktemp)"
-sitemap_code="$(curl -sS "${auth_header[@]}" -o "$sitemap_tmp" -w '%{http_code}' "${base}/sitemap.xml")"
+sitemap_code="$(curl -sS -o "$sitemap_tmp" -w '%{http_code}' "${base}/sitemap.xml")"
 echo "GET /sitemap.xml → HTTP ${sitemap_code}"
 if [ "$sitemap_code" != "200" ]; then
   echo "::error::sitemap.xml no es 200"
@@ -122,7 +115,7 @@ fi
 rm -f "$sitemap_tmp"
 
 # Honeypot: 200 neutro sin SMTP. No imprimir el cuerpo (puede incluir message).
-contact_code="$(curl -sS -o /dev/null -w '%{http_code}' "${auth_header[@]}" \
+contact_code="$(curl -sS -o /dev/null -w '%{http_code}' \
   -X POST "${base}/api/contact" \
   -H 'content-type: application/json' \
   -H 'accept: application/json' \

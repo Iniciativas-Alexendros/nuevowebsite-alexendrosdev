@@ -24,5 +24,4 @@ jobs:
       - name: Ejecutar smoke
         env:
           TARGET_URL: ${{ github.event.inputs.target_url }}
-          VERCEL_AUTOMATION_BYPASS_SECRET: ${{ secrets.VERCEL_AUTOMATION_BYPASS_SECRET }}
         run: bash scripts/smoke-post-deploy.sh
