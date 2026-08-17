@@ -296,7 +296,7 @@ La configuración global sigue el patrón de variables CSS vinculadas a tokens d
 | `--surface-sunken` | `neutral-100` | `oklch(0.11 0.006 260)` |
 | `--surface-inverse` | `neutral-950` | `neutral-50` |
 | `--foreground-muted` | `neutral-600` | `neutral-400` |
-| `--foreground-subtle` | `neutral-500` | `neutral-500` |
+| `--foreground-subtle` | `neutral-500` | `oklch(0.65 0.006 260)` (AA sobre `--surface-raised`) |
 | `--primary` | `brand-600` | `brand-400` |
 | `--primary-foreground` | `neutral-0` | `neutral-950` |
 | `--secondary` | `neutral-100` | `neutral-800` |
