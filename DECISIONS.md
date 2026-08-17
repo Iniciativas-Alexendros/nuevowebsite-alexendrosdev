@@ -109,6 +109,7 @@ Ruta: ./DECISIONS.md
 - **ADR-0028** — Diferir capturas de proyecto (DES-07) a Fase 10. *(aceptada, 16-08-2026)*
 - **ADR-0029** — Dominio canónico apex y migración al proyecto Vercel correcto. *(aceptada, 16-08-2026)*
 - **ADR-0030** — Gate anti-hex en CI, CSP de producción sin `unsafe-eval`, HSTS `includeSubDomains`+`preload`. *(aceptada, 17-08-2026)*
+- **ADR-0031** — Runtime Node y majors de Actions fijados. *(aceptada, 18-08-2026)*
 
 ---
 
@@ -1021,8 +1022,35 @@ Ruta: ./DECISIONS.md
 - Plan de reversión:
 	- ADR sustituto; no hay override silencioso de gates (quality-gates §9).
 - Seguridad y privacidad:
-	- El smoke no loguea cuerpos ni el bypass secret.
+	- El smoke no loguea cuerpos de petición.
 - Fecha de revisión:
 	- Tras el primer preview MITL del SHA posterior a este ADR, o a 3 meses.
+
+</details>
+
+<details>
+<summary>**ADR-0031** — Runtime Node y majors de Actions fijados</summary>
+
+- Estado: Aceptada (18-08-2026)
+- Decisores: Alexendros (con contraste del asistente IA)
+- Relacionado con: ADR-0025, DEC-AGENTS-04, AGENTS §8, `.github/workflows/*`
+- Contexto:
+	- GitHub depreca node20 en runners; las actions v4 generan warnings en cada run.
+	- App en Node 22 LTS (hasta 04-2027). ADR prevista como post-v1.0; se adelanta al cierre pre-v1.0 por decisión del 18-08.
+- Decisión:
+	1. **Actions:** checkout v7.0.1 / setup-node v7.0.0 / pnpm-action-setup v6.0.10 pineadas por SHA en todos los workflows; revisión trimestral o Dependabot solo para `.github/workflows`.
+	2. **App:** Node 22.x hasta post-v1.0; salto a Node 24 LTS como primera tarea post-release (`.nvmrc` = fuente única; `engines`, Vercel y `@types/node` son espejos en el mismo commit).
+	3. **Prohibido** mezclar bump de actions y bump de Node app en un mismo PR.
+- Alternativas consideradas:
+	- Bump simultáneo app + actions: rechazado; aumenta riesgo en ventana de go-live.
+	- Mantener v4 con warnings: rechazado; ruido en CI y deprecación inminente.
+- Consecuencias positivas:
+	- Cero warnings de runtime en Actions hasta ~2028; futuros warnings de deprecación = P1 con ADR.
+- Consecuencias negativas:
+	- Dos PRs separados para actions vs app Node; coordinación post-v1.0.
+- Verificación:
+	- CI 9/9 verde sin anotaciones de deprecación + build Vercel sin aviso de versión Node.
+- Fecha de revisión:
+	- Trimestral o al primer warning de deprecación en workflows.
 
 </details>
