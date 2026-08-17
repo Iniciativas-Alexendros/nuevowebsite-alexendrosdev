@@ -7,11 +7,13 @@ import { Section } from "@/components/layout/section";
 import { Alert } from "@/components/ui/alert";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { Checkbox } from "@/components/ui/checkbox";
 import { Field } from "@/components/ui/field";
 import { Icon } from "@/components/ui/icon";
 import { IconButton } from "@/components/ui/icon-button";
 import { Input } from "@/components/ui/input";
 import { Link } from "@/components/ui/link";
+import { Select } from "@/components/ui/select";
 import { Separator } from "@/components/ui/separator";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Spinner } from "@/components/ui/spinner";
@@ -150,6 +152,17 @@ export default function CatalogPage() {
             <Field id="catalog-message" label="Mensaje">
               <Textarea placeholder="Escribe tu mensaje…" />
             </Field>
+            <Field id="catalog-subject" label="Asunto">
+              <Select defaultValue="">
+                <option value="">Selecciona una opción</option>
+                <option value="consulta">Consulta</option>
+                <option value="proyecto">Proyecto</option>
+              </Select>
+            </Field>
+            <label className="flex items-start gap-3 text-sm text-foreground">
+              <Checkbox name="catalog-consent" />
+              <span>Acepto el tratamiento de datos de ejemplo (catálogo).</span>
+            </label>
             <Input disabled placeholder="Campo deshabilitado" />
           </section>
 

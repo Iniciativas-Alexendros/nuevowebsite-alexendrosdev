@@ -190,6 +190,7 @@ Las carpetas que no sean necesarias para una funcionalidad aprobada no deben cre
 - No realiza peticiones HTTP ni lee variables de entorno.
 - No importa módulos de servidor.
 - Mantiene la accesibilidad y las variantes del componente.
+- P0 implementados (nativos, Server Components salvo interacción demostrable): Alert, Badge, Button, Checkbox, Field, FieldError, Icon, IconButton, Input, Label, Link, Select, Separator, Skeleton, Spinner, Textarea. El resto de DESIGN §8.1 queda fuera del MVP.
 
 ## 4.3. src/components/layout
 

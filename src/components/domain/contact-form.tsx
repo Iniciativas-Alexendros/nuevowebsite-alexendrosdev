@@ -4,9 +4,11 @@ import { useId, useState, type FormEvent } from "react";
 
 import { Alert } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
+import { Checkbox } from "@/components/ui/checkbox";
 import { Field } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { Link } from "@/components/ui/link";
+import { Select } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { CONTACT_SUBJECTS, type ContactSubject } from "@/content/contact-subjects";
 import { contactFormSchema, type ContactApiResponse } from "@/lib/validations/contact-form";
@@ -94,7 +96,7 @@ export function ContactForm() {
 
   return (
     <form
-      className="flex flex-col gap-6"
+      className="relative flex flex-col gap-6"
       onSubmit={onSubmit}
       noValidate
       aria-busy={status.kind === "loading" || undefined}
@@ -151,9 +153,8 @@ export function ContactForm() {
         label="Asunto o tipo de consulta"
         error={fieldErrors.subject?.[0]}
       >
-        <select
+        <Select
           name="subject"
-          className="flex h-11 w-full rounded-md border border-input bg-surface-raised px-3 py-2 text-base transition-colors disabled:cursor-not-allowed disabled:bg-disabled disabled:text-disabled-foreground aria-invalid:border-destructive"
           value={values.subject}
           onChange={(event) =>
             setValues((prev) => ({
@@ -169,7 +170,7 @@ export function ContactForm() {
               {subject}
             </option>
           ))}
-        </select>
+        </Select>
       </Field>
 
       <Field
@@ -189,10 +190,7 @@ export function ContactForm() {
       </Field>
 
       {/* Honeypot: oculto visualmente; no anunciar a AT. */}
-      <div
-        className="absolute -left-[9999px] top-auto h-px w-px overflow-hidden"
-        aria-hidden="true"
-      >
+      <div className="honeypot-offscreen" aria-hidden="true">
         <label htmlFor={`${formId}-website`}>Sitio web</label>
         <input
           id={`${formId}-website`}
@@ -207,10 +205,8 @@ export function ContactForm() {
 
       <div className="flex flex-col gap-2">
         <label className="flex items-start gap-3 text-sm text-foreground">
-          <input
-            type="checkbox"
+          <Checkbox
             name="consent"
-            className="mt-1 h-4 w-4 rounded border-input"
             checked={values.consent}
             onChange={(event) => setValues((prev) => ({ ...prev, consent: event.target.checked }))}
             disabled={status.kind === "loading"}
