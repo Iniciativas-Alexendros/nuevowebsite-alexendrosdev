@@ -1,5 +1,4 @@
-import { technologySchema } from "@/lib/validations/content";
-import type { Technology } from "@/lib/validations/content";
+import { technologySchema, type Technology } from "@/lib/validations/content";
 
 export const technologies: Technology[] = [
   technologySchema.parse({

@@ -182,17 +182,44 @@ Definir tokens de intención, no de tonalidad:
 --disabled-foreground
 ```
 
-#### Para cada token se documentará:
+#### Fichas por token (cerradas 17-08-2026)
 
-- [ ] Significado funcional.
-- [ ] Valores para `:root` y `.dark`.
-- [ ] Combinaciones permitidas de fondo y primer plano.
-- [ ] Estados de interacción relacionados.
-- [ ] Ratio mínimo de contraste exigido.
-- [ ] Componentes que pueden consumirlo.
-- [ ] Casos en los que no debe utilizarse.
+Tema por `prefers-color-scheme` (ADR-0016): `:root` es claro; la media query oscura lo sobrescribe. No hay clase `.dark` ni JS de tema. Valores claro/oscuro: tabla «asignación por tema» más abajo.
 
-La configuración global seguirá el patrón de variables CSS vinculadas a tokens de Tailwind, con tema claro y oscuro definidos mediante valores OKLCH. Ese enfoque está respaldado por la documentación actual de shadcn/ui.
+**Contraste:** pares fondo/primer plano de la tabla de asignación cumplen WCAG AA (≥ 4,5:1 texto normal). Cuerpo largo: `--foreground` sobre `--background` ≥ 7:1 (AAA, DES-08). Texto sobre `--primary` / `--destructive` / `--success` / `--info` usa el `*-foreground` emparejado; no improvisar.
+
+**Anti-usos comunes (todos los tokens):** no hex/rgb/hsl ni literales de radio/sombra en componentes (DESIGN §13). No usar un primitivo (`--color-brand-600`) en UI; siempre el semántico. No mezclar un fondo con un primer plano de otra familia (p. ej. `--primary` + `--muted-foreground`).
+
+| Token | Significado | Combinaciones | Consumidores | No usar para |
+| --- | --- | --- | --- | --- |
+| `--background` | Lienzo de página | + `--foreground` (AAA cuerpo); + `--foreground-muted` (AA secundario) | `body`, `Section` | Superficies elevadas (usar `--surface*`) |
+| `--foreground` | Texto principal | Sobre `--background` / `--surface` / `--surface-raised` | Prose, headings, Label | Texto sobre `--primary` o estado (usar `*-foreground`) |
+| `--surface` | Superficie de sección | + `--foreground` | `Section` alternativa, paneles | Página completa (usar `--background`) |
+| `--surface-raised` | Superficie elevada (card, control) | + `--foreground`; borde `--border` | Input, Select, Textarea, cards | Overlay modal (usar `--overlay`) |
+| `--surface-sunken` | Superficie hundida (pozo) | + `--foreground` | Pozos de código, zonas retraídas | Controles interactivos |
+| `--surface-inverse` | Inversión de lienzo | + texto que contraste (p. ej. `--background` como fg) | Casos excepcionales de inversión | Texto de marca o enlaces |
+| `--foreground-muted` | Texto secundario | Sobre `--background` / `--surface` (AA) | Ayuda de Field, metadatos | Cuerpo largo (DES-08 exige `--foreground`) |
+| `--foreground-subtle` | Texto terciario / placeholder | Sobre `--surface-raised` | `placeholder`, captions débiles | Información crítica ni errores |
+| `--primary` / `--primary-foreground` | Acción principal | Solo emparejados entre sí | Button primary, acento de Checkbox | Fondos de página; texto de enlace (usar `--link`) |
+| `--secondary` / `--secondary-foreground` | Acción secundaria / relleno neutro | Solo emparejados | Button secondary, Badge secondary | Errores o éxito |
+| `--accent` / `--accent-foreground` | Acento no-marca (cian) | Solo emparejados | Destacados puntuales | Sustituir `--primary` en CTAs |
+| `--muted` / `--muted-foreground` | Bloque apagado | Solo emparejados | Fondos de Badge/Alert neutros | Texto sobre `--background` (usar `--foreground-muted`) |
+| `--destructive` / `--destructive-foreground` | Error / peligro | Solo emparejados; borde `aria-invalid` → `--destructive` | Button destructive, Alert, FieldError | Advertencias no bloqueantes (usar `--warning`) |
+| `--success` / `--success-foreground` | Éxito | Solo emparejados | Alert success | Enlaces o CTAs |
+| `--warning` / `--warning-foreground` | Atención no bloqueante | Solo emparejados; fg oscuro en ambos temas | Alert warning | Errores de formulario |
+| `--info` / `--info-foreground` | Información | Solo emparejados | Alert info | Sustituir `--link` |
+| `--border` | Borde por defecto | Sobre `--background` / `--surface*` | Separator, outline buttons, cards | Foco (usar `--focus` / `--ring`) |
+| `--border-strong` | Borde enfatizado | Igual que `--border` | Contenedores que necesitan más definición | Controles en error |
+| `--input` | Borde de control de formulario | + `--surface-raised` de fondo | Input, Select, Textarea, Checkbox | Foco visible |
+| `--ring` / `--focus` | Anillo de foco | Offset sobre cualquier superficie | `:focus-visible` global | Color de texto o relleno de botón |
+| `--selection` | Resaltado de selección de texto | Nativo `::selection` | globals | Fondos de componente |
+| `--link` / `--link-hover` | Enlace y hover | Sobre `--background` / `--surface` (AA) | Link inline | Botones (usar `--primary`) |
+| `--overlay` | Velado de modal/diálogo | Cubre `--background`; contenido en `--surface-raised` | Dialog/Drawer (P1) | Tinte de sección |
+| `--disabled` / `--disabled-foreground` | Control inerte | Solo emparejados | Input/Button/Select/Checkbox disabled | Texto secundario de lectura |
+
+Estados de interacción: hover de botón usa `--button-*-hover` (no oscurecer `--primary` a mano). Foco siempre `--focus`/`--ring`. `aria-invalid` cambia el borde a `--destructive`, no el texto del control.
+
+La configuración global sigue el patrón de variables CSS vinculadas a tokens de Tailwind, con tema claro y oscuro en OKLCH.
 
 ### Valores aprobados (13-08-2026)
 
@@ -423,34 +450,9 @@ Los tokens de componente no deben duplicar un token semántico sin aportar una r
 
 Cada ficha de componente debe incluir: propósito, anatomía, API, variantes, tamaños, estados, accesibilidad, comportamiento responsive, restricciones, ejemplos y pruebas mínimas.
 
-- Button.
-- IconButton.
-- Link.
-- Badge.
-- Tag.
-- Input.
-- Textarea.
-- Select.
-- Checkbox.
-- Switch.
-- Label.
-- Field.
-- FieldError.
-- Alert.
-- AlertDialog.
-- Dialog.
-- Drawer o Sheet.
-- Tooltip.
-- Popover.
-- DropdownMenu.
-- Tabs.
-- Accordion.
-- Separator.
-- Skeleton.
-- Spinner.
-- Toast.
-- EmptyState.
-- VisuallyHidden.
+**P0 implementados** (nativos; ejemplos en `/catalog`; pruebas E2E + axe): Button, IconButton, Link, Badge, Input, Textarea, Select, Checkbox, Label, Field, FieldError, Alert, Separator, Skeleton, Spinner.
+
+**Fuera del MVP (no implementar en P0):** Tag, Switch, AlertDialog, Dialog, Drawer/Sheet, Tooltip, Popover, DropdownMenu, Tabs, Accordion, Toast, EmptyState, VisuallyHidden. El honeypot de contacto usa la utilidad `.honeypot-offscreen` (no `sr-only` ni VisuallyHidden: no debe anunciarse a AT).
 
 ## 8.2. Componentes de layout
 

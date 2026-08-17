@@ -1,9 +1,11 @@
-import type { Service } from "@/lib/validations/content";
-import type { Project } from "@/lib/validations/content";
-import type { Technology } from "@/lib/validations/content";
-import type { Profile } from "@/lib/validations/content";
-import type { LegalDocument } from "@/lib/validations/content";
-import type { ContactChannel } from "@/lib/validations/content";
+import type {
+  ContactChannel,
+  LegalDocument,
+  Profile,
+  Project,
+  Service,
+  Technology,
+} from "@/lib/validations/content";
 import { services } from "@/content/services";
 import { projects } from "@/content/projects";
 import { technologies } from "@/content/technologies";
