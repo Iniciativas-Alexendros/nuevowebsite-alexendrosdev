@@ -22,6 +22,7 @@ test.describe("contacto", () => {
       page.getByRole("alert").filter({ hasText: "Revisa los campos del formulario." })
     ).toBeVisible();
     await expect(page.getByText("El nombre debe tener al menos 2 caracteres.")).toBeVisible();
+    await expect(page.getByLabel("Nombre")).toBeFocused();
   });
 
   test("envía con éxito cuando la API responde ok", async ({ page }) => {
