@@ -106,6 +106,9 @@ Ruta: ./DECISIONS.md
 - **ADR-0025** — Despliegue Vercel por cierre de fase (preview MITL → firma → producción). *(aceptada, 15-08-2026; enmiendas: preview previa a firma; 16-08-2026 retira Environment `phase-preview`)* — sustituye las previews automáticas por PR de ADR-0017.
 - **ADR-0026** — Versionado por tag desde CI; versionado ≠ promoción a Production. *(aceptada, 16-08-2026)*
 - **ADR-0027** — Asesoría legal externa post-v1.0; no bloquea PROMOTE. *(aceptada, 16-08-2026)* — sustituye la cláusula de gate pre-producción de ADR-0015.
+- **ADR-0028** — Diferir capturas de proyecto (DES-07) a Fase 10. *(aceptada, 16-08-2026)*
+- **ADR-0029** — Dominio canónico apex y migración al proyecto Vercel correcto. *(aceptada, 16-08-2026)*
+- **ADR-0030** — Gate anti-hex en CI, CSP de producción sin `unsafe-eval`, HSTS `includeSubDomains`+`preload`. *(aceptada, 17-08-2026)*
 
 ---
 
@@ -986,5 +989,40 @@ Ruta: ./DECISIONS.md
 	- Sin cambio de tratamientos; HSTS ya observado en respuestas Vercel.
 - Fecha de revisión:
 	- Tras migrar el dominio o en P8-6.
+
+</details>
+
+<details>
+<summary>**ADR-0030** — Gate anti-hex, CSP sin unsafe-eval y HSTS preload</summary>
+
+- Estado: aceptada
+- Fecha: 2026-08-17
+- Decisores: Alexendros (con contraste del asistente IA)
+- Relacionado con: DESIGN §13 §14, DEC-AGENTS-04, NFR-SEC-005, OBJ-006, P1-3/5/6/10, [quality-gates.md](./docs/quality-gates.md) §9
+- Contexto:
+	- DESIGN §13 prohibía hex/rgb/hsl y valores arbitrarios en componentes, pero el cumplimiento era solo revisión humana.
+	- CSP de producción incluía `'unsafe-eval'` sin evidencia de que Next.js 16 lo exigiera en `next start`.
+	- HSTS ya llevaba `includeSubDomains; preload` en `vercel.json` sin validar impacto en subdominios.
+- Decisión:
+	- **Gate de merge:** `scripts/check-design-tokens.mjs` corre en `pnpm lint` (y por tanto en `pnpm check` / CI Lint). Alcance: `src/components/**` y `src/app/**`. No relaja umbrales de AGENTS §8.
+	- **CSP producción:** `script-src 'self' 'unsafe-inline'` **sin** `'unsafe-eval'`. `'unsafe-inline'` se mantiene (Next inyecta scripts inline; nonces/hashes quedan fuera de v1.0). Fuente: [`src/lib/security-headers.ts`](./src/lib/security-headers.ts) + `vercel.json` (test de paridad).
+	- **HSTS:** se confirma `max-age=63072000; includeSubDomains; preload`. No hay subdominios HTTP propios bajo `alexendros.dev` (solo `www` → apex). **No** enviar a hstspreload.org hasta completar la migración de dominio (ADR-0029 / Bloque 5).
+	- **Smoke post-deploy** (P1-3) y scripts `ci:fast` / `ci:full` (P1-10) se documentan; el smoke **no** es check de PR.
+- Alternativas consideradas:
+	- Relajar DESIGN §13 a revisión-only: rechazado; el go-live exige gate automático.
+	- Nonces CSP (Next experimental): rechazado para v1.0; ADR futuro si se elimina `unsafe-inline`.
+	- Quitar `preload` de HSTS: rechazado; no hay subdominios HTTP que romper; el envío al preload list sí espera al dominio en este proyecto.
+- Consecuencias positivas:
+	- Violaciones de tokenización y CSP con eval fallan en CI; evidencia reproducible en e2e local.
+- Consecuencias negativas:
+	- Si un runtime de Next exigiera `eval` en producción, el e2e de cabeceras fallaría y habría que ADR sustituto (no reintroducir `unsafe-eval` en silencio).
+- Plan de implementación:
+	- Script anti-hex; headers en Next y Vercel; axe 8/8; smoke dispatch; `ci:fast`/`ci:full`.
+- Plan de reversión:
+	- ADR sustituto; no hay override silencioso de gates (quality-gates §9).
+- Seguridad y privacidad:
+	- El smoke no loguea cuerpos ni el bypass secret.
+- Fecha de revisión:
+	- Tras el primer preview MITL del SHA posterior a este ADR, o a 3 meses.
 
 </details>

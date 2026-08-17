@@ -48,9 +48,9 @@ Alcance E2E del MVP (DEC-GO / batería 13):
 
 ### axe-core
 
-- Integrado en specs E2E (`@axe-core/playwright`).
+- Integrado en specs E2E (`@axe-core/playwright`), helper `tests/e2e/helpers/axe.ts`.
 - Violaciones `critical` / `serious` fallan el job.
-- Cubre rutas P0 en cada PR (OBJ-006).
+- Cubre las **8 rutas P0** en cada PR (`tests/e2e/a11y.spec.ts`, OBJ-006). `/catalog` es extra no-P0.
 
 ---
 
@@ -67,6 +67,7 @@ Alcance E2E del MVP (DEC-GO / batería 13):
 | Prueba | Cuándo |
 | --- | --- |
 | Smoke SMTP real a Proton | Gate de go-live (DEC-GO-04); workflow manual / runbook |
+| Smoke post-deploy (rutas, headers, SEO, endpoint) | Gate de go-live (P1-3); [runbook-smoke-post-deploy.md](./runbook-smoke-post-deploy.md) |
 | Auditoría a11y manual AA/AAA | Fase 8 (P8-2) |
 | Lighthouse en preview Vercel | Sustituido por Lighthouse CI **local** (ADR-0025) |
 
@@ -78,6 +79,8 @@ Alcance E2E del MVP (DEC-GO / batería 13):
 pnpm test          # Vitest unit/integración
 pnpm test:e2e      # Playwright (+ axe)
 pnpm ci            # check + test + build (sin E2E ni Lighthouse; esos van en CI)
+pnpm ci:fast       # alias de pnpm ci
+pnpm ci:full       # ci + test:e2e (Lighthouse permanece en GHA)
 ```
 
 ---

@@ -1,5 +1,4 @@
 import { expect, test } from "@playwright/test";
-import AxeBuilder from "@axe-core/playwright";
 
 import { CONTACT_SUBJECTS } from "../../src/content/contact-subjects";
 
@@ -76,19 +75,5 @@ test.describe("contacto", () => {
     await page.getByRole("button", { name: "Enviar mensaje" }).click();
 
     await expect(page.getByText(/No he podido enviar el mensaje/i)).toBeVisible();
-  });
-
-  test("sin violaciones de accesibilidad críticas o serias", async ({ page }) => {
-    await page.goto("/contacto");
-
-    const results = await new AxeBuilder({ page })
-      .withTags(["wcag2a", "wcag2aa", "wcag21a", "wcag21aa"])
-      .analyze();
-
-    const blocking = results.violations.filter(
-      (violation) => violation.impact === "critical" || violation.impact === "serious"
-    );
-
-    expect(blocking, JSON.stringify(blocking, null, 2)).toEqual([]);
   });
 });

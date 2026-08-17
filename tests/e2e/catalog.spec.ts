@@ -1,19 +1,11 @@
 import { expect, test } from "@playwright/test";
-import AxeBuilder from "@axe-core/playwright";
+
+import { assertNoBlockingAxe } from "./helpers/axe";
 
 test.describe("catálogo de componentes (/catalog)", () => {
   test("sin violaciones de accesibilidad críticas o serias", async ({ page }) => {
     await page.goto("/catalog");
-
-    const results = await new AxeBuilder({ page })
-      .withTags(["wcag2a", "wcag2aa", "wcag21a", "wcag21aa"])
-      .analyze();
-
-    const blocking = results.violations.filter(
-      (violation) => violation.impact === "critical" || violation.impact === "serious"
-    );
-
-    expect(blocking, JSON.stringify(blocking, null, 2)).toEqual([]);
+    await assertNoBlockingAxe(page);
   });
 
   test("los enlaces externos abren en pestaña nueva con rel seguro e indicación accesible", async ({
