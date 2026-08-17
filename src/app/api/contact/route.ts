@@ -84,9 +84,13 @@ export async function POST(request: Request): Promise<NextResponse<ContactApiRes
 
   const limit = checkRateLimit(clientIp(request), config.rateLimitMax);
   if (!limit.allowed) {
+    const retryAfterSec = Math.max(1, Math.ceil(limit.retryAfterMs / 1000));
     return NextResponse.json(
       { ok: false, code: "rate_limit", message: RATE_LIMIT_MESSAGE },
-      { status: 429 }
+      {
+        status: 429,
+        headers: { "Retry-After": String(retryAfterSec) },
+      }
     );
   }
 

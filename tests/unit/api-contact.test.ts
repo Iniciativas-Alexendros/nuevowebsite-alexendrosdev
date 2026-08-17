@@ -97,6 +97,8 @@ describe("POST /api/contact", () => {
     expect((await POST(jsonRequest(validBody, "198.51.100.1"))).status).toBe(200);
     const limited = await POST(jsonRequest(validBody, "198.51.100.1"));
     expect(limited.status).toBe(429);
+    expect(limited.headers.get("Retry-After")).toMatch(/^\d+$/);
+    expect(Number(limited.headers.get("Retry-After"))).toBeGreaterThan(0);
     expect((await limited.json()).code).toBe("rate_limit");
   });
 

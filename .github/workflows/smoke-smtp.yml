@@ -1,5 +1,6 @@
 # Smoke SMTP real contra un deployment (go-live).
 # NO es gate de PR. El runner no recibe SMTP_TOKEN ni PROTON_* (NFR-SEC-002/006).
+# R-P0-03: bypass seguro vía header x-vercel-protection-bypass (secreto Actions).
 # Criterio completo: HTTP 200 + correo en operaciones@ — ver docs/runbook-smoke-smtp.md
 
 name: Smoke SMTP (go-live)
@@ -8,7 +9,7 @@ on:
   workflow_dispatch:
     inputs:
       target_url:
-        description: "URL base del deployment READY (preview MITL o production), sin path"
+        description: "Origen allowlisteado (alexendros.dev | *.alexendros-team.vercel.app | nuevowebsite-alexendrosdev.vercel.app), sin path"
         required: true
         type: string
 
@@ -23,12 +24,39 @@ jobs:
       - name: Enviar smoke sintético
         env:
           TARGET_URL: ${{ github.event.inputs.target_url }}
+          VERCEL_AUTOMATION_BYPASS_SECRET: ${{ secrets.VERCEL_AUTOMATION_BYPASS_SECRET }}
         run: |
           set -euo pipefail
 
-          base="${TARGET_URL%/}"
-          if [[ ! "$base" =~ ^https:// ]]; then
-            echo "::error::target_url debe ser https://"
+          # Solo origen https; sin userinfo, query ni fragmento (evita exfiltración del bypass).
+          raw="$(printf '%s' "$TARGET_URL" | tr -d '[:space:]')"
+          if [[ ! "$raw" =~ ^https://[A-Za-z0-9.-]+(:443)?/?$ ]]; then
+            echo "::error::target_url DEBE ser origen https://host[/] sin path, query, fragmento ni credenciales."
+            exit 1
+          fi
+          host="$(printf '%s' "$raw" | sed -E 's|^https://||; s|/$||; s|:443$||' | tr '[:upper:]' '[:lower:]')"
+          # Allowlist: apex canónico + deployments del proyecto/equipo (NFR-SEC-002).
+          # NO enviar el bypass a orígenes arbitrarios (quien dispara workflow_dispatch no lee secretos en UI).
+          allowed=0
+          case "$host" in
+            alexendros.dev|www.alexendros.dev|nuevowebsite-alexendrosdev.vercel.app)
+              allowed=1
+              ;;
+          esac
+          if [[ "$host" == *.alexendros-team.vercel.app ]]; then
+            allowed=1
+          fi
+          if [ "$allowed" -ne 1 ]; then
+            echo "::error::host '${host}' no está en la allowlist del smoke SMTP."
+            echo "::error::Permitidos: alexendros.dev, www.alexendros.dev, nuevowebsite-alexendrosdev.vercel.app, *.alexendros-team.vercel.app"
+            exit 1
+          fi
+          base="https://${host}"
+
+          if [ -z "${VERCEL_AUTOMATION_BYPASS_SECRET:-}" ]; then
+            echo "::error::Falta el secreto Actions VERCEL_AUTOMATION_BYPASS_SECRET (R-P0-03)."
+            echo "::error::Generar Protection Bypass for Automation en Vercel → copiar a GitHub Actions secrets."
+            echo "::error::Ver docs/runbook-smoke-smtp.md"
             exit 1
           fi
 
@@ -43,11 +71,12 @@ jobs:
           }'
 
           echo "POST ${base}/api/contact"
-          # No imprimir cabeceras de auth ni secretos; solo status y cuerpo JSON de respuesta.
+          # Bypass en header (no query string). No imprimir el secreto ni cabeceras de auth.
           http_code="$(curl -sS -o /tmp/smoke-body.json -w '%{http_code}' \
             -X POST "${base}/api/contact" \
             -H 'content-type: application/json' \
             -H 'accept: application/json' \
+            -H "x-vercel-protection-bypass: ${VERCEL_AUTOMATION_BYPASS_SECRET}" \
             --data "$payload")"
 
           echo "HTTP ${http_code}"
@@ -60,6 +89,7 @@ jobs:
             echo ""
             echo "- URL: \`${base}/api/contact\`"
             echo "- HTTP: \`${http_code}\`"
+            echo "- Bypass: header \`x-vercel-protection-bypass\` (secreto presente; valor no logueado)"
             echo "- Body:"
             echo '```json'
             cat /tmp/smoke-body.json
@@ -69,6 +99,10 @@ jobs:
             echo "Criterio humano: correo recibido en \`operaciones@alexendros.dev\` (runbook)."
           } >> "$GITHUB_STEP_SUMMARY"
 
+          if [[ "$http_code" == "401" ]] || [[ "$http_code" == "403" ]]; then
+            echo "::error::${http_code} — protección Vercel; revisar bypass secret o Deployment Protection"
+            exit 1
+          fi
           if [[ "$http_code" == "503" ]]; then
             echo "::error::503 unavailable — sync-env + redeploy pendientes o vars SMTP ausentes"
             exit 1
