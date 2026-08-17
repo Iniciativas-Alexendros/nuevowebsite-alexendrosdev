@@ -1,6 +1,6 @@
 "use client";
 
-import { useId, useState, type FormEvent } from "react";
+import { useEffect, useId, useState, type FormEvent } from "react";
 
 import { Alert } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
@@ -18,6 +18,8 @@ type FormStatus =
   | { kind: "loading" }
   | { kind: "success"; message: string }
   | { kind: "error"; message: string; fieldErrors?: Record<string, string[]> };
+
+const FIELD_ORDER = ["name", "email", "company", "subject", "message", "consent"] as const;
 
 const initialValues = {
   name: "",
@@ -39,6 +41,17 @@ export function ContactForm() {
   const [status, setStatus] = useState<FormStatus>({ kind: "idle" });
 
   const fieldErrors = status.kind === "error" ? (status.fieldErrors ?? {}) : {};
+
+  // P8-2 Fase 4 / NFR-A11Y-007: mover el foco al primer control inválido.
+  useEffect(() => {
+    if (status.kind !== "error" || !status.fieldErrors) return;
+    const first = FIELD_ORDER.find((key) => status.fieldErrors?.[key]?.length);
+    if (!first) return;
+    const frame = requestAnimationFrame(() => {
+      document.getElementById(`${formId}-${first}`)?.focus();
+    });
+    return () => cancelAnimationFrame(frame);
+  }, [status, formId]);
 
   async function onSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -206,6 +219,7 @@ export function ContactForm() {
       <div className="flex flex-col gap-2">
         <label className="flex items-start gap-3 text-sm text-foreground">
           <Checkbox
+            id={`${formId}-consent`}
             name="consent"
             checked={values.consent}
             onChange={(event) => setValues((prev) => ({ ...prev, consent: event.target.checked }))}
