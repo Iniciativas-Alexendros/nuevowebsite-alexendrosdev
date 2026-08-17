@@ -88,6 +88,25 @@ test.describe("navegación móvil", () => {
 
     await page.keyboard.press("Escape");
     await expect(page.getByRole("navigation", { name: "Principal" })).toBeHidden();
+    await expect(summary).toHaveAttribute("aria-expanded", "false");
+  });
+
+  test("marca la página activa con aria-current", async ({ page }) => {
+    await page.setViewportSize({ width: 360, height: 640 });
+    await page.goto("/servicios");
+
+    const summary = page.locator("summary");
+    await summary.click();
+
+    const nav = page.getByRole("navigation", { name: "Principal" });
+    await expect(nav.getByRole("link", { name: "Servicios", exact: true })).toHaveAttribute(
+      "aria-current",
+      "page"
+    );
+    await expect(nav.getByRole("link", { name: "Proyectos", exact: true })).not.toHaveAttribute(
+      "aria-current",
+      "page"
+    );
   });
 
   test("se cierra al hacer clic fuera del menú", async ({ page }) => {
