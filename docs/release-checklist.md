@@ -7,7 +7,7 @@
 
 **Dictamen:** No firmar Fase 8 ni ejecutar `PROMOTE` hasta cerrar R-P0-01…R-P0-05 **y** fusionar los PRs de cierre backend (#68 dedup, #69 gates, #70 polish). El SHA `0cee846` queda **invalidado** al integrar esos PRs; el candidato de go-live es el tip de `main` con CI verde **después** del merge.
 
-**SHA candidato (40 hex):** _(rellenar tras fusionar #68–#70 a `main`; no usar `0cee846`)_  
+**SHA candidato (40 hex):** `bcee86683a3326cad523bf2fa9c5cb4fafaaee54` (merge de #74; no usar `0cee846` ni `3d461da`)  
 **Issue de seguimiento:** [#64 Release v1.0.0](https://github.com/Iniciativas-Alexendros/nuevowebsite-alexendrosdev/issues/64)  
 **Workflows:** [CI](../.github/workflows/ci.yml) · [Deploy fase](../.github/workflows/deploy-phase.yml) · [Smoke SMTP](../.github/workflows/smoke-smtp.yml) · [Smoke post-deploy](../.github/workflows/smoke-post-deploy.yml) · [Release tag](../.github/workflows/release.yml)
 
@@ -15,8 +15,8 @@
 
 | Campo | Valor |
 | --- | --- |
-| SHA candidato | |
-| CI run URL (verde) | |
+| SHA candidato | `bcee86683a3326cad523bf2fa9c5cb4fafaaee54` |
+| CI run URL (verde) | https://github.com/Iniciativas-Alexendros/nuevowebsite-alexendrosdev/actions/runs/32084007480 |
 | Preview deploy run / URL / deployment_id | |
 | Simulacro rollback (fecha, SHA_A/B o dpl, resultado) | |
 | Smoke SMTP preprod (run + correo OK) | |
