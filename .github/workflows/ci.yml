@@ -66,6 +66,7 @@ jobs:
   e2e:
     name: E2E + axe-core
     runs-on: ubuntu-latest
+    timeout-minutes: 30
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       - uses: pnpm/action-setup@0977fd99725f1db4007ccb2928dbb4e90d06cc86 # v6.0.10
@@ -74,7 +75,26 @@ jobs:
           node-version-file: .nvmrc
           cache: pnpm
       - run: pnpm install --frozen-lockfile
-      - run: pnpm exec playwright install --with-deps chromium webkit
+      - name: Esperar locks de APT antes de instalar deps de Playwright
+        run: |
+          set -euo pipefail
+          LOCKS="/var/lib/dpkg/lock-frontend /var/lib/dpkg/lock /var/lib/apt/lists/lock /var/cache/apt/archives/lock"
+          for i in $(seq 1 36); do
+            if sudo sh -c "fuser $LOCKS >/dev/null 2>&1"; then
+              echo "APT ocupado (intento $i/36); esperando 5s..."
+              sleep 5
+              continue
+            fi
+            echo "APT libre; seguimos con Playwright."
+            exit 0
+          done
+          echo "::error::APT siguió bloqueado tras 180s; abortamos para evitar cuelgue silencioso."
+          sudo ps -ef | grep -E "apt|dpkg|unattended" || true
+          exit 1
+      - name: Instalar dependencias del sistema para Playwright
+        run: pnpm exec playwright install-deps chromium webkit
+      - name: Instalar navegadores de Playwright
+        run: pnpm exec playwright install chromium webkit
       - run: pnpm test:e2e
 
   security:
