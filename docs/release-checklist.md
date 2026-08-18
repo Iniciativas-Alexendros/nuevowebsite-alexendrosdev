@@ -22,8 +22,8 @@
 | CI run URL (verde) | https://github.com/Iniciativas-Alexendros/nuevowebsite-alexendrosdev/actions/runs/32094397955 |
 | Preview deploy run / URL | [32094766662](https://github.com/Iniciativas-Alexendros/nuevowebsite-alexendrosdev/actions/runs/32094766662) · https://nuevowebsite-alexendrosdev-ifq50j8q2-alexendros-team.vercel.app |
 | Simulacro rollback (fecha, SHA_A/B, resultado) | 18-08-2026 · A=`bcee866` B=`3d461da` · OK · [#64](https://github.com/Iniciativas-Alexendros/nuevowebsite-alexendrosdev/issues/64#issuecomment-5322010931) |
-| Smoke SMTP preprod (API + bandeja) | 18-08-2026 · HTTP 200 `{ok:true}` · correo en `operaciones@` (From=`operaciones@`, Reply-To=email formulario) |
-| Smoke post-deploy preprod | 18-08-2026 · manual 8/8 rutas + headers + honeypot 200 (script; GHA tras fix allowlist) |
+| Smoke SMTP preprod (API + bandeja) | 18-08 · GHA [32094878105](https://github.com/Iniciativas-Alexendros/nuevowebsite-alexendrosdev/actions/runs/32094878105) ✅ · preview `ffd975d` |
+| Smoke post-deploy preprod | 18-08 · manual ✅ · GHA [32094880161](https://github.com/Iniciativas-Alexendros/nuevowebsite-alexendrosdev/actions/runs/32094880161) ✅ |
 | MITL Playwright preview | ☐ revalidar | Tras redeploy `ffd975d` · `pnpm test:e2e:preview` |
 | Firmas Fases 5 / 6 / 7 / 7.z / 8 | ☐ decisor | Plantilla: [firmas-go-live-v1.0.md](./firmas-go-live-v1.0.md) |
 | PROMOTE run / Production deployment_id | ☐ post-firmas |
