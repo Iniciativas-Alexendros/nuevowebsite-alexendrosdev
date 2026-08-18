@@ -20,6 +20,12 @@ describe("cabeceras de seguridad (ADR-0030)", () => {
     expect(HSTS_VALUE).toContain("max-age=63072000");
   });
 
+  it("Permissions-Policy usa browsing-topics (no interest-cohort obsoleto)", () => {
+    const pp = SECURITY_HEADERS.find((h) => h.key === "Permissions-Policy")?.value ?? "";
+    expect(pp).toContain("browsing-topics=()");
+    expect(pp).not.toContain("interest-cohort");
+  });
+
   it("vercel.json coincide con src/lib/security-headers.ts", () => {
     for (const header of SECURITY_HEADERS) {
       const found = vercelHeaders.find((item) => item.key === header.key);

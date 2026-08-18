@@ -27,8 +27,8 @@ Sin (2), el gate de go-live **no** está cumplido aunque el job sea verde.
 ## Cómo ejecutar
 
 1. Actions → **Smoke SMTP (go-live)** → Run workflow.
-2. Input `target_url`: **solo origen** allowlisteado (sin path/query/credenciales), p. ej. `https://….alexendros-team.vercel.app` o `https://alexendros.dev`.
-   - Permitidos: `alexendros.dev`, `www.alexendros.dev`, `nuevowebsite-alexendrosdev.vercel.app`, `*.alexendros-team.vercel.app`.
+2. Input `target_url`: **solo origen** allowlisteado (sin path/query/credenciales), p. ej. `https://…-alexendros-team.vercel.app` o `https://alexendros.dev`.
+   - Permitidos: `alexendros.dev`, `www.alexendros.dev`, `nuevowebsite-alexendrosdev.vercel.app`, `*-alexendros-team.vercel.app` (deployments Vercel del equipo; guion, no subdominio).
    - Cualquier otro host **aborta** antes de enviar la petición.
 3. El job envía POST directamente a la URL pública del deployment (requiere Deployment Protection desactivada).
 4. Revisar el summary del job: status HTTP y `ok`.

@@ -43,7 +43,7 @@ Este archivo es el punto de entrada de lectura del proyecto. Te dice qué leer d
 
 **Fase activa:** 8 — Hardening (P8-1…P8-6). En paralelo: **Fase 7.z** (P7z-1…P7z-8). Fases 5–7 en `main`, pendientes MITL + firma.
 
-**Siguiente acción (secuencia única):** cerrar R-P0-01…05 → registrar SHA candidato → CI verde → dominio ADR-0029 → Deploy preview (`expected_sha`) → MITL + a11y → smoke SMTP → firmas → `PROMOTE` (mismo SHA) → smoke postprod → tag `v1.0.0` (mismo SHA). Detalle: [docs/handoff-p8-6.md](./docs/handoff-p8-6.md).
+**Siguiente acción (secuencia única):** merge PR evidencias/smokes → **nuevo SHA candidato** + CI verde → redeploy preview (`expected_sha`) → firma MITL P8-2 → firmas épicas → `PROMOTE` → smoke postprod → tag `v1.0.0`. Detalle: [docs/handoff-p8-6.md](./docs/handoff-p8-6.md).
 
 **Objetivo de producto:** v1.0 el 24 de agosto de 2026.
 
@@ -156,7 +156,7 @@ El sitio lo implementa un agente de código. El humano dirige, revisa diffs, hac
 
 # Pendiente ahora
 
-Fases 1–7 en `main`. Fases 5–7: pendientes de preview MITL + firma. **Activa:** Fase 8 + 7.z. **No PROMOTE / no firma Fase 8** hasta R-P0 cerrados + secuencia canónica. DES-07 diferido (ADR-0028). Workflows: [Deploy fase](./.github/workflows/deploy-phase.yml) · [Smoke SMTP](./.github/workflows/smoke-smtp.yml) · [Release tag](./.github/workflows/release.yml) · [Rollback](./docs/runbook-rollback.md).
+Fases 1–7 en `main`. **Activa:** Fase 8 + 7.z. Preview MITL desplegada (`bcee866`); smokes OK 18-08. **No PROMOTE / no firma Fase 8** hasta firma MITL + P8-6.4–6.7. Tras merge de código nuevo: redeploy preview con nuevo `expected_sha`.
 
 ## Fase 8 — Hardening y lanzamiento (activa)
 
@@ -164,14 +164,16 @@ Unidades: P8-1 checklist · P8-2 a11y · P8-3 Lighthouse multipágina · P8-4 SE
 
 ## Residuales humanos (bloquean go-live / PROMOTE)
 
-- [ ]  Simulacro rollback en preview (R-P0-02; [runbook](./docs/runbook-rollback.md)).
-- [ ]  SHA candidato registrado + CI verde + Deploy preview (`expected_sha`) MITL Fases 5–8.
-- [ ]  Smoke SMTP real + correo en `operaciones@`.
-- [ ]  Migrar `alexendros.dev` (+ `www`) de `website-alexendrosdev` → `nuevowebsite-alexendrosdev` (ADR-0029) — **antes** del preview go-live.
-- [ ]  Firmas Fases 5, 6, 7, 7.z, 8 → luego `PROMOTE` → smoke postprod → tag `v1.0.0` (mismo SHA).
+- [x]  Simulacro rollback en preview (R-P0-02; 18-08).
+- [x]  SHA candidato `bcee866` + CI verde + Deploy preview MITL (18-08).
+- [x]  Smoke SMTP real + correo en `operaciones@` (18-08).
+- [x]  Migrar `alexendros.dev` (+ `www`) → `nuevowebsite-alexendrosdev` (ADR-0029; hub 18-08).
+- [ ]  Firma MITL P8-2 + firmas Fases 5, 6, 7, 7.z, 8 → `PROMOTE` → smoke postprod → tag `v1.0.0`.
 - [ ]  Asesoría externa de textos legales **post-v1.0** (ADR-0027; no bloquea `PROMOTE`).
 - [ ]  Rotar `SMTP_TOKEN` y registrar operación (sin valor) — [SECURITY.md](./SECURITY.md).
 - [ ]  Activar secret scanning / Dependabot en GitHub si el plan lo permite.
+
+Workflows: [Deploy fase](./.github/workflows/deploy-phase.yml) · [Smoke SMTP](./.github/workflows/smoke-smtp.yml) · [Smoke post-deploy](./.github/workflows/smoke-post-deploy.yml) · [Release tag](./.github/workflows/release.yml) · [Rollback](./docs/runbook-rollback.md).
 
 ## Documentos de apoyo
 
