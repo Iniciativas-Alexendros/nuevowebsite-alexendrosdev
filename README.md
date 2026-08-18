@@ -43,7 +43,7 @@ Este archivo es el punto de entrada de lectura del proyecto. Te dice qué leer d
 
 **Fase activa:** 8 — Hardening (P8-1…P8-6). En paralelo: **Fase 7.z** (P7z-1…P7z-8). Fases 5–7 en `main`, pendientes MITL + firma.
 
-**Siguiente acción (secuencia única):** firmas MITL P8-2 + épicas 5–8 → `PROMOTE` → smoke postprod → tag `v1.0.0`. SHA candidato `ffd975d` · preview activa. Detalle: [docs/handoff-p8-6.md](./docs/handoff-p8-6.md).
+**Siguiente acción:** PROMOTE `ffd975d` → smoke postprod → tag `v1.0.0`. Detalle: [docs/handoff-p8-6.md](./docs/handoff-p8-6.md).
 
 **Objetivo de producto:** v1.0 el 24 de agosto de 2026.
 
@@ -156,7 +156,7 @@ El sitio lo implementa un agente de código. El humano dirige, revisa diffs, hac
 
 # Pendiente ahora
 
-Fases 1–7 en `main`. **Activa:** Fase 8 + 7.z. Preview MITL `ffd975d` desplegada; **firmas decisor pendientes**. No PROMOTE hasta P8-2 + P8-6.4.
+Fases 1–7 en `main`. **Activa:** cierre v1.0. Firmas MITL ✅ 18-08. **Siguiente:** PROMOTE `ffd975d` → postprod → tag.
 
 ## Fase 8 — Hardening y lanzamiento (activa)
 
@@ -168,7 +168,8 @@ Unidades: P8-1 checklist · P8-2 a11y · P8-3 Lighthouse multipágina · P8-4 SE
 - [x]  SHA candidato `ffd975d` + CI verde + Deploy preview MITL (18-08 post-#76).
 - [x]  Smoke SMTP real + correo en `operaciones@` (18-08).
 - [x]  Migrar `alexendros.dev` (+ `www`) → `nuevowebsite-alexendrosdev` (ADR-0029; hub 18-08).
-- [ ]  Firma MITL P8-2 + firmas Fases 5, 6, 7, 7.z, 8 → `PROMOTE` → smoke postprod → tag `v1.0.0`.
+- [x]  Firmas MITL P8-2 + Fases 5–8 (18-08-2026).
+- [ ]  `PROMOTE` → smoke postprod → tag `v1.0.0` (SHA `ffd975d`).
 - [ ]  Asesoría externa de textos legales **post-v1.0** (ADR-0027; no bloquea `PROMOTE`).
 - [ ]  Rotar `SMTP_TOKEN` y registrar operación (sin valor) — [SECURITY.md](./SECURITY.md).
 - [ ]  Activar secret scanning / Dependabot en GitHub si el plan lo permite.
