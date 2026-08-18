@@ -2,7 +2,7 @@
 
 Gate de **go-live** (DEC-GO-04): envío real a Proton vía el deployment. **No** es check de cada PR. En CI de PR el adaptador SMTP sigue mockeado ([testing-strategy.md](./testing-strategy.md)).
 
-**Traza:** P7z-3 · DEC-GO-04 · NFR-SEC-002/006 · ADR-0011 · ADR-0025 · Fase 7.z · **R-P0-03**.
+**Traza:** P7z-3 · DEC-GO-04 · NFR-SEC-002/006 · ADR-0011 · ADR-0025 · Fase 7.z.
 
 ---
 
@@ -21,11 +21,6 @@ Sin (2), el gate de go-live **no** está cumplido aunque el job sea verde.
 2. Workflow **Sync env → Vercel** (`sync-env-vercel.yml`) ejecutado con éxito.
 3. Redeploy del entorno objetivo (**Deploy fase** con `expected_sha` — preview MITL o production tras `PROMOTE`) para que el runtime cargue las vars.
 4. URL pública del deployment READY (no asumir alias `git-main` sin verificar).
-5. **R-P0-03 — Protection Bypass for Automation (decisor):**
-   1. Vercel → proyecto `nuevowebsite-alexendrosdev` → Settings → Deployment Protection → Protection Bypass for Automation → Create.
-   2. Copiar el secreto a GitHub Actions → Secrets → `VERCEL_AUTOMATION_BYPASS_SECRET` (repo o org).
-   3. **Nunca** pegar el valor en issues, logs ni el repo.
-   4. Sin este secreto el workflow **falla a propósito** (no finge éxito).
 
 ---
 
@@ -34,8 +29,8 @@ Sin (2), el gate de go-live **no** está cumplido aunque el job sea verde.
 1. Actions → **Smoke SMTP (go-live)** → Run workflow.
 2. Input `target_url`: **solo origen** allowlisteado (sin path/query/credenciales), p. ej. `https://….alexendros-team.vercel.app` o `https://alexendros.dev`.
    - Permitidos: `alexendros.dev`, `www.alexendros.dev`, `nuevowebsite-alexendrosdev.vercel.app`, `*.alexendros-team.vercel.app`.
-   - Cualquier otro host **aborta** antes de enviar el bypass (evita exfiltración del secreto).
-3. El job envía `x-vercel-protection-bypass` (header; no query string) usando el secreto. No imprime el valor.
+   - Cualquier otro host **aborta** antes de enviar la petición.
+3. El job envía POST directamente a la URL pública del deployment (requiere Deployment Protection desactivada).
 4. Revisar el summary del job: status HTTP y `ok`.
 5. Abrir la bandeja de `operaciones@` y confirmar el mensaje sintético.
 
@@ -54,8 +49,7 @@ Campos mínimos válidos (Zod): nombre, email de prueba, asunto de la lista cerr
 | HTTP | Significado habitual | Acción |
 | --- | --- | --- |
 | Job aborta: host no allowlisteado | `target_url` fuera del proyecto/equipo | Usar URL del deployment del proyecto o apex |
-| Job aborta: falta secreto | Bypass no configurado (R-P0-03) | Crear bypass en Vercel → secret Actions |
-| 401 / 403 | Protección Vercel; bypass inválido o ausente en runtime | Rotar/regenerar bypass; verificar nombre del secret |
+| 401 / 403 | Deployment Protection activa | Deshabilitar Deployment Protection o usar URL pública |
 | 503 `unavailable` | Vars SMTP ausentes en el runtime | Sync-env + redeploy |
 | 502 / provider | Token/host/rechazo Proton | Revisar org secrets (sin pegar valores en logs) |
 | 429 | Rate limit (`Retry-After` en cabecera) | Esperar o otra IP/URL |

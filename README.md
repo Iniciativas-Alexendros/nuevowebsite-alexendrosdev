@@ -39,7 +39,7 @@ Este archivo es el punto de entrada de lectura del proyecto. Te dice qué leer d
 
 # Estado en una mirada
 
-**Pulso:** 17 de agosto de 2026 — remediación P0 go-live; **no firmar Fase 8 ni PROMOTE** hasta cerrar R-P0 + secuencia canónica.
+**Pulso:** 18 de agosto de 2026 — remediación P0 go-live; PR #74 en revisión (R-P0-03 N/A Hobby, Node 24 unificado, ADR-0031); **no firmar Fase 8 ni PROMOTE** hasta cerrar R-P0 + secuencia canónica.
 
 **Fase activa:** 8 — Hardening (P8-1…P8-6). En paralelo: **Fase 7.z** (P7z-1…P7z-8). Fases 5–7 en `main`, pendientes MITL + firma.
 
@@ -69,7 +69,7 @@ NO DEBE tratarse como plataforma SaaS ni como e-commerce.
 
 **Proyectos P0:** FRONT Valencia, Gráficas Nasve, vcf-cribador, [alexendros.me](https://alexendros.me).
 
-**Stack cerrado:** Next.js App Router, TypeScript estricto, pnpm 10, Node 22, Tailwind + tokens OKLCH + shadcn/ui, Vitest + Playwright, Vercel, Proton SMTP para el único endpoint.
+**Stack cerrado:** Next.js App Router, TypeScript estricto, pnpm 10, Node 24, Tailwind + tokens OKLCH + shadcn/ui, Vitest + Playwright, Vercel, Proton SMTP para el único endpoint.
 
 El MVP NO incluye autenticación, base de datos, CMS, checkout, Prisma, Supabase, newsletter ni analítica.
 
@@ -164,7 +164,6 @@ Unidades: P8-1 checklist · P8-2 a11y · P8-3 Lighthouse multipágina · P8-4 SE
 
 ## Residuales humanos (bloquean go-live / PROMOTE)
 
-- [ ]  Secreto Actions `VERCEL_AUTOMATION_BYPASS_SECRET` (R-P0-03; [runbook SMTP](./docs/runbook-smoke-smtp.md)).
 - [ ]  Simulacro rollback en preview (R-P0-02; [runbook](./docs/runbook-rollback.md)).
 - [ ]  SHA candidato registrado + CI verde + Deploy preview (`expected_sha`) MITL Fases 5–8.
 - [ ]  Smoke SMTP real + correo en `operaciones@`.

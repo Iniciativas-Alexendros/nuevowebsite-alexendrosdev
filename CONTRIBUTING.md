@@ -21,7 +21,7 @@ Si no hay ficha, reconstruye y confirma con el decisor antes de implementar.
 ## Setup local
 
 1. Clona el repositorio.
-2. Node 22 + pnpm 10 (`corepack enable` / `.nvmrc`).
+2. Node 24 + pnpm 10 (`corepack enable` / `.nvmrc`).
 3. `pnpm install --frozen-lockfile`
 4. Comandos canónicos: `pnpm check`, `pnpm test`, `pnpm test:e2e`, `pnpm build`, `pnpm ci`.
 

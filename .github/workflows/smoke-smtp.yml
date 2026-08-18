@@ -1,6 +1,5 @@
 # Smoke SMTP real contra un deployment (go-live).
 # NO es gate de PR. El runner no recibe SMTP_TOKEN ni PROTON_* (NFR-SEC-002/006).
-# R-P0-03: bypass seguro vía header x-vercel-protection-bypass (secreto Actions).
 # Criterio completo: HTTP 200 + correo en operaciones@ — ver docs/runbook-smoke-smtp.md
 
 name: Smoke SMTP (go-live)
@@ -24,19 +23,17 @@ jobs:
       - name: Enviar smoke sintético
         env:
           TARGET_URL: ${{ github.event.inputs.target_url }}
-          VERCEL_AUTOMATION_BYPASS_SECRET: ${{ secrets.VERCEL_AUTOMATION_BYPASS_SECRET }}
         run: |
           set -euo pipefail
 
-          # Solo origen https; sin userinfo, query ni fragmento (evita exfiltración del bypass).
+          # Solo origen https; sin userinfo, query ni fragmento.
           raw="$(printf '%s' "$TARGET_URL" | tr -d '[:space:]')"
           if [[ ! "$raw" =~ ^https://[A-Za-z0-9.-]+(:443)?/?$ ]]; then
             echo "::error::target_url DEBE ser origen https://host[/] sin path, query, fragmento ni credenciales."
             exit 1
           fi
           host="$(printf '%s' "$raw" | sed -E 's|^https://||; s|/$||; s|:443$||' | tr '[:upper:]' '[:lower:]')"
-          # Allowlist: apex canónico + deployments del proyecto/equipo (NFR-SEC-002).
-          # NO enviar el bypass a orígenes arbitrarios (quien dispara workflow_dispatch no lee secretos en UI).
+          # Solo orígenes del proyecto/equipo (NFR-SEC-002).
           allowed=0
           case "$host" in
             alexendros.dev|www.alexendros.dev|nuevowebsite-alexendrosdev.vercel.app)
@@ -53,13 +50,6 @@ jobs:
           fi
           base="https://${host}"
 
-          if [ -z "${VERCEL_AUTOMATION_BYPASS_SECRET:-}" ]; then
-            echo "::error::Falta el secreto Actions VERCEL_AUTOMATION_BYPASS_SECRET (R-P0-03)."
-            echo "::error::Generar Protection Bypass for Automation en Vercel → copiar a GitHub Actions secrets."
-            echo "::error::Ver docs/runbook-smoke-smtp.md"
-            exit 1
-          fi
-
           # Payload sintético (sin PII reales). Asunto de la lista cerrada CONTACT_SUBJECTS.
           payload='{
             "name": "Smoke CI Alexendros",
@@ -71,12 +61,10 @@ jobs:
           }'
 
           echo "POST ${base}/api/contact"
-          # Bypass en header (no query string). No imprimir el secreto ni cabeceras de auth.
           http_code="$(curl -sS -o /tmp/smoke-body.json -w '%{http_code}' \
             -X POST "${base}/api/contact" \
             -H 'content-type: application/json' \
             -H 'accept: application/json' \
-            -H "x-vercel-protection-bypass: ${VERCEL_AUTOMATION_BYPASS_SECRET}" \
             --data "$payload")"
 
           echo "HTTP ${http_code}"
@@ -89,7 +77,6 @@ jobs:
             echo ""
             echo "- URL: \`${base}/api/contact\`"
             echo "- HTTP: \`${http_code}\`"
-            echo "- Bypass: header \`x-vercel-protection-bypass\` (secreto presente; valor no logueado)"
             echo "- Body:"
             echo '```json'
             cat /tmp/smoke-body.json
@@ -100,7 +87,7 @@ jobs:
           } >> "$GITHUB_STEP_SUMMARY"
 
           if [[ "$http_code" == "401" ]] || [[ "$http_code" == "403" ]]; then
-            echo "::error::${http_code} — protección Vercel; revisar bypass secret o Deployment Protection"
+            echo "::error::${http_code} — Deployment Protection activa; deshabilitar en Vercel Settings → Deployment Protection"
             exit 1
           fi
           if [[ "$http_code" == "503" ]]; then

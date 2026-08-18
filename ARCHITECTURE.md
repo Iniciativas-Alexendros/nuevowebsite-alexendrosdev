@@ -44,7 +44,7 @@ La arquitectura se basará en Next.js con App Router y TypeScript en modo estric
 
 - Framework: Next.js App Router. **(ADR-0001, aceptada)**
 - Lenguaje: TypeScript en modo estricto. **(ADR-0002, aceptada)**
-- Runtime: Node.js 22 LTS, fijado con `.nvmrc` y `engines.node: "22.x"` (no rangos abiertos `>=`: Vercel los resuelve al major más nuevo y emite warning). **(batería 4.3, resuelta 13-08-2026; enmienda 17-08-2026)**
+- Runtime: Node.js 24 LTS, fijado con `.nvmrc` y `engines.node: "24.x"` (no rangos abiertos `>=`: Vercel los resuelve al major más nuevo y emite warning). **(batería 4.3; enmienda ADR-0031, 18-08-2026)**
 - Gestor de paquetes: pnpm 10, fijado con `packageManager`. **(ADR-0002, aceptada)**
 - Estilos: Tailwind CSS y tokens semánticos CSS en OKLCH. **(ADR-0004, aceptada)**
 - Componentes base: shadcn/ui incorporado como código propio, personalizado exclusivamente vía tokens, sin forks profundos. **(ADR-0004, aceptada)**

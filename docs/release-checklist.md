@@ -29,13 +29,13 @@
 
 ## Secuencia canónica (única — R-P0-05)
 
-1. Cerrar R-P0-01…R-P0-05 (código/docs + secreto bypass + simulacro rollback).
+1. Cerrar R-P0-01…R-P0-05 (código/docs + simulacro rollback).
 2. Registrar el SHA candidato inmutable en este checklist y en el issue #64.
 3. Confirmar CI verde para ese SHA.
 4. Preparar dominio y entorno conforme a ADR-0029.
 5. Desplegar exactamente el SHA candidato a preview MITL (`expected_sha`).
 6. Completar QA MITL y auditoría manual de accesibilidad.
-7. Ejecutar smoke SMTP preproducción (bypass + correo en `operaciones@`).
+7. Ejecutar smoke SMTP preproducción (correo en `operaciones@`).
 8. Firmar Fases 5, 6, 7, 7.z y 8.
 9. Ejecutar `PROMOTE` del mismo artefacto (`expected_sha` + `confirmation=PROMOTE`).
 10. Ejecutar smoke postproducción.
@@ -50,7 +50,7 @@
 | --- | --- | --- | --- |
 | **R-P0-01** | `expected_sha` en Deploy fase y Release | ✅ código | Preview / Production / tag = mismo SHA |
 | **R-P0-02** | Rollback por SHA / tag / deployment ID | ✅ código + runbook | Simulacro preview ☐ (humano/agente tras merge) |
-| **R-P0-03** | Bypass seguro smoke SMTP | ✅ código + runbook | Secreto Actions ☐ (decisor) |
+| **R-P0-03** | Bypass seguro smoke SMTP | N/A — Vercel Hobby: sin Deployment Protection (feature Pro) | — |
 | **R-P0-04** | LCP máx. 2500 ms (OBJ-005) | ✅ | `lighthouserc.json`; sin relajación 2700 |
 | **R-P0-05** | Secuencia única en README / handoff / checklist / #64 / Notion | ✅ docs | Este archivo + handoff |
 
@@ -128,7 +128,7 @@ Ver [runbook-rollback.md](./runbook-rollback.md). Resumen:
 | **P8-6.0** | R-P0 cerrados + SHA registrado + CI verde | ☐ | Agente + decisor | Pre-gate |
 | **P8-6.1** | Migrar dominio a este proyecto (ADR-0029) | ☐ | Decisor | Antes del preview go-live |
 | **P8-6.2** | MITL preview (`expected_sha`) aprobada | ☐ | Decisor | |
-| **P8-6.3** | Smoke SMTP preprod | ☐ | Decisor + agente dispatch | Bypass + bandeja |
+| **P8-6.3** | Smoke SMTP preprod | ☐ | Decisor + agente dispatch | Bandeja |
 | **P8-6.4** | Firmas Fases 5, 6, 7, 7.z, 8 | ☐ | Decisor | Incl. P6-R3 confidencialidad |
 | **P8-6.5** | `PROMOTE` production (mismo SHA) | ☐ | Decisor | ADR-0025 |
 | **P8-6.6** | Smoke postproducción | ☐ | Decisor | |
@@ -140,7 +140,7 @@ Ver [runbook-rollback.md](./runbook-rollback.md). Resumen:
 
 | Gate | Quien | Bloquea |
 |------|-------|---------|
-| R-P0-01…05 | Agente + decisor (secreto/simulacro) | arranque secuencia |
+| R-P0-01…05 | Agente + decisor (simulacro) | arranque secuencia |
 | MITL + firmas | Decisor | v1.0 |
 | Smoke SMTP | Decisor | go-live |
 | Migración dominio ADR-0029 | Decisor | producción en apex |
