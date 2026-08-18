@@ -70,8 +70,8 @@ Evidencia base: axe E2E CI + Playwright preview (97 tests, 18-08) + MITL bloques
 | --- | --- |
 | **Firmado por** | `[DECISOR: Alexendros]` |
 | **Fecha** | `[DECISOR: DD-MM-YYYY]` |
-| **Preview MITL** | `[DECISOR: URL]` |
-| **SHA candidato** | `[DECISOR: 40 hex]` |
+| **Preview MITL** | https://nuevowebsite-alexendrosdev-ifq50j8q2-alexendros-team.vercel.app |
+| **SHA candidato** | `ffd975d77d79a815c237954842eed092ec2c0d94` |
 | **Dictamen** | `[DECISOR: AA global aprobado en rutas P0. Sin hallazgos bloqueantes para v1.0.]` |
 
 ---

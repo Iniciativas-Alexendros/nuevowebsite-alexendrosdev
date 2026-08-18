@@ -6,8 +6,8 @@
 **Firmas:** [docs/firmas-go-live-v1.0.md](./firmas-go-live-v1.0.md)  
 **Dictamen:** No firmar Fase 8 ni `PROMOTE` hasta MITL firmada + gates P8-6.4–6.7.
 
-**SHA candidato (inmutable):** `bcee86683a3326cad523bf2fa9c5cb4fafaaee54`  
-**Preview MITL:** https://nuevowebsite-alexendrosdev-j6yxr9hji-alexendros-team.vercel.app
+**SHA candidato (inmutable):** `ffd975d77d79a815c237954842eed092ec2c0d94`  
+**Preview MITL:** https://nuevowebsite-alexendrosdev-ifq50j8q2-alexendros-team.vercel.app
 
 ## Hecho por el agente (código/docs)
 
@@ -27,7 +27,7 @@
 2. ~~Anotar SHA candidato inmutable en release-checklist + #64.~~ ✅ (#75)
 3. ~~Confirmar CI verde para ese SHA.~~ ✅ [run 32084007480](https://github.com/Iniciativas-Alexendros/nuevowebsite-alexendrosdev/actions/runs/32084007480)
 4. ~~Migrar `alexendros.dev` (+www) → `nuevowebsite-alexendrosdev` (ADR-0029).~~ ✅ (hub 18-08)
-5. ~~Deploy fase preview (`expected_sha=bcee866`).~~ ✅ [run 32085344740](https://github.com/Iniciativas-Alexendros/nuevowebsite-alexendrosdev/actions/runs/32085344740)
+5. ~~Deploy fase preview (`expected_sha=ffd975d`).~~ ✅ [run 32094766662](https://github.com/Iniciativas-Alexendros/nuevowebsite-alexendrosdev/actions/runs/32094766662)
 6. QA MITL + a11y: bloques 0–1 decisor ✅; Playwright preview ✅ — **firma formal pendiente** (`docs/p8-2-a11y-audit.md` · plantilla `docs/firmas-go-live-v1.0.md`).
 7. ~~Smoke SMTP → bandeja `operaciones@`.~~ ✅ 18-08 (From=`operaciones@`, Reply-To=email formulario; ADR-0011)
 8. Firmar Fases 5, 6, 7, 7.z, 8 (P6-R3 confidencialidad). ☐ **decisor** — plantilla `docs/firmas-go-live-v1.0.md` §2.

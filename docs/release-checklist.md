@@ -5,12 +5,12 @@
 **Objetivo:** Validar que todo está listo para `PROMOTE` a producción y tag `v1.0.0`  
 **Responsable:** Decisor (aprobación final) + Agente (preparación)
 
-**Dictamen:** No firmar Fase 8 ni ejecutar `PROMOTE` hasta MITL firmada (P8-2) y gates P8-6.4–6.7. El SHA candidato es **inmutable** (`bcee866`); merge de **PR #76** lo invalida → nuevo SHA + redeploy preview antes de firmar.
+**Dictamen:** No firmar Fase 8 ni ejecutar `PROMOTE` hasta MITL firmada (P8-2) y gates P8-6.4–6.7. SHA candidato vigente: **`ffd975d`** (merge #76, 18-08).
 
 **Registro de firmas:** [docs/firmas-go-live-v1.0.md](./firmas-go-live-v1.0.md)
 
-**SHA candidato (40 hex):** `bcee86683a3326cad523bf2fa9c5cb4fafaaee54` (merge de #74)  
-**Preview MITL (artefacto activo):** https://nuevowebsite-alexendrosdev-j6yxr9hji-alexendros-team.vercel.app  
+**SHA candidato (40 hex):** `ffd975d77d79a815c237954842eed092ec2c0d94` (merge #76)  
+**Preview MITL (artefacto activo):** https://nuevowebsite-alexendrosdev-ifq50j8q2-alexendros-team.vercel.app  
 **Issue de seguimiento:** [#64 Release v1.0.0](https://github.com/Iniciativas-Alexendros/nuevowebsite-alexendrosdev/issues/64)  
 **Workflows:** [CI](../.github/workflows/ci.yml) · [Deploy fase](../.github/workflows/deploy-phase.yml) · [Smoke SMTP](../.github/workflows/smoke-smtp.yml) · [Smoke post-deploy](../.github/workflows/smoke-post-deploy.yml) · [Release tag](../.github/workflows/release.yml)
 
@@ -18,13 +18,13 @@
 
 | Campo | Valor |
 | --- | --- |
-| SHA candidato | `bcee86683a3326cad523bf2fa9c5cb4fafaaee54` |
-| CI run URL (verde) | https://github.com/Iniciativas-Alexendros/nuevowebsite-alexendrosdev/actions/runs/32084007480 |
-| Preview deploy run / URL | [32085344740](https://github.com/Iniciativas-Alexendros/nuevowebsite-alexendrosdev/actions/runs/32085344740) · https://nuevowebsite-alexendrosdev-j6yxr9hji-alexendros-team.vercel.app (restaurada tras rollback [32085542656](https://github.com/Iniciativas-Alexendros/nuevowebsite-alexendrosdev/actions/runs/32085542656)) |
+| SHA candidato | `ffd975d77d79a815c237954842eed092ec2c0d94` |
+| CI run URL (verde) | https://github.com/Iniciativas-Alexendros/nuevowebsite-alexendrosdev/actions/runs/32094397955 |
+| Preview deploy run / URL | [32094766662](https://github.com/Iniciativas-Alexendros/nuevowebsite-alexendrosdev/actions/runs/32094766662) · https://nuevowebsite-alexendrosdev-ifq50j8q2-alexendros-team.vercel.app |
 | Simulacro rollback (fecha, SHA_A/B, resultado) | 18-08-2026 · A=`bcee866` B=`3d461da` · OK · [#64](https://github.com/Iniciativas-Alexendros/nuevowebsite-alexendrosdev/issues/64#issuecomment-5322010931) |
 | Smoke SMTP preprod (API + bandeja) | 18-08-2026 · HTTP 200 `{ok:true}` · correo en `operaciones@` (From=`operaciones@`, Reply-To=email formulario) |
 | Smoke post-deploy preprod | 18-08-2026 · manual 8/8 rutas + headers + honeypot 200 (script; GHA tras fix allowlist) |
-| MITL Playwright preview | 18-08-2026 · 97 tests (chromium + Pixel 5) · `pnpm test:e2e:preview` |
+| MITL Playwright preview | ☐ revalidar | Tras redeploy `ffd975d` · `pnpm test:e2e:preview` |
 | Firmas Fases 5 / 6 / 7 / 7.z / 8 | ☐ decisor | Plantilla: [firmas-go-live-v1.0.md](./firmas-go-live-v1.0.md) |
 | PROMOTE run / Production deployment_id | ☐ post-firmas |
 | Smoke postprod | ☐ post-PROMOTE |

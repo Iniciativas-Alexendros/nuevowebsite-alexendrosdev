@@ -43,7 +43,7 @@ Este archivo es el punto de entrada de lectura del proyecto. Te dice qué leer d
 
 **Fase activa:** 8 — Hardening (P8-1…P8-6). En paralelo: **Fase 7.z** (P7z-1…P7z-8). Fases 5–7 en `main`, pendientes MITL + firma.
 
-**Siguiente acción (secuencia única):** merge PR evidencias/smokes → **nuevo SHA candidato** + CI verde → redeploy preview (`expected_sha`) → firma MITL P8-2 → firmas épicas → `PROMOTE` → smoke postprod → tag `v1.0.0`. Detalle: [docs/handoff-p8-6.md](./docs/handoff-p8-6.md).
+**Siguiente acción (secuencia única):** firmas MITL P8-2 + épicas 5–8 → `PROMOTE` → smoke postprod → tag `v1.0.0`. SHA candidato `ffd975d` · preview activa. Detalle: [docs/handoff-p8-6.md](./docs/handoff-p8-6.md).
 
 **Objetivo de producto:** v1.0 el 24 de agosto de 2026.
 
@@ -156,7 +156,7 @@ El sitio lo implementa un agente de código. El humano dirige, revisa diffs, hac
 
 # Pendiente ahora
 
-Fases 1–7 en `main`. **Activa:** Fase 8 + 7.z. Preview MITL desplegada (`bcee866`); smokes OK 18-08. **No PROMOTE / no firma Fase 8** hasta firma MITL + P8-6.4–6.7. Tras merge de código nuevo: redeploy preview con nuevo `expected_sha`.
+Fases 1–7 en `main`. **Activa:** Fase 8 + 7.z. Preview MITL `ffd975d` desplegada; **firmas decisor pendientes**. No PROMOTE hasta P8-2 + P8-6.4.
 
 ## Fase 8 — Hardening y lanzamiento (activa)
 
@@ -165,7 +165,7 @@ Unidades: P8-1 checklist · P8-2 a11y · P8-3 Lighthouse multipágina · P8-4 SE
 ## Residuales humanos (bloquean go-live / PROMOTE)
 
 - [x]  Simulacro rollback en preview (R-P0-02; 18-08).
-- [x]  SHA candidato `bcee866` + CI verde + Deploy preview MITL (18-08).
+- [x]  SHA candidato `ffd975d` + CI verde + Deploy preview MITL (18-08 post-#76).
 - [x]  Smoke SMTP real + correo en `operaciones@` (18-08).
 - [x]  Migrar `alexendros.dev` (+ `www`) → `nuevowebsite-alexendrosdev` (ADR-0029; hub 18-08).
 - [ ]  Firma MITL P8-2 + firmas Fases 5, 6, 7, 7.z, 8 → `PROMOTE` → smoke postprod → tag `v1.0.0`.
