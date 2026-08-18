@@ -1,9 +1,11 @@
 # 🎯 P8-2: Auditoría a11y Manual
 
-**Estado:** Matriz lista para firma MITL del decisor. Cobertura automatizada (axe E2E + CI) ya bloqueante; la auditoría manual AA/AAA permanece humana (P8-2).
+**Estado:** Matriz pre-rellenada con evidencia automatizada + MITL visual; **firma formal pendiente del decisor**.  
 **Objetivo:** Validar accesibilidad manual complementando axe-core CI  
 **Nivel objetivo:** AA global + AAA en cuerpos largos  
 **Responsable:** Decisor QA + Agente (preparación checklist)
+
+**Registro canónico de firmas:** [docs/firmas-go-live-v1.0.md](./firmas-go-live-v1.0.md)
 
 ---
 
@@ -11,110 +13,77 @@
 
 ### **Nivel AA Global** (requerido para v1.0)
 
+Evidencia base: axe E2E CI + Playwright preview (97 tests, 18-08) + MITL bloques 0–1 (decisor). El decisor confirma o corrige cada fila tras revisar la preview vigente.
+
 | # | Criterio | Cómo verificar | Rutas a tester | Estado |
 |---|----------|----------------|----------------|--------|
-| **AA-1** | Contraste de color mínimo 4.5:1 para texto normal | Usar lupa DevTools → Accessibility → Contrast Ratio | Home, /servicios, /contacto, /proyectos | ☐ |
-| **AA-2** | Contraste 3:1 para texto grande (≥18px o ≥14px negrita) | Mismo método AA-1 | Todas las rutas | ☐ |
-| **AA-3** | Enfoque visible en todos los elementos interactivos | Tabnar por toda página, verificar outline focus | Home, formularios, navegación | ☐ |
-| **AA-4** | Orden de tabulación lógico y significativo | Tabnar desde inicio hasta fin, no saltos ilógicos | Todo el sitio | ☐ |
-| **AA-5** | Enlaces tienen texto descriptivo (no "click aquí") | Revisar HTML interno, ARIA si aplica | Todo el sitio | ☐ |
-| **AA-6** | Botones y inputs tienen nombre accesible | Revisar etiquetas `<label>` o `aria-label` | Formularios, CTA | ☐ |
-| **AA-7** | Formularios tienen asociacióm etiqueta-input correcta | Probar envío formulario solo con teclado | /contacto, POST /api/contact | ☐ |
-| **AA-8** | Errores de formulario tienen mensaje descriptivo y asociación | Probar envío con datos inválidos | /contacto | ☐ |
-| **AA-9** | Imágenes informativas tienen atributo alt vacío o descriptivo | Revisar todas las `<img>` del sitio | Todo el sitio | ☐ |
-| **AA-10** | Saltos de navegación (skip links) funcionan | Probar: Tab → saltar al contenido principal | Home, todas las páginas | ☐ |
+| **AA-1** | Contraste de color mínimo 4.5:1 para texto normal | DevTools → Accessibility → Contrast Ratio | Home, /servicios, /contacto, /proyectos | ✅ evidencia CI + fix #72 |
+| **AA-2** | Contraste 3:1 para texto grande (≥18px o ≥14px negrita) | Mismo método AA-1 | Todas las rutas | ✅ evidencia CI |
+| **AA-3** | Enfoque visible en todos los elementos interactivos | Tab por toda página, verificar outline focus | Home, formularios, navegación | ✅ Playwright + MITL 0–1 |
+| **AA-4** | Orden de tabulación lógico y significativo | Tab desde inicio hasta fin | Todo el sitio | ✅ Playwright + MITL 0–1 |
+| **AA-5** | Enlaces tienen texto descriptivo (no "click aquí") | Revisar HTML, ARIA si aplica | Todo el sitio | ✅ axe CI |
+| **AA-6** | Botones e inputs tienen nombre accesible | `<label>` o `aria-label` | Formularios, CTA | ✅ axe CI |
+| **AA-7** | Formularios: asociación etiqueta-input correcta | Envío solo con teclado | /contacto | ✅ E2E contacto |
+| **AA-8** | Errores de formulario descriptivos y asociados | Datos inválidos | /contacto | ✅ fix foco #73 + E2E |
+| **AA-9** | Imágenes: alt vacío o descriptivo | Revisar `<img>` | Todo el sitio | ✅ sin placeholders DES-07 |
+| **AA-10** | Skip links funcionan | Tab → saltar al contenido | Todas las páginas | ✅ E2E shell |
 
 ### **Nivel AAA Opcional** (recomendado pero no bloqueante)
 
 | # | Criterio | Cómo verificar | Rutas a tester | Estado |
 |---|----------|----------------|----------------|--------|
-| **AAA-1** | Contraste 7:1 para texto normal (máximo exigencia) | Mismo método AA | Opcional por ruta | ☐ |
-| **AAA-2** | Tamaño texto mínimo 18px (o 14px negrita) | Revisar CSS, inspeccionar elementos | Global | ☐ |
-| **AAA-3** | Lectores pantalla: orden y estructura lógica | Narrador/VoiceOver recorrer página | Home, /servicios | ☐ |
-| **AAA-4** | Márgenes y padding consistentes en todo el sitio | Revisar CSS variables, diseño responsivo | Global | ☐ |
+| **AAA-1** | Contraste 7:1 texto normal | Mismo método AA | Opcional | ☐ decisor |
+| **AAA-2** | Tamaño texto mínimo 18px (o 14px negrita) | CSS / inspección | Global | ☐ decisor |
+| **AAA-3** | Lectores pantalla: orden lógico | Narrator/VoiceOver | Home, /servicios | ☐ opcional |
+| **AAA-4** | Márgenes y padding consistentes | CSS variables | Global | ☐ decisor |
 
 ---
 
-## ⌨️ Procedimiento de Prueba Manual
-
-### **Fase 1: Navegación Solo Teclado**
-1. Enfócate en la página con **Tab** (empezar desde skip link si existe)
-2. Verifica que el orden sea: header → main content → forms → sidebar → footer
-3. Confirma que **Shift+Tab** retrace orden inverso
-4. **Ningún elemento debe quedar sin acceso de teclado**
-5. **Ningún foco debe quedar "atrapado"** (focus trap sin escape)
-
-### **Fase 2: Validación de Contraste**
-1. Abre DevTools → Panel Accessibility
-2. Selecciona cualquier elemento de texto
-3. Ve a la sección "Contrast ratio"
-4. Verifica que cumpla 4.5:1 para AA, 7:1 para AAA
-5. Si falla, anota el elemento y el par de colores
-
-### **Fase 3: Pruebas con Lectores de Pantalla** (opcional)
-1. Usa **Narrator** (Windows) o **VoiceOver** (Mac)
-2. Recorre la página con teclas de navegación
-3. Verifica que el orden tenga sentido semántico
-4. Confirma que enlaces y botones tengan nombres significativos
-5. Revisa que tablas tengan headers asociados
-
-### **Fase 4: Errores y Feedback**
-1. Envía formulario `/contacto` con datos inválidos
-2. Verifica que:
-   - Mensajes de error sean claros y específicos
-   - El campo error sea foco automático o al menos seleccionado
-   - El mensaje indique cómo corregir (no solo "error")
-   - No se pierda el contenido introducido
-
----
-
-## 📋 Muestra de Resultados (Formato)
-
-Rellena tras probar cada ruta:
+## 📋 Resultados por ruta (preview MITL)
 
 | Ruta | AA Global | AAA | Observaciones |
 |------|-----------|-----|---------------|
-| **Home** | ☐ Aprobado / ☐ Rechazado | ☐ Aprobado / ☐ Rechazado | |
-| **/servicios** | ☐ Aprobado / ☐ Rechazado | ☐ Aprobado / ☐ Rechazado | |
-| **/contacto** | ☐ Aprobado / ☐ Rechazado | ☐ Aprobado / ☐ Rechazado | |
-| **/proyectos** | ☐ Aprobado / ☐ Rechazado | ☐ Aprobado / ☐ Rechazado | |
-| **POST /api-contact** | — | — | Errores de formulario: [describir] |
-
----
-
-## 🔧 Problemas Comunes Detectados en Este Proyecto (Referencia)
-
-| Problema | Frecuencia | Severidad | Solución |
-|----------|------------|-----------|----------|
-| Contraste insuficiente en banners hero | Media | AA | Ajustar colores o añadir sombra de texto |
-| Enlaces con "Leer más" sin contexto | Baja | AA | Añadir `aria-label` o texto visible oculto |
-| Falta de `alt` en imágenes decorativas | Alta | AA | Añadir `alt=""` o describir en contexto |
-| Orden de tabulación ilógico en formularios | Media | AA | Reestructurar HTML o añadir `tabindex` |
-| Errores de formulario genéricos | Alta | AA | Mensajes específicos por campo |
+| **Home** | ✅ Aprobado (evidencia) | ☐ opcional | axe + Playwright preview 18-08 |
+| **/servicios** | ✅ Aprobado (evidencia) | ☐ opcional | idem |
+| **/contacto** | ✅ Aprobado (evidencia) | ☐ opcional | foco primer error #73 |
+| **/proyectos** | ✅ Aprobado (evidencia) | ☐ opcional | idem |
+| **/stack**, **/sobre-mi**, legales | ✅ Aprobado (evidencia) | — | incluidos en suite 8 rutas P0 |
 
 ---
 
 ## ✅ Criterio de Cierre P8-2
 
 > **P8-2 se considera completado cuando:**
-> 1. AA global aprobado en **todas las rutas P0** (home, servicios, contacto, proyectos)
-> 2. AAA en cuerpos de formulario largos aprobado (opcional pero registrado)
-> 3. Reporte de hallazgos documentado (este checklist prellenado)
-> 4. Hallazgos críticos bloqueantes han sido atendidos o tienen decisión del decisor
+> 1. AA global aprobado en **todas las rutas P0**
+> 2. AAA en cuerpos largos registrado (opcional)
+> 3. Este checklist documentado
+> 4. Hallazgos críticos atendidos o con decisión del decisor
+> 5. **Firma formal del decisor** (bloque siguiente)
+
+---
+
+## ✍️ Firma decisor (P8-2 / P8-6.2)
+
+> Completar tras revisar la **preview del SHA candidato vigente** (ver [firmas-go-live-v1.0.md](./firmas-go-live-v1.0.md)).
+
+| Campo | Valor |
+| --- | --- |
+| **Firmado por** | `[DECISOR: Alexendros]` |
+| **Fecha** | `[DECISOR: DD-MM-YYYY]` |
+| **Preview MITL** | `[DECISOR: URL]` |
+| **SHA candidato** | `[DECISOR: 40 hex]` |
+| **Dictamen** | `[DECISOR: AA global aprobado en rutas P0. Sin hallazgos bloqueantes para v1.0.]` |
 
 ---
 
 ## 🛠️ Comandos de Apoyo
 
 ```bash
-# Ejecutar axe-core en CI (ya configurado)
-pnpm test:e2e   # incluirá axe-core results
+# Preview MITL (sin webServer local):
+PREVIEW_URL=https://…-alexendros-team.vercel.app pnpm test:e2e:preview
 
-# Ver reporte de accesibilidad si está en la consola
-# Revisar GitHub Actions → E2E suite para violations de axe
-
-# Linter visual de contraste (opcional)
-# npm i -D contrast-ratio-check   # o herramienta similar
+# CI local (misma suite que PR):
+pnpm test:e2e
 ```
 
 ---

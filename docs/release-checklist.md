@@ -5,7 +5,9 @@
 **Objetivo:** Validar que todo está listo para `PROMOTE` a producción y tag `v1.0.0`  
 **Responsable:** Decisor (aprobación final) + Agente (preparación)
 
-**Dictamen:** No firmar Fase 8 ni ejecutar `PROMOTE` hasta MITL firmada (P8-2) y gates P8-6.4–6.7. El SHA candidato es **inmutable** (`bcee866`); un commit de **código** nuevo lo invalida (docs-only no).
+**Dictamen:** No firmar Fase 8 ni ejecutar `PROMOTE` hasta MITL firmada (P8-2) y gates P8-6.4–6.7. El SHA candidato es **inmutable** (`bcee866`); merge de **PR #76** lo invalida → nuevo SHA + redeploy preview antes de firmar.
+
+**Registro de firmas:** [docs/firmas-go-live-v1.0.md](./firmas-go-live-v1.0.md)
 
 **SHA candidato (40 hex):** `bcee86683a3326cad523bf2fa9c5cb4fafaaee54` (merge de #74)  
 **Preview MITL (artefacto activo):** https://nuevowebsite-alexendrosdev-j6yxr9hji-alexendros-team.vercel.app  
@@ -23,7 +25,7 @@
 | Smoke SMTP preprod (API + bandeja) | 18-08-2026 · HTTP 200 `{ok:true}` · correo en `operaciones@` (From=`operaciones@`, Reply-To=email formulario) |
 | Smoke post-deploy preprod | 18-08-2026 · manual 8/8 rutas + headers + honeypot 200 (script; GHA tras fix allowlist) |
 | MITL Playwright preview | 18-08-2026 · 97 tests (chromium + Pixel 5) · `pnpm test:e2e:preview` |
-| Firmas Fases 5 / 6 / 7 / 7.z / 8 | ☐ decisor |
+| Firmas Fases 5 / 6 / 7 / 7.z / 8 | ☐ decisor | Plantilla: [firmas-go-live-v1.0.md](./firmas-go-live-v1.0.md) |
 | PROMOTE run / Production deployment_id | ☐ post-firmas |
 | Smoke postprod | ☐ post-PROMOTE |
 | Release `v1.0.0` (tag = mismo SHA) | ☐ post-PROMOTE |
@@ -64,8 +66,8 @@
 | Item | Descripción | Estado | Comentario |
 |------|-------------|--------|------------|
 | **P8-1.1** | `docs/release-checklist.md` creado y vigente | ✅ | Este archivo |
-| **P8-1.2** | Revisado por decisor | ☐ | Firma manual |
-| **P8-1.3** | MITL Fases 5–7 en preview | ☐ firma | Deploy ✅; Playwright preview ✅; firma decisor P8-2 pendiente |
+| **P8-1.2** | Revisado por decisor | ☐ | [firmas-go-live-v1.0.md](./firmas-go-live-v1.0.md) |
+| **P8-1.3** | MITL Fases 5–7 en preview | ☐ firma | Deploy ✅; Playwright ✅; firma P8-2 pendiente |
 | **P8-1.4** | Smoke SMTP real | ✅ | `operaciones@` 18-08 + HTTP 200 |
 | **P8-1.5** | Tag `v1.0.0` vía `release.yml` | ☐ | ADR-0026 + `expected_sha`; post-PROMOTE |
 | **P8-1.6** | Redirecciones legacy | ✅ | N/A (ADR-0013) |
@@ -86,8 +88,8 @@ Ver [runbook-rollback.md](./runbook-rollback.md). Resumen:
 
 | Item | Descripción | Estado | Comentario |
 |------|-------------|--------|------------|
-| **P8-2.1** | Matriz en `docs/p8-2-a11y-audit.md` | ☐ | Firma decisor |
-| **P8-2.2** | Teclado / foco / zoom / temas / reduced-motion | ☐ firma | Playwright preview ✅; visual 0–1 decisor ✅ |
+| **P8-2.1** | Matriz en `docs/p8-2-a11y-audit.md` | ☐ firma | Pre-rellenada; bloque firma decisor |
+| **P8-2.2** | Teclado / foco / zoom / temas / reduced-motion | ☐ firma | Playwright ✅; MITL 0–1 ✅ |
 | **P8-2.3** | axe CI sin violaciones bloqueantes | ✅ | 8/8 P0 preview + CI SHA candidato |
 
 ---
@@ -132,7 +134,7 @@ Ver [runbook-rollback.md](./runbook-rollback.md). Resumen:
 | **P8-6.1** | Migrar dominio a este proyecto (ADR-0029) | ✅ | Hub decisor 18-08 |
 | **P8-6.2** | MITL preview (`expected_sha`) aprobada | ☐ firma | Preview lista; Playwright OK |
 | **P8-6.3** | Smoke SMTP preprod | ✅ | Bandeja 18-08 |
-| **P8-6.4** | Firmas Fases 5, 6, 7, 7.z, 8 | ☐ | Decisor |
+| **P8-6.4** | Firmas Fases 5, 6, 7, 7.z, 8 | ☐ | [firmas-go-live-v1.0.md](./firmas-go-live-v1.0.md) |
 | **P8-6.5** | `PROMOTE` production (mismo SHA) | ☐ | Decisor · ADR-0025 |
 | **P8-6.6** | Smoke postproducción | ☐ | Post-PROMOTE |
 | **P8-6.7** | Tag + GitHub Release `v1.0.0` (mismo SHA) | ☐ | Post-PROMOTE · ADR-0026 |
@@ -164,6 +166,7 @@ TARGET_URL="$PREVIEW_URL" bash scripts/smoke-post-deploy.sh
 
 ## Relacionado
 
+- [firmas-go-live-v1.0.md](./firmas-go-live-v1.0.md)
 - [handoff-p8-6.md](./handoff-p8-6.md)
 - [runbook-rollback.md](./runbook-rollback.md)
 - [runbook-smoke-smtp.md](./runbook-smoke-smtp.md)
