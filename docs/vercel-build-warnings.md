@@ -8,7 +8,7 @@
 | ID | Síntoma | Causa | Solución definitiva | Estado |
 | --- | --- | --- | --- | --- |
 | **VW-1** | `Warning: Detected "engines": { "node": ">=…" } … will automatically upgrade` | Rangos abiertos en `engines`; Vercel mapea al último major | `engines.node: "24.x"` alineado con `.nvmrc` / ADR-0031 | ✅ repo |
-| **VW-2** | Mismatch panel Vercel ↔ `engines` / `.nvmrc` | Settings del proyecto desalineados del pin del repo | Pin `24.x` en `package.json` + **decisor:** Settings → Node.js Version → **24.x** | ✅ repo · ☐ panel |
+| **VW-2** | Mismatch panel Vercel ↔ `engines` / `.nvmrc` | Settings del proyecto desalineados del pin del repo | Pin `24.x` en `package.json` + Settings → Node.js Version → **24.x** | ✅ repo · ✅ panel (decisor, 18-08-2026) |
 | **VW-3** | `Warning: Next.js ignored pnpm-lock.yaml in … outside the current Git repository` / pedir `turbopack.root` | Lockfile padre (`~/pnpm-lock.yaml`) hace que Turbopack infiera mal la raíz | `turbopack.root` + `outputFileTracingRoot` = raíz del paquete en [`next.config.ts`](../next.config.ts) | ✅ repo |
 | **VW-4** | Deployments GitHub en estado **CANCELED** («Ignored Build Step») en cada push/PR | `vercel.json` → `ignoreCommand: exit 0` (ADR-0025: sin preview por PR) | **Intencional.** No es fallo. Deploy real solo vía workflow **Deploy fase** | ✅ doc |
 | **VW-5** | `framework: null` en API del proyecto pese a `"framework": "nextjs"` en `vercel.json` | Metadato de proyecto legacy / prebuilt CLI | Mantener `framework` en `vercel.json`. Si el panel muestra «Other», fijar Framework Preset = Next.js (decisor) | ☐ panel opcional |
@@ -33,7 +33,7 @@ Fuente: API `GET /v9/projects/…` (Build & Deployment / Framework Settings).
 | Setting | Valor actual | Esperado | Veredicto |
 | --- | --- | --- | --- |
 | Framework | `nextjs` | Next.js | OK (VW-5 cerrado) |
-| Node.js Version | _(verificar)_ | **24.x** (ADR-0031) | ☐ decisor: alinear panel |
+| Node.js Version | `24.x` | **24.x** (ADR-0031) | OK (VW-2 cerrado, 18-08-2026) |
 | Build Command | `null` (default Next) | Override vacío | OK |
 | Install Command | `null` (pnpm vía `packageManager`) | Override vacío | OK |
 | Output Directory | `null` (`.next`) | Override vacío | OK |
@@ -47,6 +47,6 @@ Fuente: API `GET /v9/projects/…` (Build & Deployment / Framework Settings).
 
 ### Acción residual (decisor)
 
-**VW-2:** Settings → Node.js Version → **24.x** (alinear con `.nvmrc` y `engines`).
+VW-2 cerrado: panel Vercel en Node.js Version **24.x** (confirmado 18-08-2026).
 
 Si el panel sigue mostrando «Awaiting Data», confirmar con **Disable** en Analytics / Speed Insights (UI). En código no hay paquetes de analítica; los toggles API ya están en `false`.
