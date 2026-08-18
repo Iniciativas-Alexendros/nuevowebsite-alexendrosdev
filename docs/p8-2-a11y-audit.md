@@ -1,6 +1,6 @@
 # 🎯 P8-2: Auditoría a11y Manual
 
-**Estado:** Matriz pre-rellenada con evidencia automatizada + MITL visual; **firma formal pendiente del decisor**.  
+**Estado:** **Firmado por el decisor el 18-08-2026** (preview `ffd975d` revisada y aprobada).  
 **Objetivo:** Validar accesibilidad manual complementando axe-core CI  
 **Nivel objetivo:** AA global + AAA en cuerpos largos  
 **Responsable:** Decisor QA + Agente (preparación checklist)
@@ -68,11 +68,11 @@ Evidencia base: axe E2E CI + Playwright preview (97 tests, 18-08) + MITL bloques
 
 | Campo | Valor |
 | --- | --- |
-| **Firmado por** | `[DECISOR: Alexendros]` |
-| **Fecha** | `[DECISOR: DD-MM-YYYY]` |
-| **Preview MITL** | `[DECISOR: URL]` |
-| **SHA candidato** | `[DECISOR: 40 hex]` |
-| **Dictamen** | `[DECISOR: AA global aprobado en rutas P0. Sin hallazgos bloqueantes para v1.0.]` |
+| **Firmado por** | Alexendros (decisor) |
+| **Fecha** | 18-08-2026 |
+| **Preview MITL** | https://nuevowebsite-alexendrosdev-ifq50j8q2-alexendros-team.vercel.app |
+| **SHA candidato** | `ffd975d77d79a815c237954842eed092ec2c0d94` |
+| **Dictamen** | AA global aprobado en rutas P0. Preview revisada: es bueno. Sin hallazgos bloqueantes para v1.0. |
 
 ---
 
