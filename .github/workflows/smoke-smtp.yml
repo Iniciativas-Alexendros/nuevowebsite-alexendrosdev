@@ -8,7 +8,7 @@ on:
   workflow_dispatch:
     inputs:
       target_url:
-        description: "Origen allowlisteado (alexendros.dev | *.alexendros-team.vercel.app | nuevowebsite-alexendrosdev.vercel.app), sin path"
+        description: "Origen allowlisteado (alexendros.dev | *-alexendros-team.vercel.app | nuevowebsite-alexendrosdev.vercel.app), sin path"
         required: true
         type: string
 
@@ -33,19 +33,19 @@ jobs:
             exit 1
           fi
           host="$(printf '%s' "$raw" | sed -E 's|^https://||; s|/$||; s|:443$||' | tr '[:upper:]' '[:lower:]')"
-          # Solo orígenes del proyecto/equipo (NFR-SEC-002).
+          # Solo orígenes del proyecto/equipo (NFR-SEC-002). Vercel team: guion antes de alexendros-team.
           allowed=0
           case "$host" in
             alexendros.dev|www.alexendros.dev|nuevowebsite-alexendrosdev.vercel.app)
               allowed=1
               ;;
           esac
-          if [[ "$host" == *.alexendros-team.vercel.app ]]; then
+          if [[ "$host" =~ -alexendros-team\.vercel\.app$ ]]; then
             allowed=1
           fi
           if [ "$allowed" -ne 1 ]; then
             echo "::error::host '${host}' no está en la allowlist del smoke SMTP."
-            echo "::error::Permitidos: alexendros.dev, www.alexendros.dev, nuevowebsite-alexendrosdev.vercel.app, *.alexendros-team.vercel.app"
+            echo "::error::Permitidos: alexendros.dev, www.alexendros.dev, nuevowebsite-alexendrosdev.vercel.app, *-alexendros-team.vercel.app"
             exit 1
           fi
           base="https://${host}"

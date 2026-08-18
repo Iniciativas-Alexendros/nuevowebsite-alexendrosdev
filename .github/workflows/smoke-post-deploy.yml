@@ -8,7 +8,7 @@ on:
   workflow_dispatch:
     inputs:
       target_url:
-        description: "Origen allowlisteado (alexendros.dev | *.alexendros-team.vercel.app | nuevowebsite-alexendrosdev.vercel.app), sin path"
+        description: "Origen allowlisteado (alexendros.dev | *-alexendros-team.vercel.app | nuevowebsite-alexendrosdev.vercel.app), sin path"
         required: true
         type: string
 

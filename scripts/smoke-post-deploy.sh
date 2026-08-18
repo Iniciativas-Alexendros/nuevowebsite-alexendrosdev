@@ -17,17 +17,11 @@ if [[ ! "$raw" =~ ^https://[A-Za-z0-9.-]+(:443)?/?$ ]]; then
 fi
 host="$(printf '%s' "$raw" | sed -E 's|^https://||; s|/$||; s|:443$||' | tr '[:upper:]' '[:lower:]')"
 
-allowed=0
-case "$host" in
-  alexendros.dev|www.alexendros.dev|nuevowebsite-alexendrosdev.vercel.app)
-    allowed=1
-    ;;
-esac
-if [[ "$host" == *.alexendros-team.vercel.app ]]; then
-  allowed=1
-fi
-if [ "$allowed" -ne 1 ]; then
+# shellcheck source=scripts/smoke-host-allowlist.sh
+source "$(dirname "$0")/smoke-host-allowlist.sh"
+if ! smoke_host_allowed "$host"; then
   echo "::error::host '${host}' no está en la allowlist del smoke post-deploy."
+  echo "::error::Permitidos: alexendros.dev, www, nuevowebsite-alexendrosdev.vercel.app, *-alexendros-team.vercel.app"
   exit 1
 fi
 

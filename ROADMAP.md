@@ -312,7 +312,7 @@ Camino crítico ~70 h con solape de Fase 4. Sin holgura humana de revisión. Rec
 - [x]  Añadir conversiones o eventos únicamente si existe consentimiento y decisión de analítica. — **Resuelto:** sin analítica ni cookies no esenciales en el MVP (ADR-0010).
 - [x]  Crear pruebas E2E del flujo de contacto y tests de integración del endpoint en CI (OBJ-007; ADR-0009). — **PRs #39/#40.**
 - [ ]  **RESIDUAL:** smoke SMTP real tras sync-env + redeploy (pre-PROMOTE).
-- [ ]  **RESIDUAL:** preview MITL + firma del decisor (ADR-0025 / DEC-ROADMAP-03).
+- [ ]  **RESIDUAL:** preview MITL + firma del decisor (ADR-0025 / DEC-ROADMAP-03). Plantilla: `docs/firmas-go-live-v1.0.md`.
 
 **Entregable:** versión MVP capaz de presentar servicios y recibir contactos.
 
@@ -355,7 +355,7 @@ Camino crítico ~70 h con solape de Fase 4. Sin holgura humana de revisión. Rec
 - [x]  Añadir metadata específica por ruta: `/proyectos`, `/stack` y `/sobre-mi` (NFR-SEO-001). — **PRs #42–#44.**
 - [x]  Revisar navegación cruzada entre servicios, proyectos y stack (OBJ-003: alcanzables en ≤2 interacciones). — **E2E PR #44.**
 - [ ]  **RESIDUAL:** capturas DES-07 (`images[]` omitidas hasta assets reales).
-- [ ]  **RESIDUAL:** preview MITL + firma del decisor (ADR-0025 / DEC-ROADMAP-03).
+- [ ]  **RESIDUAL:** preview MITL + firma del decisor (ADR-0025 / DEC-ROADMAP-03). Plantilla: `docs/firmas-go-live-v1.0.md`.
 
 **Entregable:** portfolio navegable y mantenible.
 
@@ -394,7 +394,7 @@ Camino crítico ~70 h con solape de Fase 4. Sin holgura humana de revisión. Rec
 - [x]  Revisar textos de consentimiento (checkbox no premarcado; REQ-FORM-CONTACT-001).
 - [x]  Definir proceso de actualización cuando se añada una integración (criterio SPECS 6.9). — **Documentado en CONTENT.md §10.1.**
 - [x]  Validar los textos legales con asesoría antes de producción (riesgo regulatorio residual del criterio SMI, ADR-0015). — **Desviado (ADR-0027 / DEC-GO-03):** el decisor firma los textos `published`; la asesoría externa es residual **post-v1.0** y **no** bloquea `PROMOTE`.
-- [ ]  **RESIDUAL:** preview MITL + firma del decisor (ADR-0025 / DEC-ROADMAP-03).
+- [ ]  **RESIDUAL:** preview MITL + firma del decisor (ADR-0025 / DEC-ROADMAP-03). Plantilla: `docs/firmas-go-live-v1.0.md`.
 
 **Entregable:** información legal coherente con la operación real del sitio.
 
