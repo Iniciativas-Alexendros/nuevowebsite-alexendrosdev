@@ -1,13 +1,13 @@
 # Handoff P8-6 — gates humanos v1.0
 
-**Fecha:** 17-08-2026  
+**Fecha:** 18-08-2026  
 **Issue:** https://github.com/Iniciativas-Alexendros/nuevowebsite-alexendrosdev/issues/64  
 **Checklist:** [docs/release-checklist.md](./release-checklist.md)  
 **Dictamen:** No firmar Fase 8 ni `PROMOTE` hasta cerrar R-P0-01…R-P0-05.
 
 ## Hecho por el agente (código/docs)
 
-- Remediación P0: `expected_sha` en Deploy/Release; rollback (SHA/tag/dpl); bypass smoke SMTP; LCP 2500 ms; secuencia única
+- Remediación P0: `expected_sha` en Deploy/Release; rollback (SHA/tag/dpl); smoke SMTP (URL pública); LCP 2500 ms; secuencia única
 - `/sobre-mi` completo; E2E portfolio OBJ-003 + launch
 - Taxonomía asuntos + claims servicios
 - CONTRIBUTING.md, SECURITY.md, ADR-0028, ADR-0029
@@ -18,7 +18,7 @@
 
 ## Secuencia canónica (única — R-P0-05)
 
-1. Cerrar R-P0-01…R-P0-05 (incl. secreto bypass + simulacro rollback en preview).
+1. Cerrar R-P0-01…R-P0-05 (incl. simulacro rollback en preview).
 2. Anotar SHA candidato inmutable en [release-checklist.md](./release-checklist.md) + issue #64.
 3. Confirmar CI verde para ese SHA.
 4. Migrar `alexendros.dev` (+www) de `website-alexendrosdev` → `nuevowebsite-alexendrosdev` (ADR-0029).

@@ -26,7 +26,7 @@ jobs:
         run: |
           set -euo pipefail
 
-          # Solo origen https; sin userinfo, query ni fragmento (evita exfiltración del bypass).
+          # Solo origen https; sin userinfo, query ni fragmento.
           raw="$(printf '%s' "$TARGET_URL" | tr -d '[:space:]')"
           if [[ ! "$raw" =~ ^https://[A-Za-z0-9.-]+(:443)?/?$ ]]; then
             echo "::error::target_url DEBE ser origen https://host[/] sin path, query, fragmento ni credenciales."

@@ -39,7 +39,7 @@ Este archivo es el punto de entrada de lectura del proyecto. Te dice qué leer d
 
 # Estado en una mirada
 
-**Pulso:** 17 de agosto de 2026 — remediación P0 go-live; **no firmar Fase 8 ni PROMOTE** hasta cerrar R-P0 + secuencia canónica.
+**Pulso:** 18 de agosto de 2026 — remediación P0 go-live; PR #74 en revisión (R-P0-03 N/A Hobby, Node 24 unificado, ADR-0031); **no firmar Fase 8 ni PROMOTE** hasta cerrar R-P0 + secuencia canónica.
 
 **Fase activa:** 8 — Hardening (P8-1…P8-6). En paralelo: **Fase 7.z** (P7z-1…P7z-8). Fases 5–7 en `main`, pendientes MITL + firma.
 

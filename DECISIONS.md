@@ -109,7 +109,7 @@ Ruta: ./DECISIONS.md
 - **ADR-0028** — Diferir capturas de proyecto (DES-07) a Fase 10. *(aceptada, 16-08-2026)*
 - **ADR-0029** — Dominio canónico apex y migración al proyecto Vercel correcto. *(aceptada, 16-08-2026)*
 - **ADR-0030** — Gate anti-hex en CI, CSP de producción sin `unsafe-eval`, HSTS `includeSubDomains`+`preload`. *(aceptada, 17-08-2026)*
-- **ADR-0031** — Runtime Node 24 LTS y majors de Actions fijados. *(aceptada, 18-08-2026; enmienda app 24.x mismo día)*
+- **ADR-0031** — Runtime Node 24 LTS y majors de Actions fijados. *(aceptada, 18-08-2026)*
 
 ---
 
@@ -1037,13 +1037,12 @@ Ruta: ./DECISIONS.md
 - Relacionado con: ADR-0002, ADR-0025, DEC-AGENTS-04, AGENTS §8, `.github/workflows/*`, `.nvmrc`
 - Contexto:
 	- GitHub depreca node20 en runners; las actions v4 generan warnings en cada run.
-	- Node 24 LTS es el default actual de GitHub y Vercel; mantener Node 22 en app generaba desalineación panel↔repo (VW-2).
+	- La redacción previa (chat 18-08) dejaba la app en 22 hasta post-v1.0; el decisor adelantó el salto a este mismo PR para unificar major en local/CI/Vercel y cerrar VW-2.
 - Decisión:
 	1. **Actions:** checkout v7.0.1 / setup-node v7.0.0 / pnpm-action-setup v6.0.10 pineadas por SHA en todos los workflows; revisión trimestral o Dependabot solo para `.github/workflows`.
 	2. **App:** Node **24.x** LTS en `.nvmrc` (fuente única), `engines`, `@types/node`, CI (`node-version-file: .nvmrc`) y panel Vercel → **24.x** (espejos en el mismo commit/PR).
-	3. **Enmienda 18-08-2026:** el salto de app a Node 24 se adelanta al cierre pre-v1.0 (mismo PR que actions bump); sustituye la cláusula «post-v1.0» de la redacción inicial.
 - Alternativas consideradas:
-	- App en 22 + Actions en node24: rechazado tras enmienda; mismatch Vercel y doble estándar local/CI/producción.
+	- App en 22 + Actions en node24: rechazado: mismatch Vercel y doble estándar local/CI/producción.
 	- Mantener v4 con warnings: rechazado; ruido en CI y deprecación inminente.
 - Consecuencias positivas:
 	- Un solo major Node en Actions, CI, local y Vercel; cero warnings de runtime en Actions hasta ~2028.
