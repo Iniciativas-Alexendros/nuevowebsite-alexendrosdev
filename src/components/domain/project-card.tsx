@@ -14,6 +14,8 @@ export type ProjectCardProps = {
   project: Project;
   /** En home/listados densos se omiten badges de tecnologías (peso DOM / Lighthouse). */
   showTechnologies?: boolean;
+  /** Muestra la primera métrica de `results[]` si existe. */
+  showResult?: boolean;
   className?: string;
 };
 
@@ -21,10 +23,16 @@ export type ProjectCardProps = {
  * Tarjeta de proyecto (REQ-DOMAIN-PROJECTCARD-001).
  * Una sola acción enfocable; sin placeholders de imagen (DES-07).
  */
-export function ProjectCard({ project, showTechnologies = true, className }: ProjectCardProps) {
+export function ProjectCard({
+  project,
+  showTechnologies = true,
+  showResult = true,
+  className,
+}: ProjectCardProps) {
   const primaryLink = project.links?.[0];
   const href = primaryLink?.href ?? "/proyectos";
   const linkLabel = primaryLink?.label ?? "Ver proyectos";
+  const primaryResult = showResult ? project.results?.[0] : undefined;
 
   const techNames = showTechnologies
     ? project.technologies
@@ -45,6 +53,9 @@ export function ProjectCard({ project, showTechnologies = true, className }: Pro
         <p className="text-base leading-relaxed text-foreground-muted">
           {project.shortDescription}
         </p>
+        {primaryResult ? (
+          <p className="text-sm font-medium leading-relaxed text-foreground">{primaryResult}</p>
+        ) : null}
       </div>
 
       {techNames.length > 0 ? (

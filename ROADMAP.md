@@ -543,6 +543,15 @@ Cada bloque P1 se activa solo con su disparador cumplido y su ADR registrado (AD
 
 - Requiere estrategia editorial, modelo de contenido, periodicidad y plan de mantenimiento.
 
+## Diferido explícito (dictamen conversión v1.0)
+
+Hasta que el embudo de captación (formulario + Cal.com + auditoría empaquetada) lo justifique, **permanecen aplazados**:
+
+- `/servicios/[slug]` y `/proyectos/[slug]` (P1; disparador de contenido vigente).
+- Precios públicos, Stripe/checkout, WhatsApp embebido, blog, newsletter y CRM (SPECS §3/§9; CONSTITUTION §Superficie).
+
+No activar estos bloques «por si acaso» dentro de P0/post-lanzamiento inmediato.
+
 ---
 
 # 12. Decisiones abiertas (batería ROADMAP)

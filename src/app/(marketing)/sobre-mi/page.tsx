@@ -6,10 +6,15 @@ import { Container } from "@/components/layout/container";
 import { PageHeader } from "@/components/layout/page-header";
 import { Section } from "@/components/layout/section";
 import { Link } from "@/components/ui/link";
+import { contactChannels } from "@/content/contact";
 import { getPublishedProfile } from "@/lib/content";
 import { buildPageMetadata } from "@/lib/seo";
 
 const profile = getPublishedProfile();
+
+const calendarHref =
+  contactChannels.find((channel) => channel.type === "calendar" && channel.visible)?.href ??
+  "https://cal.com/alexendros";
 
 export const metadata: Metadata = buildPageMetadata({
   title: "Sobre mí",
@@ -76,8 +81,9 @@ export default function SobreMiPage() {
 
       <CtaSection
         title="¿Encaja con lo que buscas?"
-        description="Escríbeme con el contexto del proyecto. Si no encajo, te lo digo en la primera conversación."
+        description="Escríbeme con el contexto del proyecto o reserva una llamada. Si no encajo, te lo digo en la primera conversación."
         cta={{ label: "Contactar", href: "/contacto" }}
+        secondaryCta={{ label: "Agendar llamada", href: calendarHref }}
       />
     </>
   );

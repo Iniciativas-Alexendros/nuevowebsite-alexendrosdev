@@ -48,7 +48,15 @@ test.describe("contacto", () => {
     await page.getByRole("checkbox").check();
     await page.getByRole("button", { name: "Enviar mensaje" }).click();
 
-    await expect(page.getByRole("status").filter({ hasText: "Mensaje enviado" })).toBeVisible();
+    const success = page.getByRole("status").filter({ hasText: "Mensaje enviado" });
+    await expect(success).toBeVisible();
+    await expect(success.getByRole("link", { name: /Agendar una llamada/i })).toBeVisible();
+  });
+
+  test("preselecciona asunto desde ?subject=", async ({ page }) => {
+    await page.goto("/contacto?subject=auditoria");
+
+    await expect(page.getByLabel("Asunto o tipo de consulta")).toHaveValue(CONTACT_SUBJECTS[3]);
   });
 
   test("muestra error claro ante fallo del proveedor", async ({ page }) => {

@@ -1,9 +1,11 @@
 import type { Metadata } from "next";
 
+import { CtaSection } from "@/components/domain/cta-section";
 import { StackGroup } from "@/components/domain/stack-group";
 import { Container } from "@/components/layout/container";
 import { PageHeader } from "@/components/layout/page-header";
 import { Section } from "@/components/layout/section";
+import { contactChannels } from "@/content/contact";
 import { getPublishedTechnologies } from "@/lib/content";
 import { buildPageMetadata } from "@/lib/seo";
 
@@ -13,6 +15,10 @@ export const metadata: Metadata = buildPageMetadata({
     "Tecnologías y herramientas en uso real: lenguajes, frameworks, CMS, estilos y tooling. Sin porcentajes ni niveles subjetivos.",
   path: "/stack",
 });
+
+const calendarHref =
+  contactChannels.find((channel) => channel.type === "calendar" && channel.visible)?.href ??
+  "https://cal.com/alexendros";
 
 export default function StackPage() {
   const technologies = getPublishedTechnologies();
@@ -30,6 +36,12 @@ export default function StackPage() {
           <StackGroup technologies={technologies} deferBelowFold />
         </Container>
       </Section>
+      <CtaSection
+        title="¿Quieres aplicar este stack a tu proyecto?"
+        description="Cuéntame el contexto por el formulario o agenda una llamada corta de discovery."
+        cta={{ label: "Ir a contacto", href: "/contacto" }}
+        secondaryCta={{ label: "Agendar llamada", href: calendarHref }}
+      />
     </>
   );
 }

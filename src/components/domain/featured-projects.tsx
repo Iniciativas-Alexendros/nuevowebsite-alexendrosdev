@@ -12,6 +12,7 @@ export type FeaturedProjectsProps = {
 /**
  * Proyectos destacados en home (DES-07 diferido).
  * Markup ligero aparte de ProjectCard para no penalizar Lighthouse (OBJ-005).
+ * Una métrica de `results[0]` cuando existe (prueba social cuantificada).
  */
 export function FeaturedProjects({
   projects,
@@ -35,6 +36,7 @@ export function FeaturedProjects({
         {projects.map((project) => {
           const primaryLink = project.links?.[0];
           const href = primaryLink?.href ?? "/proyectos";
+          const primaryResult = project.results?.[0];
 
           return (
             <li key={project.id} className="flex flex-col gap-3 border-t border-border pt-6">
@@ -42,6 +44,11 @@ export function FeaturedProjects({
               <p className="text-base leading-relaxed text-foreground-muted">
                 {project.shortDescription}
               </p>
+              {primaryResult ? (
+                <p className="text-sm font-medium leading-relaxed text-foreground">
+                  {primaryResult}
+                </p>
+              ) : null}
               <div>
                 <Link href={href} variant="secondary" size="sm">
                   {primaryLink?.label ?? "Ver proyectos"}

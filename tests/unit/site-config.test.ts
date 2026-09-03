@@ -17,4 +17,9 @@ describe("siteConfig", () => {
     expect(hrefs).toContain("/aviso-legal");
     expect(hrefs).toContain("/privacidad");
   });
+
+  it("expone redes y email para el pie (LinkedIn + mailto)", () => {
+    const labels = siteConfig.socialLinks.map((item) => item.label);
+    expect(labels).toEqual(expect.arrayContaining(["LinkedIn", "Email", "GitHub"]));
+  });
 });
