@@ -7,6 +7,7 @@ export const profileSchema = z.object({
   title: z.string().min(1).max(120),
   summary: z.string().min(1),
   bio: z.array(z.string().min(1)).min(1),
+  method: z.array(z.string().min(1)).min(1),
   location: z.string().optional(),
   languages: z.array(z.string().min(1)).optional(),
   links: z

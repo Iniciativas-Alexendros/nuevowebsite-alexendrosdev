@@ -13,7 +13,7 @@ test.describe("SEO técnico", () => {
     expect(text).toContain("Sitemap: https://alexendros.dev/sitemap.xml");
   });
 
-  test("sitemap.xml lista las ocho rutas estáticas", async ({ request }) => {
+  test("sitemap.xml lista las seis rutas estáticas canónicas", async ({ request }) => {
     const response = await request.get("/sitemap.xml");
     expect(response.status()).toBe(200);
     expect(["application/xml", "text/xml"]).toContain(
@@ -23,11 +23,12 @@ test.describe("SEO técnico", () => {
     const text = await response.text();
     expect(text.includes("<urlset")).toBe(true);
     expect(text).not.toContain("/catalog");
+    // /proyectos y /stack son redirecciones 308: no pueden aparecer en el sitemap.
+    expect(text).not.toContain("alexendros.dev/proyectos");
+    expect(text).not.toContain("alexendros.dev/stack");
     for (const path of [
       "/",
       "/servicios",
-      "/proyectos",
-      "/stack",
       "/sobre-mi",
       "/contacto",
       "/aviso-legal",
@@ -41,8 +42,6 @@ test.describe("SEO técnico", () => {
     const routes = [
       { path: "/", titlePart: "Alexendros" },
       { path: "/servicios", titlePart: "Servicios" },
-      { path: "/proyectos", titlePart: "Proyectos" },
-      { path: "/stack", titlePart: "Stack" },
       { path: "/sobre-mi", titlePart: "Sobre mí" },
       { path: "/contacto", titlePart: "Contacto" },
       { path: "/aviso-legal", titlePart: "Aviso legal" },

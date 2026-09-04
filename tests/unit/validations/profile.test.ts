@@ -8,6 +8,7 @@ const validProfile = {
   title: "Desarrollador web full-stack",
   summary: "Resumen profesional.",
   bio: ["Párrafo uno.", "Párrafo dos."],
+  method: ["Definición de alcance.", "Validación continua."],
   status: "published",
   metadata: {
     title: "Sobre mí",
@@ -49,6 +50,13 @@ describe("profileSchema", () => {
 
   it("rechaza bio vacío", () => {
     expect(profileSchema.safeParse({ ...validProfile, bio: [] }).success).toBe(false);
+  });
+
+  it("rechaza method ausente o vacío", () => {
+    const { method: _omitted, ...rest } = validProfile;
+    void _omitted;
+    expect(profileSchema.safeParse(rest).success).toBe(false);
+    expect(profileSchema.safeParse({ ...validProfile, method: [] }).success).toBe(false);
   });
 
   it("rechaza links con href vacío", () => {
