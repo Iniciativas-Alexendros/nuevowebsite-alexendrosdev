@@ -26,11 +26,11 @@ test.describe("captación OBJ-002", () => {
     expect(box!.y + box!.height).toBeLessThanOrEqual(640);
   });
 
-  test("servicios lista los cuatro servicios publicados", async ({ page }) => {
+  test("servicios lista los tres servicios publicados", async ({ page }) => {
     await page.goto("/servicios");
 
     await expect(page.getByRole("heading", { level: 1, name: "Servicios" })).toBeVisible();
-    await expect(page.getByRole("heading", { level: 3 })).toHaveCount(4);
+    await expect(page.getByRole("heading", { level: 3 })).toHaveCount(3);
     await expect(page.getByRole("link", { name: "Contactar" }).first()).toBeVisible();
     await expect(page.getByRole("link", { name: "Pedir auditoría" })).toBeVisible();
     await expect(page.getByText("Entregables").first()).toBeVisible();
