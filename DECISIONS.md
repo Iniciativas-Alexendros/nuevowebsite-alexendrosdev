@@ -110,6 +110,7 @@ Ruta: ./DECISIONS.md
 - **ADR-0029** — Dominio canónico apex y migración al proyecto Vercel correcto. *(aceptada, 16-08-2026)*
 - **ADR-0030** — Gate anti-hex en CI, CSP de producción sin `unsafe-eval`, HSTS `includeSubDomains`+`preload`. *(aceptada, 17-08-2026)*
 - **ADR-0031** — Runtime Node 24 LTS y majors de Actions fijados. *(aceptada, 18-08-2026)*
+- **ADR-0032** — Design System Forge Terminal — Developer Obsidian: paleta OKLCH obsidiana/ámbar, dark default dual, Geist y variantes cva. *(aceptada, 04-09-2026)* — invierte el tema `:root` de ADR-0016 (oscuro pasa a ser el default) y sustituye las familias tipográficas de DES-03.
 
 ---
 
@@ -1052,5 +1053,47 @@ Ruta: ./DECISIONS.md
 	- CI 9/9 verde sin anotaciones de deprecación + build Vercel sin aviso de versión Node + `node -v` = 24 en runners.
 - Fecha de revisión:
 	- Trimestral o al primer warning de deprecación en workflows.
+
+</details>
+
+<details>
+<summary>**ADR-0032** — Design System Forge Terminal — Developer Obsidian: paleta OKLCH obsidiana/ámbar, dark default dual, Geist y variantes cva</summary>
+
+- Estado: aceptada
+- Fecha: 2026-09-04
+- Decisores: Alexendros (con contraste del asistente IA)
+- Relacionado con: ADR-0016 (ratificada; se invierte qué tema es `:root`), ADR-0030 (gate ampliado), DES-03 (familias sustituidas), DESIGN §3 §4 §5 §8 §13, SPECS REQ-DS-*, NFR-A11Y-003, OBJ-005, ROADMAP Fase 11
+- Contexto:
+	- v1.0 (18-08) y v1.1.0 (Fase 10.z, 04-09) están en producción; la identidad visual actual (azul 255, Inter + JetBrains Mono) es funcional pero genérica.
+	- El decisor aprueba la dirección «Forge Terminal — Developer Obsidian» (ficha de sesión, 04-09-2026): obsidiana = confianza técnica, ámbar = señal humana en la máquina, monospace = interfaz, sin decoración fuera del sistema, performance por defecto.
+	- La ficha original proponía dark-only citando ADR-0028, que trata de capturas de proyecto (DES-07), no de temas; el decisor resolvió mantener tema dual.
+	- La ficha proponía valores `oklch()` arbitrarios en componentes, incompatible con DESIGN §13 y con su propio DoD; se resuelve ampliando los tokens semánticos.
+- Decisión:
+	1. **Paleta OKLCH Forge** (valores cerrados en DESIGN §4.5): escala obsidiana (matiz 255), primer plano frío (matiz 255), ámbar (matiz 75) como único acento de marca, y estados lima/cian/rojo. Escalas construidas variando solo L con C/H constantes.
+	2. **Tema dual con dark default intencional:** `:root` pasa a ser el tema oscuro; el claro se sirve vía `@media (prefers-color-scheme: light)`. Se ratifica ADR-0016 (sin clase `.dark`, sin JS de tema, sin flash); solo cambia cuál tema es el default. La rampa clara queda definida en DESIGN §4.5.
+	3. **Tipografía:** Geist Sans + Geist Mono vía `next/font/google` (self-host en build; cero peticiones runtime a terceros). Sustituye a Inter Variable + JetBrains Mono self-hosted; se mantiene el espíritu de DES-03 (sin CDN de fuentes) y `display: "optional"` con preload solo de la sans (OBJ-005).
+	4. **Dependencias nuevas autorizadas:** `class-variance-authority` (variantes tipadas de primitivos) y `colorjs.io` (parseo OKLCH + contraste WCAG 2.x en tests unitarios de CI).
+	5. **Tokens semánticos ampliados** (DESIGN §4.5): `primary-hover`, `primary-active`, `border-hover`, `placeholder`, `terminal`, `card`/`popover` y sus `*-foreground`. Los componentes NO DEBEN usar valores `oklch()` arbitrarios; consumen el semántico.
+	6. **Gate ampliado (extiende ADR-0030):** `scripts/check-design-tokens.mjs` bloquea también `-[oklch(` arbitrario en `src/components/**` y `src/app/**`.
+	7. **Componentes nuevos de dominio:** TerminalWindow (implementa «Terminal» de DESIGN §8.3), ServiceCommand (implementa «TerminalCommand») y GridPattern, anclados en SPECS REQ-DS-*.
+- Alternativas consideradas:
+	- Dark-only sin tema claro: rechazado; eliminar el claro rompe ADR-0016 y la preferencia de usuario, y su justificación en la ficha era una cita errónea de ADR-0028.
+	- Mantener Inter + JetBrains Mono: rechazado por la dirección estética aprobada; Geist se sirve self-hosted en build, sin coste de privacidad.
+	- `apca-w3` en lugar de colorjs.io: colorjs cubre parseo OKLCH y WCAG 2.x con una sola dependencia; APCA queda como candidato si se adopta WCAG 3 en el futuro.
+	- `shadcn add` para regenerar primitivos: rechazado; sobrescribiría los primitivos custom existentes (components.json ya configurado). La migración a cva es manual.
+- Consecuencias positivas:
+	- Identidad diferenciada y coherente con el posicionamiento técnico; contraste verificado en CI (no manual); cero valores arbitrarios en componentes también para OKLCH.
+- Consecuencias negativas:
+	- Migración en cuatro PRs (P11-1…P11-4) con QA visual en dos temas; los woff2 self-hosted y las escalas neutral/brand quedan deprecados y se retiran en P11-1.
+- Plan de implementación:
+	- ROADMAP Fase 11: P11-1 tokens + Geist + tests de contraste; P11-2 primitivos cva; P11-3 componentes Forge; P11-4 páginas. Cada PR con CI verde; MITL visual (claro y oscuro) antes de la firma de la fase.
+- Plan de reversión:
+	- ADR sustituto; git revert de los PRs de la fase (tokens y componentes son cambios acotados sin migración de datos).
+- Seguridad y privacidad:
+	- Sin proveedores runtime nuevos: Geist se descarga en build (next/font) y se self-hostea; colorjs.io y cva son dependencias de build/test.
+- Verificación:
+	- Tests de contraste en CI (REQ-DS-CONTRAST-001), gate anti-`oklch(` arbitrario en `pnpm lint`, axe 6/6 rutas P0 y Lighthouse ≥ 90 móvil tras P11-4.
+- Fecha de revisión:
+	- Tras la firma de la Fase 11 o a 3 meses.
 
 </details>

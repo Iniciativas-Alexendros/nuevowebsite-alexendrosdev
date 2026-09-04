@@ -581,12 +581,73 @@ Ejemplo de requisito para ContactForm:
 
 </details>
 
+**Fichas Forge Terminal (Fase 11; ADR-0032):**
+
+<details>
+<summary>**REQ-DS-TOKENS-001** — Tokens primitivos Forge tipados</summary>
+
+- Los primitivos Forge DEBEN declararse en `src/lib/tokens/` como constantes tipadas (`as const`) y solo con valores `oklch()`.
+- Las escalas DEBEN variar únicamente la luminosidad (L) manteniendo croma (C) y matiz (H) constantes dentro de cada familia.
+- Los valores DEBEN ser exactamente los aprobados en [DESIGN.md](./DESIGN.md) §4.5; NO DEBEN inventarse pasos intermedios.
+- `isValidOklch` y `getContrastRatio` DEBEN implementarse en `src/lib/tokens/` con cobertura de tests (DEC-AGENTS-04).
+
+</details>
+
+<details>
+<summary>**REQ-DS-THEME-001** — Tema CSS-first dual con dark default</summary>
+
+- La fuente de verdad del tema DEBE ser `src/styles/forge-terminal.css` con `@theme inline` y sintaxis `<alpha-value>`; NO DEBE existir `tailwind.config.js` con colores.
+- `:root` DEBE ser el tema oscuro (default intencional); el tema claro DEBE servirse vía `@media (prefers-color-scheme: light)` (ADR-0016, ADR-0032). Sin clase `.dark` ni JS de tema.
+- Los componentes DEBEN consumir tokens semánticos (`var(--color-*)` vía utilidades); NO DEBEN usar valores `oklch()`, hex, rgb ni hsl arbitrarios (DESIGN §13, ADR-0030/0032).
+- Las tipografías DEBEN ser Geist Sans y Geist Mono vía `next/font` con `display: "optional"`; preload solo de la sans (OBJ-005).
+
+</details>
+
+<details>
+<summary>**REQ-DS-CONTRAST-001** — Contraste verificado en tests</summary>
+
+- El contraste DEBE verificarse en tests unitarios de CI (colorjs.io, WCAG 2.x), no manualmente.
+- Ratios mínimos, en ambos temas: `--foreground`/`--background` ≥ 15:1; `--muted-foreground`/`--card` ≥ 4,5:1; `--primary`/`--background` ≥ 7:1; `--placeholder`/`--input` ≥ 4,5:1; `--primary-foreground`/`--primary` ≥ 4,5:1 (NFR-A11Y-003).
+- Si un valor aprobado no alcanza su ratio, DEBE ajustarse L dentro de la misma C/H y registrarse el ajuste en [DESIGN.md](./DESIGN.md) §4.5 en el mismo PR.
+
+</details>
+
+<details>
+<summary>**REQ-DS-TERMINAL-001** — TerminalWindow</summary>
+
+- Implementa el componente «Terminal» de [DESIGN.md](./DESIGN.md) §8.3: cabecera con tres indicadores y título, cuerpo monoespaciado con líneas tipadas (`cmd`, `success`, `info`, `muted`, `warn`).
+- El prompt `$` DEBE usar `--primary`; los tipos de línea DEBEN usar tokens semánticos (`--success`, `--info`, `--muted-foreground`).
+- La API DEBE ser props tipadas: `{ title?, logs: { type, text }[], withGlow? }`; el glow ámbar (`--shadow-glow-amber`) solo si `withGlow`.
+- NO DEBE depender de animación para comunicar estado; el efecto scanline DEBE ser decorativo, `aria-hidden` y neutralizado bajo `prefers-reduced-motion` (NFR-A11Y-005).
+- DEBE tener contenido accesible equivalente: las líneas son texto real legible por AT, no canvas ni imagen.
+
+</details>
+
+<details>
+<summary>**REQ-DS-COMMAND-001** — ServiceCommand</summary>
+
+- Implementa «TerminalCommand» de [DESIGN.md](./DESIGN.md) §8.3: comando monoespaciado con argumentos, descripción y lista de verificaciones.
+- La API DEBE ser props tipadas: `{ id, command, args, description, checks, href }`; los datos DEBEN proceder de la entidad Service tipada (REQ-DOMAIN-SERVICECARD-001).
+- El estado hover/focus DEBE usar tokens (`--primary`, `--border`); el borde izquierdo de acento NO DEBE ser el único indicador de foco (NFR-A11Y-002).
+- La acción DEBE ser un único elemento enfocable; NO DEBEN anidarse controles interactivos.
+
+</details>
+
+<details>
+<summary>**REQ-DS-GRID-001** — GridPattern</summary>
+
+- Fondo decorativo de puntos con el token `--grid-dot`; DEBE ser `aria-hidden="true"` y no interceptar puntero ni foco.
+- NO DEBE animarse; cualquier variante animada requiere alternativa bajo `prefers-reduced-motion` (NFR-A11Y-005).
+- NO DEBE degradar el contraste del contenido que lo cubre (NFR-A11Y-003).
+
+</details>
+
 <aside>
 ⚠️
 
 **Cobertura y trazabilidad**
 
-- Prefijos de requisito: REQ-UI-* para primitivos ([DESIGN.md](./DESIGN.md) §8.1), REQ-LAYOUT-* para layout (§8.2), REQ-DOMAIN-* para dominio (§8.3) y REQ-FORM-* para formularios.
+- Prefijos de requisito: REQ-UI-* para primitivos ([DESIGN.md](./DESIGN.md) §8.1), REQ-LAYOUT-* para layout (§8.2), REQ-DOMAIN-* para dominio (§8.3), REQ-FORM-* para formularios y REQ-DS-* para el design system Forge Terminal (§7, ADR-0032).
 - Las fichas anteriores cubren los componentes críticos P0. El resto del inventario de [DESIGN.md](./DESIGN.md) recibirá su ficha cuando el componente entre en desarrollo, como parte de la Definition of Ready.
 
 </aside>
