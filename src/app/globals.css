@@ -1,8 +1,7 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 
-@import "../styles/tokens.css";
-@import "../styles/themes.css";
+@import "../styles/forge-terminal.css";
 @import "../styles/utilities.css";
 
 @layer base {

@@ -1,0 +1,278 @@
+/*
+ * Forge Terminal — Developer Obsidian (DESIGN §4.5, ADR-0032).
+ * Fuente de verdad del tema. `:root` es el tema oscuro (default intencional);
+ * el claro se sirve vía `@media (prefers-color-scheme: light)` (ADR-0016).
+ * Sin clase .dark, sin JS de tema. Primitivos tipados espejo: `src/lib/tokens/forge.ts`
+ * (los tests de contraste de REQ-DS-CONTRAST-001 verifican estos mismos valores).
+ *
+ * Opacidad en utilidades (`bg-primary/80`, etc.): Tailwind v4 la resuelve con
+ * color-mix() sobre los var(--*), por lo que la indirección var() es compatible.
+ * Los modificadores de opacidad NO necesitan la sintaxis <alpha-value> (idioma v3).
+ *
+ * Espaciado: la escala por defecto de Tailwind (--spacing: 0.25rem) materializa
+ * --space-N (base 4 px, DESIGN §6) sin tokens duplicados.
+ */
+
+:root {
+  /* Semánticos — tema oscuro (default) */
+  --background: oklch(0.16 0.012 255);
+  --foreground: oklch(0.93 0.01 255);
+  --surface: oklch(0.21 0.015 255);
+  --surface-raised: oklch(0.27 0.015 255);
+  --surface-sunken: oklch(0.12 0.01 255);
+  --surface-inverse: oklch(0.97 0.005 255);
+  --foreground-muted: oklch(0.65 0.015 255);
+  --foreground-subtle: oklch(0.65 0.015 255);
+  --card: oklch(0.21 0.015 255);
+  --card-foreground: oklch(0.93 0.01 255);
+  --popover: oklch(0.21 0.015 255);
+  --popover-foreground: oklch(0.93 0.01 255);
+  --primary: oklch(0.77 0.17 75);
+  --primary-foreground: oklch(0.16 0.012 255);
+  --primary-hover: oklch(0.82 0.15 75);
+  --primary-active: oklch(0.7 0.17 75);
+  --secondary: oklch(0.27 0.015 255);
+  --secondary-foreground: oklch(0.93 0.01 255);
+  --accent: oklch(0.27 0.015 255);
+  --accent-foreground: oklch(0.93 0.01 255);
+  --muted: oklch(0.27 0.015 255);
+  --muted-foreground: oklch(0.65 0.015 255);
+  --destructive: oklch(0.65 0.2 25);
+  --destructive-foreground: oklch(0.16 0.012 255);
+  --success: oklch(0.8 0.18 145);
+  --success-foreground: oklch(0.16 0.012 255);
+  --warning: oklch(0.82 0.15 75);
+  --warning-foreground: oklch(0.16 0.012 255);
+  --info: oklch(0.75 0.12 205);
+  --info-foreground: oklch(0.16 0.012 255);
+  --border: oklch(0.27 0.015 255);
+  --border-strong: oklch(0.35 0.015 255);
+  --border-hover: oklch(0.35 0.015 255);
+  --input: oklch(0.27 0.015 255);
+  --placeholder: oklch(0.65 0.015 255);
+  --ring: oklch(0.77 0.17 75);
+  --focus: oklch(0.77 0.17 75);
+  --selection: oklch(0.77 0.17 75 / 0.2);
+  --link: oklch(0.77 0.17 75);
+  --link-hover: oklch(0.82 0.15 75);
+  --overlay: oklch(0 0 0 / 0.7);
+  --disabled: oklch(0.27 0.015 255);
+  --disabled-foreground: oklch(0.45 0.015 255);
+  --terminal: oklch(0.12 0.01 255);
+  --terminal-foreground: oklch(0.93 0.01 255);
+  --button-primary-hover: var(--primary-hover);
+  --button-secondary-hover: oklch(0.35 0.015 255);
+  --button-subtle-hover: oklch(0.21 0.015 255);
+  --button-destructive-hover: oklch(0.72 0.18 25);
+
+  /* Tokens de componente (DESIGN §4.5) */
+  --grid-dot: oklch(0.25 0.01 255);
+  --shadow-glow-amber: 0 0 20px oklch(0.77 0.17 75 / 0.3);
+  --shadow-glow-amber-strong: 0 0 30px oklch(0.77 0.17 75 / 0.45);
+
+  /* Primitivos no color (DESIGN §4/§5/§6) */
+  --radius-none: 0px;
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-xl: 16px;
+  --radius-full: 9999px;
+  --duration-instant: 0ms;
+  --duration-fast: 120ms;
+  --duration-normal: 200ms;
+  --duration-slow: 320ms;
+  --ease-standard: cubic-bezier(0.2, 0, 0, 1);
+  --ease-emphasized: cubic-bezier(0.3, 0, 0, 1);
+  --ease-enter: cubic-bezier(0, 0, 0.2, 1);
+  --ease-exit: cubic-bezier(0.4, 0, 1, 1);
+  --z-base: 0;
+  --z-dropdown: 1000;
+  --z-sticky: 1100;
+  --z-overlay: 1200;
+  --z-modal: 1300;
+  --z-toast: 1400;
+  --font-family-sans: "Geist", ui-sans-serif, system-ui, sans-serif;
+  --font-family-mono: "Geist Mono", ui-monospace, "SF Mono", "Cascadia Mono", monospace;
+  --font-size-2xs: 0.694rem;
+  --font-size-xs: 0.75rem;
+  --font-size-sm: 0.875rem;
+  --font-size-base: 1rem;
+  --font-size-lg: 1.125rem;
+  --font-size-xl: clamp(1.25rem, 1.15rem + 0.5vw, 1.5rem);
+  --font-size-2xl: clamp(1.5rem, 1.3rem + 1vw, 1.875rem);
+  --font-size-3xl: clamp(1.875rem, 1.5rem + 1.5vw, 2.25rem);
+  --font-size-4xl: clamp(2.25rem, 1.8rem + 2vw, 3rem);
+  --font-size-5xl: clamp(2.75rem, 2rem + 3vw, 3.75rem);
+  --font-size-6xl: clamp(3.25rem, 2.2rem + 4vw, 4.5rem);
+  --line-height-tight: 1.15;
+  --line-height-normal: 1.5;
+  --line-height-relaxed: 1.7;
+  --letter-spacing-tight: -0.025em;
+  --letter-spacing-normal: 0em;
+  --letter-spacing-wide: 0.025em;
+}
+
+@media (prefers-color-scheme: light) {
+  :root {
+    --background: oklch(0.98 0.003 255);
+    --foreground: oklch(0.21 0.015 255);
+    --surface: oklch(0.96 0.004 255);
+    --surface-raised: oklch(0.96 0.004 255);
+    --surface-sunken: oklch(0.92 0.006 255);
+    --surface-inverse: oklch(0.16 0.012 255);
+    --foreground-muted: oklch(0.45 0.015 255);
+    --foreground-subtle: oklch(0.52 0.015 255);
+    --card: oklch(0.96 0.004 255);
+    --card-foreground: oklch(0.21 0.015 255);
+    --popover: oklch(0.96 0.004 255);
+    --popover-foreground: oklch(0.21 0.015 255);
+    --primary: oklch(0.45 0.11 75);
+    --primary-foreground: oklch(0.98 0.003 255);
+    --primary-hover: oklch(0.42 0.11 75);
+    --primary-active: oklch(0.39 0.1 75);
+    --secondary: oklch(0.92 0.006 255);
+    --secondary-foreground: oklch(0.21 0.015 255);
+    --accent: oklch(0.92 0.006 255);
+    --accent-foreground: oklch(0.21 0.015 255);
+    --muted: oklch(0.92 0.006 255);
+    --muted-foreground: oklch(0.45 0.015 255);
+    --destructive: oklch(0.55 0.19 25);
+    --destructive-foreground: oklch(0.98 0.003 255);
+    --success: oklch(0.5 0.14 145);
+    --success-foreground: oklch(0.98 0.003 255);
+    --warning: oklch(0.7 0.17 75);
+    --warning-foreground: oklch(0.16 0.012 255);
+    --info: oklch(0.48 0.11 205);
+    --info-foreground: oklch(0.98 0.003 255);
+    --border: oklch(0.87 0.008 255);
+    --border-strong: oklch(0.75 0.01 255);
+    --border-hover: oklch(0.75 0.01 255);
+    --input: oklch(0.87 0.008 255);
+    --placeholder: oklch(0.52 0.015 255);
+    --ring: oklch(0.45 0.11 75);
+    --focus: oklch(0.45 0.11 75);
+    --selection: oklch(0.77 0.17 75 / 0.25);
+    --link: oklch(0.45 0.11 75);
+    --link-hover: oklch(0.42 0.11 75);
+    --overlay: oklch(0.16 0.012 255 / 0.6);
+    --disabled: oklch(0.92 0.006 255);
+    --disabled-foreground: oklch(0.6 0.01 255);
+    /* El terminal es oscuro en ambos temas (intencional, DESIGN §4.5). */
+    --terminal: oklch(0.12 0.01 255);
+    --terminal-foreground: oklch(0.93 0.01 255);
+    --button-primary-hover: var(--primary-hover);
+    --button-secondary-hover: oklch(0.87 0.008 255);
+    --button-subtle-hover: oklch(0.92 0.006 255);
+    --button-destructive-hover: oklch(0.48 0.18 25);
+    --grid-dot: oklch(0.8 0.008 255);
+  }
+}
+
+/*
+ * Vínculo variables CSS ↔ utilidades Tailwind (DESIGN §13).
+ * @theme inline: las utilidades referencian los var(--*) semánticos en vez de duplicar valores.
+ */
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-surface: var(--surface);
+  --color-surface-raised: var(--surface-raised);
+  --color-surface-sunken: var(--surface-sunken);
+  --color-surface-inverse: var(--surface-inverse);
+  --color-foreground-muted: var(--foreground-muted);
+  --color-foreground-subtle: var(--foreground-subtle);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary-hover: var(--primary-hover);
+  --color-primary-active: var(--primary-active);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-success: var(--success);
+  --color-success-foreground: var(--success-foreground);
+  --color-warning: var(--warning);
+  --color-warning-foreground: var(--warning-foreground);
+  --color-info: var(--info);
+  --color-info-foreground: var(--info-foreground);
+  --color-border: var(--border);
+  --color-border-strong: var(--border-strong);
+  --color-border-hover: var(--border-hover);
+  --color-input: var(--input);
+  --color-placeholder: var(--placeholder);
+  --color-ring: var(--ring);
+  --color-focus: var(--focus);
+  --color-selection: var(--selection);
+  --color-link: var(--link);
+  --color-link-hover: var(--link-hover);
+  --color-overlay: var(--overlay);
+  --color-disabled: var(--disabled);
+  --color-disabled-foreground: var(--disabled-foreground);
+  --color-terminal: var(--terminal);
+  --color-terminal-foreground: var(--terminal-foreground);
+  --color-button-primary-hover: var(--button-primary-hover);
+  --color-button-secondary-hover: var(--button-secondary-hover);
+  --color-button-subtle-hover: var(--button-subtle-hover);
+  --color-button-destructive-hover: var(--button-destructive-hover);
+
+  --z-base: var(--z-base);
+  --z-dropdown: var(--z-dropdown);
+  --z-sticky: var(--z-sticky);
+  --z-overlay: var(--z-overlay);
+  --z-modal: var(--z-modal);
+  --z-toast: var(--z-toast);
+
+  --font-sans: var(--font-geist-sans, var(--font-family-sans));
+  --font-mono: var(--font-geist-mono, var(--font-family-mono));
+
+  --text-2xs: var(--font-size-2xs);
+  --text-xs: var(--font-size-xs);
+  --text-sm: var(--font-size-sm);
+  --text-base: var(--font-size-base);
+  --text-lg: var(--font-size-lg);
+  --text-xl: var(--font-size-xl);
+  --text-2xl: var(--font-size-2xl);
+  --text-3xl: var(--font-size-3xl);
+  --text-4xl: var(--font-size-4xl);
+  --text-5xl: var(--font-size-5xl);
+  --text-6xl: var(--font-size-6xl);
+  --text-xl--line-height: var(--line-height-tight);
+  --text-2xl--line-height: var(--line-height-tight);
+  --text-3xl--line-height: var(--line-height-tight);
+  --text-4xl--line-height: var(--line-height-tight);
+  --text-5xl--line-height: var(--line-height-tight);
+  --text-6xl--line-height: var(--line-height-tight);
+
+  --leading-tight: var(--line-height-tight);
+  --leading-normal: var(--line-height-normal);
+  --leading-relaxed: var(--line-height-relaxed);
+
+  --radius-none: var(--radius-none);
+  --radius-sm: var(--radius-sm);
+  --radius-md: var(--radius-md);
+  --radius-lg: var(--radius-lg);
+  --radius-xl: var(--radius-xl);
+  --radius-full: var(--radius-full);
+
+  --default-transition-duration: var(--duration-fast);
+  --default-transition-timing-function: var(--ease-standard);
+
+  --animate-glow: glow-amber 2s ease-in-out infinite alternate;
+
+  @keyframes glow-amber {
+    from {
+      box-shadow: var(--shadow-glow-amber);
+    }
+    to {
+      box-shadow: var(--shadow-glow-amber-strong);
+    }
+  }
+}
