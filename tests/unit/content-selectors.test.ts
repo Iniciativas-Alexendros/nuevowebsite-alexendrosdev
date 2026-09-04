@@ -54,10 +54,10 @@ describe("selectores de contenido publicado", () => {
   });
 
   it("getServiceBySlug devuelve servicio publicado por slug", () => {
-    const service = getServiceBySlug("desarrollo-web");
+    const service = getServiceBySlug("produccion-sitios-web");
 
     expect(service).toBeDefined();
-    expect(service?.slug).toBe("desarrollo-web");
+    expect(service?.slug).toBe("produccion-sitios-web");
     expect(service?.status).toBe("published");
   });
 
@@ -150,12 +150,12 @@ describe("selectores de contenido publicado", () => {
   });
 
   it("getRelatedTechnologies filtra por relatedProjects y relatedServices", () => {
-    const related = getRelatedTechnologies(["front-valencia"], ["desarrollo-web"]);
+    const related = getRelatedTechnologies(["front-valencia"], ["produccion-sitios-web"]);
 
     expect(related.length).toBeGreaterThan(0);
     for (const tech of related) {
       const hasProject = tech.relatedProjects?.some((p) => p === "front-valencia") ?? false;
-      const hasService = tech.relatedServices?.some((s) => s === "desarrollo-web") ?? false;
+      const hasService = tech.relatedServices?.some((s) => s === "produccion-sitios-web") ?? false;
       expect(hasProject || hasService).toBe(true);
     }
   });

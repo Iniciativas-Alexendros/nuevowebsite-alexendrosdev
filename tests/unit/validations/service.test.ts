@@ -3,9 +3,9 @@ import { describe, expect, it } from "vitest";
 import { serviceSchema } from "@/lib/validations/content";
 
 const validService = {
-  id: "servicio-desarrollo-web",
-  slug: "desarrollo-web",
-  title: "Desarrollo Web",
+  id: "servicio-produccion-sitios-web",
+  slug: "produccion-sitios-web",
+  title: "Producción de sitios web",
   shortDescription: "Creación de sitios web a medida.",
   description: "Descripción extensa del servicio.",
   audience: "Negocios que necesitan presencia digital.",

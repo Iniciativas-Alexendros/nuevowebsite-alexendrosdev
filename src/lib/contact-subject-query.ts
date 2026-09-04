@@ -16,10 +16,9 @@ export const CONTACT_SUBJECT_QUERY_KEYS = {
 export type ContactSubjectQueryKey = keyof typeof CONTACT_SUBJECT_QUERY_KEYS;
 
 const SERVICE_SLUG_TO_QUERY: Record<string, ContactSubjectQueryKey> = {
-  "desarrollo-web": "desarrollo",
-  "landing-pages": "portal",
-  "automatizacion-ia": "automatizacion",
-  "auditoria-web": "auditoria",
+  "produccion-sitios-web": "desarrollo",
+  auditorias: "auditoria",
+  "consultoria-tecnologica": "asesoramiento",
 };
 
 export function resolveContactSubjectQuery(

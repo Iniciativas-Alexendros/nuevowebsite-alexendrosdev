@@ -14,7 +14,7 @@ export const technologies: Technology[] = [
     featured: true,
     status: "published",
     relatedProjects: ["front-valencia", "graficas-nasve", "alexendros-me"],
-    relatedServices: ["desarrollo-web", "landing-pages"],
+    relatedServices: ["produccion-sitios-web"],
   }),
   technologySchema.parse({
     id: "astro",
@@ -29,7 +29,7 @@ export const technologies: Technology[] = [
     featured: true,
     status: "published",
     relatedProjects: ["front-valencia"],
-    relatedServices: ["desarrollo-web"],
+    relatedServices: ["produccion-sitios-web"],
   }),
   technologySchema.parse({
     id: "typescript",
@@ -44,7 +44,7 @@ export const technologies: Technology[] = [
     featured: true,
     status: "published",
     relatedProjects: ["front-valencia", "graficas-nasve", "vcf-cribador", "alexendros-me"],
-    relatedServices: ["desarrollo-web", "landing-pages", "automatizacion-ia", "auditoria-web"],
+    relatedServices: ["produccion-sitios-web", "consultoria-tecnologica", "auditorias"],
   }),
   technologySchema.parse({
     id: "rust",
@@ -59,7 +59,7 @@ export const technologies: Technology[] = [
     featured: true,
     status: "published",
     relatedProjects: ["vcf-cribador"],
-    relatedServices: ["automatizacion-ia"],
+    relatedServices: ["consultoria-tecnologica"],
   }),
   technologySchema.parse({
     id: "go",
@@ -74,7 +74,7 @@ export const technologies: Technology[] = [
     featured: false,
     status: "published",
     relatedProjects: ["graficas-nasve"],
-    relatedServices: ["automatizacion-ia"],
+    relatedServices: ["consultoria-tecnologica"],
   }),
   technologySchema.parse({
     id: "tailwind-css",
@@ -89,7 +89,7 @@ export const technologies: Technology[] = [
     featured: true,
     status: "published",
     relatedProjects: ["front-valencia", "graficas-nasve", "alexendros-me"],
-    relatedServices: ["desarrollo-web", "landing-pages", "auditoria-web"],
+    relatedServices: ["produccion-sitios-web", "auditorias"],
   }),
   technologySchema.parse({
     id: "shadcn-ui",
@@ -104,7 +104,7 @@ export const technologies: Technology[] = [
     featured: true,
     status: "published",
     relatedProjects: ["front-valencia", "graficas-nasve", "alexendros-me"],
-    relatedServices: ["desarrollo-web", "landing-pages"],
+    relatedServices: ["produccion-sitios-web"],
   }),
   technologySchema.parse({
     id: "payload-cms",
@@ -119,7 +119,7 @@ export const technologies: Technology[] = [
     featured: true,
     status: "published",
     relatedProjects: ["front-valencia"],
-    relatedServices: ["desarrollo-web"],
+    relatedServices: ["produccion-sitios-web"],
   }),
   technologySchema.parse({
     id: "postgresql",
@@ -134,7 +134,7 @@ export const technologies: Technology[] = [
     featured: false,
     status: "published",
     relatedProjects: ["graficas-nasve", "front-valencia"],
-    relatedServices: ["desarrollo-web"],
+    relatedServices: ["produccion-sitios-web"],
   }),
   technologySchema.parse({
     id: "prisma",
@@ -149,7 +149,7 @@ export const technologies: Technology[] = [
     featured: false,
     status: "published",
     relatedProjects: ["graficas-nasve"],
-    relatedServices: ["desarrollo-web"],
+    relatedServices: ["produccion-sitios-web"],
   }),
   technologySchema.parse({
     id: "stripe",
@@ -164,7 +164,7 @@ export const technologies: Technology[] = [
     featured: false,
     status: "published",
     relatedProjects: ["graficas-nasve"],
-    relatedServices: ["desarrollo-web"],
+    relatedServices: ["produccion-sitios-web"],
   }),
   technologySchema.parse({
     id: "zod",
@@ -179,7 +179,7 @@ export const technologies: Technology[] = [
     featured: true,
     status: "published",
     relatedProjects: ["front-valencia", "graficas-nasve", "vcf-cribador", "alexendros-me"],
-    relatedServices: ["desarrollo-web", "landing-pages", "automatizacion-ia", "auditoria-web"],
+    relatedServices: ["produccion-sitios-web", "consultoria-tecnologica", "auditorias"],
   }),
   technologySchema.parse({
     id: "vitest",
@@ -194,7 +194,7 @@ export const technologies: Technology[] = [
     featured: true,
     status: "published",
     relatedProjects: ["front-valencia", "graficas-nasve", "vcf-cribador", "alexendros-me"],
-    relatedServices: ["desarrollo-web", "landing-pages", "automatizacion-ia", "auditoria-web"],
+    relatedServices: ["produccion-sitios-web", "consultoria-tecnologica", "auditorias"],
   }),
   technologySchema.parse({
     id: "playwright",
@@ -209,7 +209,7 @@ export const technologies: Technology[] = [
     featured: true,
     status: "published",
     relatedProjects: ["front-valencia", "graficas-nasve", "alexendros-me"],
-    relatedServices: ["desarrollo-web", "landing-pages", "auditoria-web"],
+    relatedServices: ["produccion-sitios-web", "auditorias"],
   }),
   technologySchema.parse({
     id: "mcp",
@@ -224,7 +224,7 @@ export const technologies: Technology[] = [
     featured: true,
     status: "published",
     relatedProjects: [],
-    relatedServices: ["automatizacion-ia"],
+    relatedServices: ["consultoria-tecnologica"],
   }),
   technologySchema.parse({
     id: "ollama",
@@ -239,7 +239,7 @@ export const technologies: Technology[] = [
     featured: false,
     status: "published",
     relatedProjects: [],
-    relatedServices: ["automatizacion-ia"],
+    relatedServices: ["consultoria-tecnologica"],
   }),
   technologySchema.parse({
     id: "lighthouse-ci",
@@ -254,7 +254,7 @@ export const technologies: Technology[] = [
     featured: true,
     status: "published",
     relatedProjects: ["front-valencia", "graficas-nasve", "alexendros-me"],
-    relatedServices: ["desarrollo-web", "landing-pages", "auditoria-web"],
+    relatedServices: ["produccion-sitios-web", "auditorias"],
   }),
   technologySchema.parse({
     id: "axe-core",
@@ -269,7 +269,7 @@ export const technologies: Technology[] = [
     featured: true,
     status: "published",
     relatedProjects: ["front-valencia", "graficas-nasve", "alexendros-me"],
-    relatedServices: ["desarrollo-web", "landing-pages", "auditoria-web"],
+    relatedServices: ["produccion-sitios-web", "auditorias"],
   }),
   technologySchema.parse({
     id: "vercel",
@@ -284,7 +284,7 @@ export const technologies: Technology[] = [
     featured: true,
     status: "published",
     relatedProjects: ["graficas-nasve", "alexendros-me"],
-    relatedServices: ["desarrollo-web", "landing-pages"],
+    relatedServices: ["produccion-sitios-web"],
   }),
   technologySchema.parse({
     id: "github-actions",
@@ -299,7 +299,7 @@ export const technologies: Technology[] = [
     featured: true,
     status: "published",
     relatedProjects: ["front-valencia", "graficas-nasve", "vcf-cribador", "alexendros-me"],
-    relatedServices: ["desarrollo-web", "landing-pages", "automatizacion-ia", "auditoria-web"],
+    relatedServices: ["produccion-sitios-web", "consultoria-tecnologica", "auditorias"],
   }),
 ];
 

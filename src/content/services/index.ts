@@ -1,6 +1,5 @@
-import { desarrolloWeb } from "./desarrollo-web";
-import { landingPages } from "./landing-pages";
-import { automatizacionIa } from "./automatizacion-ia";
-import { auditoriaWeb } from "./auditoria-web";
+import { auditorias } from "./auditorias";
+import { consultoriaTecnologica } from "./consultoria-tecnologica";
+import { produccionSitiosWeb } from "./produccion-sitios-web";
 
-export const services = [desarrolloWeb, landingPages, automatizacionIa, auditoriaWeb];
+export const services = [produccionSitiosWeb, auditorias, consultoriaTecnologica];
