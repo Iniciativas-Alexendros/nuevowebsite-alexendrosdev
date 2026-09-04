@@ -510,7 +510,35 @@ Nueva IA editorial aprobada por el decisor (spec de sesión, 04-09-2026): el sit
 
 ---
 
-# 11. Fase 9 — Mejoras posteriores priorizadas
+# 11. Fase 11 — Design System Forge Terminal (post-v1.1)
+
+**Depende de:** v1.1.0 en producción (tag `v1.1.0`, 04-09-2026); canon aprobado (ADR-0032, REQ-DS-*, DESIGN §4.5).
+
+<aside>
+📌
+
+Migración del design system a «Forge Terminal — Developer Obsidian» aprobada por el decisor (ficha de sesión, 04-09-2026; decisiones: canon primero, ejecución post-v1.0, tema dual con dark default, deps `class-variance-authority` + `colorjs.io` y fuentes Geist autorizadas).
+
+</aside>
+
+**Objetivo:** sistema 100 % tokenizado en OKLCH con la paleta obsidiana/ámbar, dark default intencional con tema claro dual, tipografía Geist, variantes tipadas con cva y contraste verificado en CI. Cero valores de color arbitrarios en componentes.
+
+**Traza:** ADR-0032, ADR-0016, ADR-0030; SPECS REQ-DS-TOKENS-001, REQ-DS-THEME-001, REQ-DS-CONTRAST-001, REQ-DS-TERMINAL-001, REQ-DS-COMMAND-001, REQ-DS-GRID-001; NFR-A11Y-002/003/005; OBJ-005; DESIGN §3 §4.5 §5 §8 §13.
+
+**Entregable:**
+
+- [ ] **P11-1** Tokens fundacionales: `src/lib/tokens/` (primitivos tipados + `isValidOklch` + `getContrastRatio`), `src/styles/forge-terminal.css` (`@theme inline`, `<alpha-value>`, dual dark/light), Geist vía `next/font` (retira woff2 de `src/fonts/`), gate anti-`oklch(` arbitrario en `scripts/check-design-tokens.mjs`, tests de contraste en CI. Deps: `class-variance-authority`, `colorjs.io`.
+- [ ] **P11-2** Primitivos UI con cva: Button, Badge, Input, Textarea y Card nuevo; API pública estable; foco `ring-2 ring-offset-background`.
+- [ ] **P11-3** Componentes Forge de dominio: `TerminalWindow`, `ServiceCommand`, `GridPattern` (en `src/components/domain/`), migración de `ProjectCard`, `SiteHeader`/`SiteFooter` (mono, skip link `#main`).
+- [ ] **P11-4** Páginas: hero con `TerminalWindow` + `GridPattern`, servicios con `ServiceCommand` (tres ofertas vigentes), contacto con Card; SEO/metadata intactos; e2e (incl. `seo.spec.ts` con `https://alexendros.dev`), axe 6/6 y Lighthouse ≥ 90 móvil en verde.
+
+**Exclusiones:** textos legales (ADR-0027), endpoint SMTP y rotación de `SMTP_TOKEN`, multiidioma, cualquier P1/P2 de la Fase 9.
+
+**Criterio de salida (firma del decisor):** CI verde en los cuatro PRs, tests de contraste en ambos temas, gate anti-`oklch(` en `pnpm lint`, QA visual MITL en claro y oscuro (teclado, foco, responsive, reduced-motion) sobre el preview de fase (ADR-0025). El decisor firma; el agente no cierra la fase.
+
+---
+
+# 12. Fase 9 — Mejoras posteriores priorizadas
 
 **Depende de:** — (posterior al lanzamiento)
 
@@ -580,7 +608,7 @@ No activar estos bloques «por si acaso» dentro de P0/post-lanzamiento inmediat
 
 ---
 
-# 12. Decisiones abiertas (batería ROADMAP)
+# 13. Decisiones abiertas (batería ROADMAP)
 
 <aside>
 ⚠️

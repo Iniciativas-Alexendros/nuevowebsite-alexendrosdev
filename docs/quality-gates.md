@@ -37,7 +37,7 @@ Workflow: [`.github/workflows/ci.yml`](../.github/workflows/ci.yml). Dispara en 
 | # | Job | Criterio bloqueante |
 | --- | --- | --- |
 | 1 | Typecheck | `pnpm typecheck` |
-| 2 | Lint | `pnpm lint` (ESLint + `scripts/check-design-tokens.mjs`, ADR-0030) + `pnpm format:check` |
+| 2 | Lint | `pnpm lint` (ESLint + `scripts/check-design-tokens.mjs`, ADR-0030; anti-`oklch(` arbitrario desde ADR-0032) + `pnpm format:check` |
 | 3 | Test (Vitest + cobertura) | Vitest con cobertura; umbrales §4 |
 | 4 | Build | `pnpm build` |
 | 5 | E2E + axe-core | Playwright (Chromium + Pixel 5 + WebKit en CI); violaciones axe `critical`/`serious` fallan |
@@ -114,3 +114,4 @@ No se introducen gates “por si acasa” sin ancla canónica.
 - [ARCHITECTURE.md](../ARCHITECTURE.md) — estructura `tests/`
 - [ADR-0025](../DECISIONS.md) — despliegue por fase; Lighthouse local
 - [ADR-0030](../DECISIONS.md) — anti-hex, CSP sin eval, HSTS preload
+- [ADR-0032](../DECISIONS.md) — Forge Terminal DS; gate anti-`oklch(` arbitrario y contraste en tests

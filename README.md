@@ -39,18 +39,18 @@ Este archivo es el punto de entrada de lectura del proyecto. Te dice qué leer d
 
 # Estado en una mirada
 
-**Pulso:** 18 de agosto de 2026 — remediación P0 go-live; PR #74 en revisión (R-P0-03 N/A Hobby, Node 24 unificado, ADR-0031); **no firmar Fase 8 ni PROMOTE** hasta cerrar R-P0 + secuencia canónica.
+**Pulso:** 4 de septiembre de 2026 — v1.0 (18-08) y **v1.1.0** (Fase 10.z, consolidación de IA) en producción; **Fase 11 (Forge Terminal DS)** anclada en canon con ADR-0032, pendiente de arrancar P11-1.
 
-**Fase activa:** 8 — Hardening (P8-1…P8-6). En paralelo: **Fase 7.z** (P7z-1…P7z-8). Fases 5–7 en `main`, pendientes MITL + firma.
+**Fase activa:** 11 — Design System Forge Terminal (ADR-0032). Fases 0–8 y 10.z cerradas y firmadas.
 
-**Siguiente acción:** PROMOTE `ffd975d` → smoke postprod → tag `v1.0.0`. Detalle: [docs/handoff-p8-6.md](./docs/handoff-p8-6.md).
+**Siguiente acción:** P11-1 (tokens Forge + Geist + tests de contraste). Detalle: [ROADMAP.md](./ROADMAP.md) §11.
 
-**Objetivo de producto:** v1.0 el 24 de agosto de 2026.
+**Objetivo de producto:** v1.0 lanzada el 18-08-2026; v1.1.0 el 04-09-2026. Siguiente hito: Fase 11 (DS Forge Terminal).
 
 | Capa | Estado |
 | --- | --- |
-| Documentación canónica | Aprobada el 13-08-2026; pulso alineado 16-08 |
-| Código del sitio nuevo | Fases 1–7 en `main`; Fase 8 hardening en curso |
+| Documentación canónica | Aprobada el 13-08-2026; ADR-0032 (Forge Terminal) aceptada el 04-09-2026 |
+| Código del sitio nuevo | v1.1.0 en producción (`https://alexendros.dev`); Fase 11 pendiente de arrancar |
 | Repositorio nuevo | `Iniciativas-Alexendros/nuevowebsite-alexendrosdev` (público) |
 | Sitio anterior | Solo lectura; sin redirecciones legacy (ADR-0013) |
 | Contenido editorial | Hechos firmados; legales `published`; asesoría externa post-v1.0 (ADR-0027); DES-07 diferido (ADR-0028) |
@@ -156,21 +156,17 @@ El sitio lo implementa un agente de código. El humano dirige, revisa diffs, hac
 
 # Pendiente ahora
 
-Fases 1–7 en `main`. **Activa:** cierre v1.0. Firmas MITL ✅ 18-08. **Siguiente:** PROMOTE `ffd975d` → postprod → tag.
+v1.0 (18-08) y v1.1.0 (04-09) en producción. **Activa:** Fase 11 — Design System Forge Terminal (ADR-0032; ROADMAP §11).
 
-## Fase 8 — Hardening y lanzamiento (activa)
+## Fase 11 — Forge Terminal DS (activa)
 
-Unidades: P8-1 checklist · P8-2 a11y · P8-3 Lighthouse multipágina · P8-4 SEO/headers · P8-5 E2E · P8-6 gate humano. Remediación P0: [docs/release-checklist.md](./docs/release-checklist.md).
+Unidades: P11-1 tokens + Geist + contraste en CI · P11-2 primitivos cva · P11-3 componentes Forge · P11-4 páginas. Canon: ADR-0032, REQ-DS-*, DESIGN §4.5.
 
-## Residuales humanos (bloquean go-live / PROMOTE)
+## Residuales humanos (post-go-live)
 
-- [x]  Simulacro rollback en preview (R-P0-02; 18-08).
-- [x]  SHA candidato `ffd975d` + CI verde + Deploy preview MITL (18-08 post-#76).
-- [x]  Smoke SMTP real + correo en `operaciones@` (18-08).
-- [x]  Migrar `alexendros.dev` (+ `www`) → `nuevowebsite-alexendrosdev` (ADR-0029; hub 18-08).
-- [x]  Firmas MITL P8-2 + Fases 5–8 (18-08-2026).
-- [ ]  `PROMOTE` → smoke postprod → tag `v1.0.0` (SHA `ffd975d`).
-- [ ]  Asesoría externa de textos legales **post-v1.0** (ADR-0027; no bloquea `PROMOTE`).
+- [x]  Go-live v1.0 (18-08): PROMOTE `ffd975d` → smoke postprod → tag `v1.0.0`.
+- [x]  v1.1.0 (04-09): Fase 10.z consolidación IA; preview MITL `62a8565`, PROMOTE y tag `v1.1.0` (docs/release-checklist.md).
+- [ ]  Asesoría externa de textos legales **post-v1.0** (ADR-0027; no bloqueante).
 - [ ]  Rotar `SMTP_TOKEN` y registrar operación (sin valor) — [SECURITY.md](./SECURITY.md).
 - [ ]  Activar secret scanning / Dependabot en GitHub si el plan lo permite.
 
@@ -205,8 +201,10 @@ Capacidad: 50 h/semana de dirección y revisión humana. Ventana: 14–24 ago 20
 | 5 | mar 18 – jue 20 | **Hito:** landing mínima pública |
 | 6 | vie 21 | Portfolio, stack y sobre-mí |
 | 7 | vie 21 – sáb 22 | Aviso legal y privacidad |
-| 8 | sáb 22 – lun 24 | **Lanzamiento v1.0** |
-| 9 | después del 24-08 | P1/P2 solo con disparador + ADR |
+| 8 | sáb 22 – lun 24 | **Lanzamiento v1.0** (realizado 18-08) |
+| 10.z | jue 3 – vie 4 sep | Consolidación IA (v1.1.0, realizado 04-09) |
+| 11 | a partir del 4 sep | **Forge Terminal DS** (ADR-0032; P11-1…P11-4) |
+| 9 | posterior a Fase 11 | P1/P2 solo con disparador + ADR |
 
 **Disparadores P1** (no adelantar trabajo):
 

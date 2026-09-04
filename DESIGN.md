@@ -98,6 +98,13 @@ Ninguna decisión visual podrá tomarse directamente en una página si pertenece
 - Dirección estética aprobada: **sobrio corporativo** de alto contraste (DES-04). Sin gradientes ni efectos glow. La estética terminal se reserva a los componentes `Terminal`, `TerminalCommand` y `TechnologyBadge`; en el resto prevalece el componente estándar.
 - Tema según preferencia del sistema (DES-02): `:root` define el tema claro y `.dark` el oscuro, aplicado vía `prefers-color-scheme`.
 
+### Reforma de identidad (04-09-2026, ADR-0032)
+
+- Nueva dirección aprobada: **Forge Terminal — Developer Obsidian**. Principios: obsidiana = confianza técnica, ámbar = señal humana en la máquina, monospace = interfaz, sin decoración fuera del sistema, performance por defecto.
+- **Sustituye** la dirección «sobrio corporativo» de DES-04: el ámbar se convierte en el único acento de marca y el glow ámbar (`--shadow-glow-amber`) queda permitido como microinteracción acotada a `TerminalWindow` y `Button` primary (§9, §12).
+- **Invierte** el tema por defecto de DES-02: `:root` pasa a ser el tema oscuro (dark default intencional); el claro se sirve vía `prefers-color-scheme: light` (§4.5). Sigue sin clase `.dark` ni JS de tema (ADR-0016 ratificado).
+- El wordmark pasa a componerse en Geist (§5) en la Fase 11.
+
 ---
 
 # 4. Arquitectura de tokens
@@ -222,6 +229,13 @@ Estados de interacción: hover de botón usa `--button-*-hover` (no oscurecer `-
 La configuración global sigue el patrón de variables CSS vinculadas a tokens de Tailwind, con tema claro y oscuro en OKLCH.
 
 ### Valores aprobados (13-08-2026)
+
+<aside>
+⚠️
+
+**Deprecado por ADR-0032 (04-09-2026).** Las escalas neutral/brand y la asignación por tema de esta sección quedan sustituidas por §4.5 (Forge Terminal) tras la fusión de P11-1. Vigente solo hasta entonces.
+
+</aside>
 
 **Primitivos de color — neutrales (matiz 260, croma bajo) y marca (azul 255):**
 
@@ -358,6 +372,103 @@ Los tokens de componente no deben duplicar un token semántico sin aportar una r
 
 </aside>
 
+## 4.5. Forge Terminal — Developer Obsidian (ADR-0032, Fase 11)
+
+Reforma aprobada el 04-09-2026. Fuente de verdad de color desde P11-1. Reglas:
+
+- Todo valor en OKLCH; las escalas varían solo L con C/H constantes dentro de cada familia.
+- `:root` es el tema **oscuro** (default intencional); el claro se sirve con `@media (prefers-color-scheme: light)` (ADR-0016 ratificado).
+- Los componentes consumen tokens semánticos; prohibido `oklch()` arbitrario en `src/components/**` y `src/app/**` (§13, gate ADR-0030/0032).
+- Los ratios de §4.5 se verifican en tests de CI (REQ-DS-CONTRAST-001); si un valor no llega, se ajusta L dentro de la misma C/H y se registra aquí en el mismo PR.
+
+### Primitivos Forge (valores cerrados)
+
+```css
+/* Obsidiana (matiz 255) */
+--color-obsidian-950: oklch(0.12 0.01 255);   /* terminal */
+--color-obsidian-900: oklch(0.16 0.012 255);  /* background */
+--color-obsidian-800: oklch(0.21 0.015 255);  /* card/surface */
+--color-obsidian-700: oklch(0.27 0.015 255);  /* secondary/muted/border */
+--color-obsidian-600: oklch(0.35 0.015 255);  /* border-hover */
+--color-obsidian-500: oklch(0.45 0.015 255);
+
+/* Primer plano frío (matiz 255) */
+--color-fg-100: oklch(0.97 0.005 255);
+--color-fg-200: oklch(0.93 0.01 255);         /* foreground */
+--color-fg-300: oklch(0.75 0.015 255);
+--color-fg-400: oklch(0.55 0.015 255);        /* placeholder */
+
+/* Ámbar (matiz 75) — único acento de marca */
+--color-amber-100: oklch(0.97 0.04 75);
+--color-amber-400: oklch(0.82 0.15 75);       /* hover (dark) */
+--color-amber-500: oklch(0.77 0.17 75);       /* primary (dark) */
+--color-amber-600: oklch(0.70 0.17 75);       /* active (dark) */
+--color-amber-700: oklch(0.58 0.15 75);       /* primary (light) */
+--color-amber-800: oklch(0.52 0.14 75);       /* active (light) */
+--color-amber-900: oklch(0.25 0.08 75);
+
+/* Estados */
+--color-lime-400: oklch(0.85 0.16 145);
+--color-lime-500: oklch(0.80 0.18 145);       /* success (dark) */
+--color-lime-600: oklch(0.55 0.15 145);       /* success (light) */
+--color-cyan-500: oklch(0.75 0.12 205);       /* info (dark) */
+--color-cyan-600: oklch(0.55 0.12 205);       /* info (light) */
+--color-red-500: oklch(0.65 0.20 25);         /* destructive (dark) */
+--color-red-600: oklch(0.55 0.19 25);         /* destructive (light) */
+
+/* Papel (matiz 255) — solo tema claro */
+--color-paper-50: oklch(0.98 0.003 255);      /* background light */
+--color-paper-100: oklch(0.96 0.004 255);     /* card light */
+--color-paper-200: oklch(0.92 0.006 255);     /* secondary/muted light */
+--color-paper-300: oklch(0.87 0.008 255);     /* border light */
+--color-paper-400: oklch(0.75 0.01 255);      /* border-hover light */
+```
+
+### Tokens semánticos — asignación por tema (Forge)
+
+| Token | `:root` (oscuro, default) | `prefers-color-scheme: light` |
+| --- | --- | --- |
+| `--background` | `obsidian-900` | `paper-50` |
+| `--foreground` | `fg-200` | `obsidian-800` |
+| `--card` / `--popover` | `obsidian-800` | `paper-100` |
+| `--card-foreground` / `--popover-foreground` | `fg-200` | `obsidian-800` |
+| `--primary` | `amber-500` | `amber-700` |
+| `--primary-foreground` | `obsidian-900` | `obsidian-900` |
+| `--primary-hover` | `amber-400` | `oklch(0.64 0.15 75)` (entre 500 y 700) |
+| `--primary-active` | `amber-600` | `amber-800` |
+| `--secondary` / `--muted` / `--accent` | `obsidian-700` | `paper-200` |
+| `--secondary-foreground` / `--accent-foreground` | `fg-200` | `obsidian-800` |
+| `--muted-foreground` | `oklch(0.65 0.015 255)` | `obsidian-500` |
+| `--destructive` | `red-500` | `red-600` |
+| `--destructive-foreground` | `fg-100` | `paper-50` |
+| `--success` | `lime-500` | `lime-600` |
+| `--info` | `cyan-500` | `cyan-600` |
+| `--warning` | `amber-400` | `amber-700` |
+| `--border` / `--input` | `obsidian-700` | `paper-300` |
+| `--border-hover` (alias `--border-strong`) | `obsidian-600` | `paper-400` |
+| `--ring` / `--focus` | `amber-500` | `amber-700` |
+| `--placeholder` (alias `--foreground-subtle`) | `fg-400` | `oklch(0.55 0.015 255)` |
+| `--foreground-muted` | `oklch(0.65 0.015 255)` | `obsidian-500` |
+| `--link` | `amber-500` | `oklch(0.45 0.11 75)` (ámbar oscurecido, AA texto) |
+| `--link-hover` | `amber-400` | `amber-800` |
+| `--selection` | `oklch(0.77 0.17 75 / 0.2)` | `oklch(0.77 0.17 75 / 0.25)` |
+| `--overlay` | `oklch(0 0 0 / 0.7)` | `oklch(0.16 0.012 255 / 0.6)` |
+| `--disabled` | `obsidian-700` | `paper-200` |
+| `--disabled-foreground` | `obsidian-500` | `oklch(0.60 0.01 255)` |
+| `--terminal` | `obsidian-950` | `obsidian-950` (el terminal es oscuro en ambos temas, intencional) |
+
+Asignación de tokens heredados (se mantienen funcionando en P11-1; los componentes migran a los nuevos nombres en P11-2…P11-4): `--surface` → `--card`; `--surface-raised` → `--secondary` (oscuro) / `--card` (claro); `--surface-sunken` → `--terminal`; `--surface-inverse` → inversión de `--background`/`--foreground`; `--button-primary-hover` → `--primary-hover`; `--button-secondary-hover` / `--button-subtle-hover` → `--border-hover` / `--card`; `--button-destructive-hover` → `oklch(0.72 0.18 25)` (oscuro) / `oklch(0.48 0.18 25)` (claro).
+
+### Tokens de componente (Forge)
+
+```css
+--grid-dot: oklch(0.25 0.01 255);                       /* GridPattern, decorativo aria-hidden */
+--shadow-glow-amber: 0 0 20px oklch(0.77 0.17 75 / 0.3);
+--shadow-glow-amber-strong: 0 0 30px oklch(0.77 0.17 75 / 0.45);
+```
+
+El glow ámbar solo se aplica en `TerminalWindow` (con `withGlow`) y en el hover de `Button` primary; queda neutralizado bajo `prefers-reduced-motion` (§12).
+
 ---
 
 # 5. Tipografía
@@ -397,6 +508,13 @@ Los tokens de componente no deben duplicar un token semántico sin aportar una r
 - Line-height por rol: H1–H3 `--line-height-tight: 1.15`; interfaz y H4–H6 `--line-height-normal: 1.5`; cuerpo largo `--line-height-relaxed: 1.7`.
 - Ancho máximo de lectura: `68ch` en texto editorial (`Prose`). Cuerpo de texto largo con mínimo `1rem` y contraste AAA (DES-08).
 - Una sola familia sans y una mono; cualquier adición requiere ADR.
+
+### Reforma tipográfica (04-09-2026, ADR-0032)
+
+- **Geist Sans + Geist Mono** sustituyen a Inter Variable y JetBrains Mono como familias únicas (sans y mono) en la Fase 11.
+- Se cargan vía `next/font/google` (self-host en build; cero peticiones a terceros en runtime, se mantiene el espíritu de DES-03) con `display: "optional"` y preload solo de la sans (OBJ-005); los woff2 de `src/fonts/` se retiran en P11-1.
+- La mono gana peso como «voz de interfaz» de Forge Terminal: etiquetas, kickers, badges, metadatos y componentes `TerminalWindow`/`ServiceCommand`; sigue prohibida en párrafos extensos.
+- Escala fluida, line-heights por rol, ancho de lectura y fallbacks se mantienen sin cambios.
 
 ---
 
@@ -452,6 +570,8 @@ Cada ficha de componente debe incluir: propósito, anatomía, API, variantes, ta
 
 **P0 implementados** (nativos; ejemplos en `/catalog`; pruebas E2E + axe): Button, IconButton, Link, Badge, Input, Textarea, Select, Checkbox, Label, Field, FieldError, Alert, Separator, Skeleton, Spinner.
 
+**Fase 11 (ADR-0032):** Card entra como primitivo P0 (`bg-card`, borde `--border`, hover `--border-hover`); Button y Badge migran a variantes tipadas con `class-variance-authority` sin cambiar su API pública.
+
 **Fuera del MVP (no implementar en P0):** Tag, Switch, AlertDialog, Dialog, Drawer/Sheet, Tooltip, Popover, DropdownMenu, Tabs, Accordion, Toast, EmptyState, VisuallyHidden. El honeypot de contacto usa la utilidad `.honeypot-offscreen` (no `sr-only` ni VisuallyHidden: no debe anunciarse a AT).
 
 ## 8.2. Componentes de layout
@@ -483,8 +603,9 @@ Cada ficha de componente debe incluir: propósito, anatomía, API, variantes, ta
 - Testimonial o ProofPoint, solo si existe contenido real verificable.
 - ContactForm.
 - NewsletterForm, solo si la funcionalidad se aprueba.
-- Terminal.
-- TerminalCommand.
+- Terminal. — Implementado como `TerminalWindow` en la Fase 11 (REQ-DS-TERMINAL-001, ADR-0032).
+- TerminalCommand. — Implementado como `ServiceCommand` en la Fase 11 (REQ-DS-COMMAND-001, ADR-0032).
+- GridPattern. — Fondo decorativo de puntos (`--grid-dot`), `aria-hidden`, sin animación (REQ-DS-GRID-001, ADR-0032).
 - AvailabilityStatus, solo si existe una fuente fiable y una política editorial.
 - CTASection.
 - LegalNotice.
@@ -584,11 +705,12 @@ Los elementos no interactivos no deben adoptar affordances engañosas de interac
 
 # 13. Convenciones de implementación
 
-- Los tokens vivirán en una única fuente de verdad, preferiblemente `styles/tokens.css` o equivalente.
+- Los tokens vivirán en una única fuente de verdad, preferiblemente `styles/tokens.css` o equivalente. Desde la Fase 11 (ADR-0032): `src/styles/forge-terminal.css` con `@theme inline` y `<alpha-value>`; los primitivos tipados viven en `src/lib/tokens/`.
 - Las utilidades de Tailwind deben consumir tokens semánticos.
 - Los componentes deben usar una utilidad de composición de clases normalizada.
-- Las variantes se definirán de forma tipada y consistente.
-- No se permitirán hexadecimales, RGB/HSL, valores de sombra manuales, radios manuales ni colores arbitrarios en componentes de producción, salvo excepción documentada.
+- Las variantes se definirán de forma tipada y consistente (con `class-variance-authority` desde la Fase 11).
+- No se permitirán hexadecimales, RGB/HSL, valores de sombra manuales, radios manuales ni colores arbitrarios —**incluidos `oklch()` arbitrarios** (ADR-0032)— en componentes de producción, salvo excepción documentada. El gate `scripts/check-design-tokens.mjs` lo verifica en `pnpm lint`.
+- `:root` es el tema oscuro (default intencional, ADR-0032); el claro se sirve vía `@media (prefers-color-scheme: light)`.
 - Cada componente nuevo requerirá ejemplo de uso y pruebas, o una revisión visual definida.
 - El modo claro y oscuro se revisarán para cada variante nueva.
 
