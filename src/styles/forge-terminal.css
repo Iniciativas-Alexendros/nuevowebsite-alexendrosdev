@@ -169,6 +169,17 @@
 }
 
 /*
+ * Utilidades Forge (DESIGN §4.5): fondos decorativos tokenizados.
+ * Viven aquí y no en componentes para cumplir el gate §13 (sin valores arbitrarios).
+ */
+@layer utilities {
+  .bg-grid-pattern {
+    background-image: radial-gradient(var(--grid-dot) 1px, transparent 1px);
+    background-size: 1.5rem 1.5rem;
+  }
+}
+
+/*
  * Vínculo variables CSS ↔ utilidades Tailwind (DESIGN §13).
  * @theme inline: las utilidades referencian los var(--*) semánticos en vez de duplicar valores.
  */

@@ -4,6 +4,9 @@ import { Search, Send, X } from "lucide-react";
 
 import { Container } from "@/components/layout/container";
 import { Section } from "@/components/layout/section";
+import { GridPattern } from "@/components/domain/grid-pattern";
+import { ServiceCommand } from "@/components/domain/service-command";
+import { TerminalWindow } from "@/components/domain/terminal-window";
 import { Alert } from "@/components/ui/alert";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -212,6 +215,51 @@ export default function CatalogPage() {
               <Spinner size="sm" label="Cargando (pequeño)" />
               <Spinner />
               <Spinner size="lg" label="Cargando (grande)" />
+            </div>
+          </section>
+
+          <Separator />
+
+          <section className="flex flex-col gap-4">
+            <Heading>Forge — TerminalWindow</Heading>
+            <TerminalWindow
+              withGlow
+              title="alexendros@forge:~$"
+              logs={[
+                { type: "cmd", text: "pnpm ci && pnpm build" },
+                { type: "success", text: "✓ Compiled in 1.2s" },
+                { type: "info", text: "i Lighthouse CI: 4 categorías ≥ 90" },
+                { type: "warn", text: "! Ejemplo de advertencia" },
+                { type: "muted", text: "▶ Ready on https://alexendros.dev" },
+              ]}
+            />
+          </section>
+
+          <Separator />
+
+          <section className="flex flex-col gap-4">
+            <Heading>Forge — ServiceCommand</Heading>
+            <div className="max-w-xl">
+              <ServiceCommand
+                id="01"
+                command="auditorias"
+                args="--scope web"
+                description="Diagnóstico técnico con hallazgos priorizados y plan de remediación."
+                checks={["Informe navegable con evidencias", "Scripts de reproducción en CI"]}
+                href="/servicios"
+              />
+            </div>
+          </section>
+
+          <Separator />
+
+          <section className="flex flex-col gap-4">
+            <Heading>Forge — GridPattern</Heading>
+            <div className="relative flex h-40 items-center justify-center rounded-lg border border-border">
+              <GridPattern />
+              <span className="font-mono text-xs text-muted-foreground">
+                fondo decorativo aria-hidden
+              </span>
             </div>
           </section>
         </Container>

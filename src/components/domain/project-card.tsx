@@ -1,5 +1,7 @@
 import type { Project, ProjectVisibility } from "@/lib/validations/content";
+import { ArrowRight } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
+import { Icon } from "@/components/ui/icon";
 import { Link } from "@/components/ui/link";
 import { getTechnologyById } from "@/lib/content";
 import { cn } from "@/lib/utils";
@@ -41,12 +43,17 @@ export function ProjectCard({
     : [];
 
   return (
-    <article className={cn("flex h-full flex-col gap-4 border-t border-border pt-6", className)}>
+    <article
+      className={cn(
+        "group flex h-full flex-col gap-4 rounded-lg border border-border bg-card p-6 transition-colors duration-200 hover:border-border-hover",
+        className
+      )}
+    >
       {/* Sin images[] hasta capturas reales (DES-07); no placeholders. */}
       <div className="flex flex-col gap-2">
         <div className="flex flex-wrap items-baseline justify-between gap-2">
           <h3 className="text-xl font-semibold text-foreground">{project.title}</h3>
-          <span className="text-sm text-foreground-muted">
+          <span className="font-mono text-xs uppercase tracking-widest text-muted-foreground">
             {VISIBILITY_LABEL[project.visibility]}
           </span>
         </div>
@@ -74,6 +81,11 @@ export function ProjectCard({
       <div className="mt-auto pt-2">
         <Link href={href} variant="secondary" size="sm">
           {linkLabel}
+          <Icon
+            icon={ArrowRight}
+            size="sm"
+            className="transition-transform group-hover:translate-x-1"
+          />
         </Link>
       </div>
     </article>

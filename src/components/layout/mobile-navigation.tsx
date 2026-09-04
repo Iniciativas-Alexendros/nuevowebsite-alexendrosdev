@@ -78,7 +78,7 @@ export function MobileNavigation() {
                   onClick={closeMenu}
                   aria-current={isActive ? "page" : undefined}
                   className={cn(
-                    "block rounded-md px-3 py-2 text-sm font-medium no-underline transition-colors",
+                    "block rounded-md px-3 py-2 font-mono text-sm font-medium no-underline transition-colors",
                     isActive
                       ? "text-foreground"
                       : "text-foreground-muted hover:bg-button-subtle-hover hover:text-foreground"
