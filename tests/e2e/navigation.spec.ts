@@ -28,10 +28,25 @@ test.describe("cascarón de navegación", () => {
       "aria-current",
       "page"
     );
-    await expect(page.getByRole("link", { name: "Proyectos" })).not.toHaveAttribute(
+    await expect(page.getByRole("link", { name: "Contacto" })).not.toHaveAttribute(
       "aria-current",
       "page"
     );
+  });
+
+  test("la navegación principal no enlaza las rutas heredadas /proyectos ni /stack", async ({
+    page,
+    isMobile,
+  }) => {
+    test.skip(isMobile, "nav de escritorio oculta bajo Pixel 5");
+    await page.goto("/");
+
+    const nav = page.getByRole("navigation", { name: "Principal" });
+    await expect(nav.getByRole("link", { name: "Servicios" })).toBeVisible();
+    await expect(nav.getByRole("link", { name: "Sobre mí" })).toBeVisible();
+    await expect(nav.getByRole("link", { name: "Contacto" })).toBeVisible();
+    expect(await nav.locator('a[href="/proyectos"]').count()).toBe(0);
+    expect(await nav.locator('a[href="/stack"]').count()).toBe(0);
   });
 
   test("el enlace de salto es el primer elemento enfocable", async ({ page }) => {
@@ -103,7 +118,7 @@ test.describe("navegación móvil", () => {
       "aria-current",
       "page"
     );
-    await expect(nav.getByRole("link", { name: "Proyectos", exact: true })).not.toHaveAttribute(
+    await expect(nav.getByRole("link", { name: "Contacto", exact: true })).not.toHaveAttribute(
       "aria-current",
       "page"
     );

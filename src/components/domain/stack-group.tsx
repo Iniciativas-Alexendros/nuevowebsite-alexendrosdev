@@ -24,7 +24,7 @@ export type StackGroupProps = {
   compact?: boolean;
   /**
    * Diferir pintura de categorías tras la primera (content-visibility).
-   * Mejora LCP lab en `/stack` sin ocultar el primer grupo (OBJ-005).
+   * Mejora LCP lab en el bloque de stack de `/sobre-mi` sin ocultar el primer grupo (OBJ-005).
    */
   deferBelowFold?: boolean;
   className?: string;

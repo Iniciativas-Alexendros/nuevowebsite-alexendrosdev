@@ -20,7 +20,7 @@ describe("absoluteUrl", () => {
   it("usa NEXT_PUBLIC_SITE_URL cuando está definida", async () => {
     vi.stubEnv("NEXT_PUBLIC_SITE_URL", "https://preview.example.com");
     const mod = await import("@/lib/seo");
-    expect(mod.absoluteUrl("/stack")).toBe("https://preview.example.com/stack");
+    expect(mod.absoluteUrl("/sobre-mi")).toBe("https://preview.example.com/sobre-mi");
   });
 });
 
@@ -56,10 +56,10 @@ describe("buildPageMetadata", () => {
   });
 
   it("reutiliza la descripción por defecto cuando no se proporciona", () => {
-    const metadata = buildPageMetadata({ title: "Stack", path: "/stack" });
+    const metadata = buildPageMetadata({ title: "Sobre mí", path: "/sobre-mi" });
 
     expect(metadata.description).toBe(siteConfig.defaultDescription);
-    expect(metadata.alternates?.canonical).toBe(`${siteConfig.siteUrl}/stack`);
+    expect(metadata.alternates?.canonical).toBe(`${siteConfig.siteUrl}/sobre-mi`);
   });
 });
 

@@ -3,16 +3,14 @@ import { siteConfigSchema } from "@/lib/validations/content";
 export const siteConfig = siteConfigSchema.parse({
   siteName: "Alexendros",
   siteUrl: "https://alexendros.dev",
-  defaultTitle: "Alexendros — Desarrollo web, automatización y auditoría técnica",
+  defaultTitle: "Alexendros — Producción de sitios web, auditorías y consultoría tecnológica",
   defaultDescription:
-    "Desarrollo web (Next.js, Astro), landing pages, automatización IA (MCP, Rust) y auditoría técnica (rendimiento, WCAG, SEO). Código mantenible, CI verificado, despliegue Vercel.",
+    "Producción de sitios web (Next.js, Astro), auditorías técnicas (rendimiento, WCAG, SEO) y consultoría tecnológica. Código mantenible, CI verificado, despliegue Vercel.",
   locale: "es",
   ogLocale: "es_ES",
   defaultOpenGraphImage: "/opengraph-image",
   navigation: [
     { label: "Servicios", href: "/servicios" },
-    { label: "Proyectos", href: "/proyectos" },
-    { label: "Stack", href: "/stack" },
     { label: "Sobre mí", href: "/sobre-mi" },
     { label: "Contacto", href: "/contacto" },
   ],
@@ -27,7 +25,7 @@ export const siteConfig = siteConfigSchema.parse({
   ],
   person: {
     name: "Alexendros",
-    role: "Desarrollador web, automatización y auditoría técnica",
+    role: "Desarrollador web, auditorías y consultoría tecnológica",
     url: "https://alexendros.dev",
   },
 });

@@ -30,7 +30,7 @@ export function ProjectCard({
   className,
 }: ProjectCardProps) {
   const primaryLink = project.links?.[0];
-  const href = primaryLink?.href ?? "/proyectos";
+  const href = primaryLink?.href ?? "/sobre-mi#proyectos";
   const linkLabel = primaryLink?.label ?? "Ver proyectos";
   const primaryResult = showResult ? project.results?.[0] : undefined;
 
