@@ -140,7 +140,7 @@ jobs:
         run: |
           set -euo pipefail
           # Rutas P0 alineadas con lighthouserc.json (evitar LCP frío en multipágina).
-          ROUTES="/ /servicios /proyectos /stack /sobre-mi /contacto /aviso-legal /privacidad"
+          ROUTES="/ /servicios /sobre-mi /contacto /aviso-legal /privacidad"
           pnpm start > /tmp/next-start.log 2>&1 &
           echo $! > /tmp/next-start.pid
           for i in $(seq 1 60); do
