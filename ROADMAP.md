@@ -501,12 +501,12 @@ Nueva IA editorial aprobada por el decisor (spec de sesión, 04-09-2026): el sit
 
 **Entregable:**
 
-- [ ] Tres servicios publicados (`produccion-sitios-web`, `auditorias`, `consultoria-tecnologica`) con descripción, destinatarios y alcance. — **PR #80.**
-- [ ] `/sobre-mi` con secciones `presentacion`, `metodo`, `#proyectos` y `#stack`; sin proyectos no públicos. — **PR #81.**
-- [ ] `/proyectos` → `/sobre-mi#proyectos` y `/stack` → `/sobre-mi#stack` como 308 en `next.config.ts`; páginas autónomas retiradas. — **PR #81.**
-- [ ] Home sin bloques de destacados; navegación principal Servicios / Sobre mí / Contacto; rutas P0 reducidas a seis en axe, Lighthouse, CI y smoke. — **PR #82.**
+- [x] Tres servicios publicados (`produccion-sitios-web`, `auditorias`, `consultoria-tecnologica`) con descripción, destinatarios y alcance. — **PR #83 (sustituye a #80).**
+- [x] `/sobre-mi` con secciones `presentacion`, `metodo`, `#proyectos` y `#stack`; sin proyectos no públicos. — **PR #81.**
+- [x] `/proyectos` → `/sobre-mi#proyectos` y `/stack` → `/sobre-mi#stack` como 308 en `next.config.ts`; páginas autónomas retiradas. — **PR #81.**
+- [x] Home sin bloques de destacados; navegación principal Servicios / Sobre mí / Contacto; rutas P0 reducidas a seis en axe, Lighthouse, CI y smoke. — **PR #82.**
 
-**Criterio de salida (firma del decisor):** CI verde en los tres PRs, redirects 308 verificados con curl y e2e, documentación canónica sin IA contradictoria, y validación MITL del preview antes de cualquier promoción (ADR-0025).
+**Criterio de salida (firma del decisor):** CI verde en los tres PRs, redirects 308 verificados con curl y e2e, documentación canónica sin IA contradictoria, y validación MITL del preview antes de cualquier promoción (ADR-0025). — **Firmado por el decisor el 04-09-2026** (preview MITL `62a8565` validado; PROMOTE autorizado).
 
 ---
 

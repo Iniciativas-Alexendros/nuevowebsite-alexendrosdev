@@ -390,7 +390,7 @@ Con cuatro proyectos no se implementa filtro en el MVP (criterio de volumen insu
 | Nombre | Sí | Texto, 2–100 caracteres. |
 | Email | Sí | Formato de email válido, máximo 254 caracteres. |
 | Empresa u organización | No | Texto, máximo 100 caracteres. |
-| Asunto o tipo de consulta | No | Valor de una lista cerrada definida en contenido tipado (`src/content/contact-subjects.ts`). La lista es taxonomía comercial (seis asuntos) y **no** exige 1:1 con los cuatro servicios de DEC-SPECS-02; ver CONTENT §6. |
+| Asunto o tipo de consulta | No | Valor de una lista cerrada definida en contenido tipado (`src/content/contact-subjects.ts`). La lista es taxonomía comercial (seis asuntos) y **no** exige 1:1 con los tres servicios de DEC-SPECS-02; ver CONTENT §6. |
 | Mensaje | Sí | Texto, 20–2.000 caracteres. |
 | Consentimiento informado | Sí, si se tratan datos personales | Checkbox no premarcado; el envío se bloquea sin consentimiento. |
 | Honeypot | — | Campo invisible; si llega con valor, la petición se descarta con respuesta neutra. |
@@ -918,7 +918,7 @@ Estas decisiones bloquean el paso de “Propuesta sin revisar” a “Aprobado�
 | ID | Decisión pendiente | Afecta a | Estado |
 | --- | --- | --- | --- |
 | **DEC-SPECS-01** | Posicionamiento (freelance, empleo o ambos) y conversión principal. | §1, §6.1, §6.8 | Resuelta (13-08-2026): freelance; conversión principal = formulario. |
-| **DEC-SPECS-02** | Lista definitiva de servicios con alcance y entregables. | §6.2, §6.3 | Resuelta (13-08-2026): 4 servicios — desarrollo web, landing pages, automatización/IA, auditoría. |
+| **DEC-SPECS-02** | Lista definitiva de servicios con alcance y entregables. | §6.2, §6.3 | Resuelta (13-08-2026): 4 servicios — desarrollo web, landing pages, automatización/IA, auditoría. **Enmendada (04-09-2026): consolidación 4→3 — producción de sitios web, auditorías, consultoría tecnológica (nueva IA del sitio, Fase 10.z).** |
 | **DEC-SPECS-03** | Lista de proyectos publicables y necesidades de anonimización. | §6.4, §6.5 | Resuelta (13-08-2026): 4 proyectos publicables; sin anonimización ni aprobación previa. |
 | **DEC-SPECS-04** | Ratificación de cifras y plazos de OBJ-001 a OBJ-008. | §2 | Resuelta (13-08-2026): cifras ratificadas tal cual. |
 | **DEC-SPECS-05** | Régimen legal (autónomo en España) y uso de cookies no esenciales. | §6.9 | Resuelta (13-08-2026): sin alta de autónomo hasta superar el SMI anual de facturación; analítica con cookies aprobada para P1. |
