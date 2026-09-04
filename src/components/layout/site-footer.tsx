@@ -19,7 +19,7 @@ export function SiteFooter() {
               <Link
                 key={item.href}
                 href={item.href}
-                className="text-sm font-medium no-underline text-foreground-muted transition-colors hover:text-foreground"
+                className="font-mono text-sm font-medium no-underline text-foreground-muted transition-colors hover:text-foreground"
               >
                 {item.label}
               </Link>
@@ -34,7 +34,7 @@ export function SiteFooter() {
             <Link
               key={item.href}
               href={item.href}
-              className="text-sm font-medium no-underline text-foreground-muted transition-colors hover:text-foreground"
+              className="font-mono text-sm font-medium no-underline text-foreground-muted transition-colors hover:text-foreground"
             >
               {item.label}
             </Link>
@@ -42,7 +42,7 @@ export function SiteFooter() {
           {calendar ? (
             <Link
               href={calendar.href}
-              className="text-sm font-medium no-underline text-foreground-muted transition-colors hover:text-foreground"
+              className="font-mono text-sm font-medium no-underline text-foreground-muted transition-colors hover:text-foreground"
             >
               {calendar.label}
             </Link>

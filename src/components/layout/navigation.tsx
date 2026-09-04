@@ -19,7 +19,7 @@ export function Navigation() {
                 href={item.href}
                 aria-current={isActive ? "page" : undefined}
                 className={cn(
-                  "text-sm font-medium no-underline transition-colors",
+                  "font-mono text-sm font-medium no-underline transition-colors",
                   isActive ? "text-foreground" : "text-foreground-muted hover:text-foreground"
                 )}
               >
