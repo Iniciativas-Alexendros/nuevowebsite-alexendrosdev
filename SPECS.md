@@ -120,7 +120,7 @@ El sitio DEBE ofrecer una navegación principal accesible desde todas las rutas 
 <details>
 <summary>**REQ-GLOBAL-002** — CTA de contacto</summary>
 
-El sitio DEBE incluir una llamada a la acción de contacto coherente y visible en las rutas de captación: `/`, `/servicios`, `/proyectos` y `/sobre-mi`.
+El sitio DEBE incluir una llamada a la acción de contacto coherente y visible en las rutas de captación: `/`, `/servicios` y `/sobre-mi`.
 
 </details>
 
@@ -188,14 +188,13 @@ El sitio DEBE permitir la sustitución de proveedores externos mediante adaptado
 
 **Objetivo:**
 
-- Comunicar la propuesta de valor y dirigir hacia servicios, proyectos o contacto.
+- Comunicar la propuesta de valor y dirigir hacia servicios, sobre mí o contacto.
 
 **Contenido mínimo:**
 
 - Hero con identidad, propuesta de valor y CTA principal orientado al formulario de contacto (conversión principal, DEC-SPECS-01).
 - Resumen de servicios.
-- Proyectos o casos destacados.
-- Stack o capacidades relevantes.
+- Introducción breve a Sobre mí (los proyectos y el stack viven en `/sobre-mi`, §6.7).
 - Elemento de credibilidad verificable.
 - CTA final de contacto.
 - Footer con navegación y enlaces legales.
@@ -204,7 +203,7 @@ El sitio DEBE permitir la sustitución de proveedores externos mediante adaptado
 
 - La propuesta de valor se entiende sin depender de imágenes o animaciones.
 - El CTA principal funciona mediante teclado y puntero.
-- Los proyectos y servicios destacados enlazan a rutas válidas.
+- Los servicios y el enlace a Sobre mí apuntan a rutas válidas.
 - Los encabezados siguen una jerarquía semántica.
 - La página incluye metadata específica y Open Graph.
 
@@ -214,14 +213,13 @@ El sitio DEBE permitir la sustitución de proveedores externos mediante adaptado
 
 - Exponer las áreas de servicio de forma clara, concreta y orientada a la necesidad.
 
-**Servicios aprobados (DEC-SPECS-02):**
+**Servicios aprobados (DEC-SPECS-02; consolidación 4→3 aprobada por el decisor en la nueva IA del sitio):**
 
-| Slug propuesto | Servicio | Evidencia disponible |
+| Slug | Servicio | Evidencia disponible |
 | --- | --- | --- |
-| `desarrollo-web` | Desarrollo web a medida (Next.js/Astro) con SEO y accesibilidad. | website-frontvalencia, ecommerce-graficasnasve |
-| `landing-pages` | Landing pages con pruebas A/B y captación de contactos. | website-landingpage-template |
-| `automatizacion-ia` | Automatización y agentes de IA (MCP, CLI). | agent-protonsuite, vcf-cribador |
-| `auditoria-web` | Auditoría de rendimiento y accesibilidad. | Prácticas aplicadas en los proyectos publicados |
+| `produccion-sitios-web` | Producción de sitios web: diseño, desarrollo y publicación de webs, landing pages y productos digitales acotados (consolida `desarrollo-web` y `landing-pages`). | website-frontvalencia, ecommerce-graficasnasve, website-landingpage-template |
+| `auditorias` | Auditorías técnicas: rendimiento, accesibilidad, SEO técnico, calidad y seguridad proporcional, con plan de remediación (sustituye `auditoria-web`). | Prácticas aplicadas en los proyectos publicados |
+| `consultoria-tecnologica` | Consultoría tecnológica: diagnóstico, arquitectura, evaluación de alternativas y plan de implementación (absorbe el contenido estratégico de `automatizacion-ia`; la implementación es proyecto aparte). | agent-protonsuite, vcf-cribador |
 
 El alcance y los entregables detallados de cada servicio se redactan como entidades Service tipadas según [CONTENT.md](./CONTENT.md).
 
@@ -263,7 +261,9 @@ El alcance y los entregables detallados de cada servicio se redactan como entida
 - Metadata individual.
 - Enlaces canónicos y navegación de retorno.
 
-## 6.4. Proyectos: /proyectos
+## 6.4. Proyectos (bloque de `/sobre-mi#proyectos`)
+
+> Nueva IA del sitio: los proyectos ya no tienen página autónoma. `/proyectos` es una redirección permanente (308) a `/sobre-mi#proyectos`, donde vive el listado. Los criterios de esta sección se aplican a ese bloque.
 
 **Objetivo:**
 
@@ -296,6 +296,8 @@ Con cuatro proyectos no se implementa filtro en el MVP (criterio de volumen insu
 
 ## 6.5. Detalle de proyecto: /proyectos/[slug]
 
+> P1. Cuando se active, el listado padre es el bloque `/sobre-mi#proyectos` (§6.4); la ruta `/proyectos` raíz permanece como redirección 308.
+
 **Objetivo:**
 
 - Presentar un caso de estudio técnico comprensible para una audiencia técnica y no técnica.
@@ -320,7 +322,9 @@ Con cuatro proyectos no se implementa filtro en el MVP (criterio de volumen insu
 - La metadata se genera a partir del contenido del proyecto.
 - La ruta gestiona correctamente slugs inexistentes.
 
-## 6.6. Stack: /stack
+## 6.6. Stack (bloque de `/sobre-mi#stack`)
+
+> Nueva IA del sitio: el stack ya no tiene página autónoma. `/stack` es una redirección permanente (308) a `/sobre-mi#stack`, donde vive el listado agrupado por categorías. Los criterios de esta sección se aplican a ese bloque.
 
 **Objetivo:**
 
@@ -345,6 +349,7 @@ Con cuatro proyectos no se implementa filtro en el MVP (criterio de volumen insu
 **Objetivo:**
 
 - Aportar contexto profesional y un enfoque humano a la propuesta de servicios.
+- Agregar en una única página canónica el perfil, el método de trabajo, los proyectos seleccionados (§6.4) y el stack (§6.6).
 
 **Contenido mínimo:**
 
@@ -352,6 +357,8 @@ Con cuatro proyectos no se implementa filtro en el MVP (criterio de volumen insu
 - Enfoque de trabajo.
 - Áreas de especialidad.
 - Principios o proceso.
+- Proyectos seleccionados (`#proyectos`, §6.4).
+- Stack y herramientas agrupados por función (`#stack`, §6.6).
 - Enlaces profesionales pertinentes.
 - CTA.
 
@@ -831,9 +838,7 @@ Las dependencias externas deben tener una finalidad documentada, un mantenedor a
 | **P0** | Navegación, layout, footer y 404 |
 | **P0** | Inicio (ruta 6.1) |
 | **P0** | Servicios (ruta 6.2) |
-| **P0** | Proyectos (ruta 6.4) |
-| **P0** | Stack (ruta 6.6) |
-| **P0** | Sobre mí (ruta 6.7) |
+| **P0** | Sobre mí, con proyectos y stack integrados (rutas 6.7, 6.4 y 6.6) |
 | **P0** | Contacto (ruta 6.8) |
 | **P0** | Páginas legales aplicables (ruta 6.9) |
 | **P0** | SEO técnico base |

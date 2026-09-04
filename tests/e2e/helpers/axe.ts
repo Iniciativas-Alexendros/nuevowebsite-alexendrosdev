@@ -8,8 +8,6 @@ const WCAG_TAGS = ["wcag2a", "wcag2aa", "wcag21a", "wcag21aa"] as const;
 export const P0_ROUTES = [
   "/",
   "/servicios",
-  "/proyectos",
-  "/stack",
   "/sobre-mi",
   "/contacto",
   "/aviso-legal",

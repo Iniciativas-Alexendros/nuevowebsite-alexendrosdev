@@ -4,8 +4,6 @@
       "url": [
         "http://localhost:3000/",
         "http://localhost:3000/servicios",
-        "http://localhost:3000/proyectos",
-        "http://localhost:3000/stack",
         "http://localhost:3000/sobre-mi",
         "http://localhost:3000/contacto",
         "http://localhost:3000/aviso-legal",

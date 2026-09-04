@@ -154,7 +154,7 @@ Hasta existir el repo, estos nombres son el contrato. El scaffold de Fase 1 DEBE
 Umbrales ejecutables (DEC-AGENTS-04; no los rebajes):
 
 - Lighthouse ≥90 en las cuatro categorías en móvil (OBJ-005), medido en CI **local** tras `pnpm build` (ADR-0025; no despliega Vercel por PR).
-- axe-core sin violaciones bloqueantes en CI (8 rutas P0).
+- axe-core sin violaciones bloqueantes en CI (6 rutas P0).
 - Cobertura mínima 70 % en `src/lib/` y validaciones, medida por Vitest en CI, bloqueante de merge.
 
 ---
@@ -256,14 +256,14 @@ Batería 7.3 del [Plan de verificación y desarrollo de documentos pendientes �
 
 - Hub Notion del proyecto: https://app.notion.com/p/3bb7ded224cb807c9101e14ef41e6dc5 ; ficha Fase 5: https://app.notion.com/p/1965e7f8eb784df0ac7d8490f833fed8 ; ficha Fase 6: https://app.notion.com/p/901e1eba9e874304af08f5a10daddf54 ; ficha Fase 7: https://app.notion.com/p/7d6d6b9cad00464d8425cdcd25c34efe ; ficha Fase 7.z: https://app.notion.com/p/3be7ded224cb818ba8ced8c3b69fad6f ; ficha Fase 8: https://app.notion.com/p/3be7ded224cb81a79932f6630cbc648f
 - Contenido tipado en `src/content/*` (servicios, proyectos, stack, perfil, site, legal); las páginas marketing se alimentan desde ahí.
-- Portfolio P0: rutas `/proyectos`, `/stack`, `/sobre-mi` (consume `profile.ts` published); `/proyectos/[slug]` y MDX son P1 (Fase 9).
-- Home: `FeaturedProjects` / `FeaturedStack` deben permanecer ligeros (OBJ-005); cards/badges de dominio completos viven en las páginas de portfolio.
+- Portfolio: proyectos y stack viven como bloques de `/sobre-mi` (`#proyectos`, `#stack`; consume `profile.ts` published); `/proyectos` y `/stack` son redirects 308; `/proyectos/[slug]` y MDX son P1 (Fase 9).
+- Home: sin bloques de destacados (`FeaturedProjects`/`FeaturedStack` eliminados); Hero + servicios + intro Sobre mí + CTA (OBJ-005).
 - Reserva Cal.com: solo enlace a `https://cal.com/alexendros` (sin script de terceros).
 - Envío de contacto: Proton SMTP vía `nodemailer` en `src/lib/server/` (ADR-0011); org secrets `PROTON_SMTP_HOST`/`PORT`, `PROTON_MAIL_FROM` (`operaciones@` = To+From+SMTP_USER), `PROTON_SMTP_TOKEN` (no Bridge); mailto público `hola@` (catch-all); sync a Vercel con `sync-env-vercel.yml` → vars runtime `SMTP_*`. Sin SMTP el formulario degrada a 503.
 - Despliegue Vercel (ADR-0025): sin preview por PR; Environments GitHub solo `Preview` + `Production` (nunca `phase-preview`); Deploy fase con `expected_sha`; Lighthouse CI local; tras integrar la fase en `main` → preview MITL → firma → production con `PROMOTE`. Los aliases estables (`*.vercel.app` / `git-main`) no siempre siguen al preview de fase.
 - Dominio canónico apex `https://alexendros.dev` (ADR-0029); puede seguir en el proyecto Vercel legacy `website-alexendrosdev` hasta migrar.
 - Legales: aviso legal y privacidad `published` (Fase 7 / #48); asesoría externa residual **post-v1.0** (ADR-0027). Fase 7.z integrada; Fase 8 activa con P8-6 go-live pendiente; **no firmar Fase 8 ni PROMOTE** hasta el SHA de `main` posterior a los PRs de cierre (dedup/gates/polish), con CI verde, smoke post-deploy y secuencia ADR-0025. El SHA `0cee846` queda invalidado al fusionar esos PRs.
-- Gates: axe 8/8 rutas P0; `pnpm lint` incluye anti-hex (ADR-0030); CSP producción sin `unsafe-eval`; HSTS `includeSubDomains; preload` (no hstspreload.org hasta migrar dominio). `pnpm ci:fast` / `ci:full` no relajan AGENTS §8.
+- Gates: axe 6/6 rutas P0 (`/proyectos` y `/stack` son redirects 308 a `/sobre-mi`); `pnpm lint` incluye anti-hex (ADR-0030); CSP producción sin `unsafe-eval`; HSTS `includeSubDomains; preload` (no hstspreload.org hasta migrar dominio). `pnpm ci:fast` / `ci:full` no relajan AGENTS §8.
 
 ## Cursor Cloud specific instructions
 

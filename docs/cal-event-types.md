@@ -14,8 +14,8 @@ Reducir fricción de discovery y empaquetar trabajo de baja complejidad (auditor
 | Event type (nombre en Cal.com) | Duración | Asunto / oferta alineada | Notas |
 | --- | --- | --- | --- |
 | **Discovery 30 min** | 30 min | Transversal; asuntos de proyecto, portal, formación, asesoramiento | Filtro antes de desarrollo a medida |
-| **Brief auditoría** | 30–45 min | «Auditoría de seguridad y posicionamiento» · servicio `auditoria-web` | Confirmar URLs, entorno, acceso repo opcional |
-| **PoC automatización** | 30 min | «Sistemas profesionales · Flujos de trabajos automatizables» | Alcance 1–2 semanas; no retainer |
+| **Brief auditoría** | 30–45 min | «Auditoría de seguridad y posicionamiento» · servicio `auditorias` | Confirmar URLs, entorno, acceso repo opcional |
+| **PoC automatización** | 30 min | «Sistemas profesionales · Flujos de trabajos automatizables» · servicio `consultoria-tecnologica` (la implementación es proyecto aparte) | Alcance 1–2 semanas; no retainer |
 
 ## Deep-links del sitio
 

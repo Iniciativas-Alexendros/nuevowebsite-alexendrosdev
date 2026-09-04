@@ -33,7 +33,9 @@ header_dump() {
 }
 
 fail=0
-routes=("/" "/servicios" "/proyectos" "/stack" "/sobre-mi" "/contacto" "/aviso-legal" "/privacidad")
+routes=("/" "/servicios" "/sobre-mi" "/contacto" "/aviso-legal" "/privacidad")
+# Rutas heredadas: deben responder 308 permanentes hacia /sobre-mi (nueva IA).
+legacy_redirects=("/proyectos:/sobre-mi#proyectos" "/stack:/sobre-mi#stack")
 
 echo "Smoke post-deploy contra ${base}"
 
@@ -70,6 +72,24 @@ for path in "${routes[@]}"; do
     echo "::error::${path} HSTS sin preload (P1-6)"
     fail=1
   }
+  rm -f "$tmp"
+done
+
+for entry in "${legacy_redirects[@]}"; do
+  path="${entry%%:*}"
+  expected="${entry#*:}"
+  tmp="$(mktemp)"
+  http_code="$(curl -sS -D "$tmp" -o /dev/null -w '%{http_code}' "${base}${path}")"
+  location="$(header_dump < "$tmp" | grep -i '^location=' || true)"
+  echo "GET ${path} → HTTP ${http_code} ${location}"
+  if [ "$http_code" != "308" ]; then
+    echo "::error::${path} esperaba 308 Permanent Redirect"
+    fail=1
+  fi
+  if ! echo "$location" | grep -qF "$expected"; then
+    echo "::error::${path} location no apunta a ${expected}"
+    fail=1
+  fi
   rm -f "$tmp"
 done
 

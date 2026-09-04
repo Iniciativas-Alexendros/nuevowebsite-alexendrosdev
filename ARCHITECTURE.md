@@ -248,17 +248,22 @@ Declaración obligatoria por tipo de módulo (ADR-0005; verificable en revisión
 
 # 5. Rutas públicas previstas
 
-- `/`: presentación principal, propuesta de valor, servicios destacados, proyectos destacados, stack y CTA de contacto (SPECS §6.1).
-- `/servicios`: catálogo de los cuatro servicios aprobados (DEC-SPECS-02).
+Rutas canónicas (nueva IA del sitio, aprobada por el decisor):
+
+- `/`: presentación principal, propuesta de valor, resumen de los tres servicios, introducción a Sobre mí y CTA de contacto (SPECS §6.1).
+- `/servicios`: catálogo de los tres servicios aprobados (DEC-SPECS-02, consolidación 4→3).
 - `/servicios/[slug]`: P1 condicional (SPECS §6.3); su carpeta se creará al activarse el bloque.
-- `/proyectos`: índice de los cuatro proyectos publicables (DEC-SPECS-03); sin filtros, por volumen insuficiente.
-- `/proyectos/[slug]`: casos de estudio completos, P1 (SPECS §6.5); su carpeta se creará al activarse el bloque.
-- `/stack`: tecnologías, herramientas, prácticas y áreas de especialidad.
-- `/sobre-mi`: perfil profesional, enfoque y experiencia.
+- `/sobre-mi`: perfil profesional, método de trabajo, proyectos seleccionados (`#proyectos`, SPECS §6.4) y stack agrupado por categorías (`#stack`, SPECS §6.6).
 - `/contacto`: formulario según REQ-FORM-CONTACT-001 y enlace a agenda [Cal.com](https://cal.com) (ADR-0007).
 - `/aviso-legal`: aviso legal (ADR-0015); debe reflejar la situación real del prestador y actualizarse al formalizar el alta.
 - `/privacidad`: política de privacidad (ADR-0015).
 - `/cookies`: no existe en el MVP; se publicará junto al banner de consentimiento al activar la analítica P1 (ADR-0010).
+
+Rutas heredadas (redirecciones permanentes 308 en `next.config.ts`; sin página en filesystem):
+
+- `/proyectos` → `/sobre-mi#proyectos`.
+- `/stack` → `/sobre-mi#stack`.
+- `/proyectos/[slug]`: casos de estudio completos, P1 (SPECS §6.5); su carpeta se creará al activarse el bloque.
 
 <aside>
 🚫

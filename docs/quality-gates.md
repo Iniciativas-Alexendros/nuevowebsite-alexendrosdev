@@ -68,7 +68,7 @@ Son **siete** checks requeridos desde el scaffold de Fase 1 (histórico: gate Li
 
 ## 6. Accesibilidad automatizada (OBJ-006)
 
-- **axe-core** integrado en E2E Playwright sobre las **8 rutas P0** en **cada PR** (`tests/e2e/a11y.spec.ts`; mismas URLs que [`lighthouserc.json`](../lighthouserc.json)): `/`, `/servicios`, `/proyectos`, `/stack`, `/sobre-mi`, `/contacto`, `/aviso-legal`, `/privacidad`.
+- **axe-core** integrado en E2E Playwright sobre las **6 rutas P0** en **cada PR** (`tests/e2e/a11y.spec.ts`; mismas URLs que [`lighthouserc.json`](../lighthouserc.json)): `/`, `/servicios`, `/sobre-mi`, `/contacto`, `/aviso-legal`, `/privacidad`. Las rutas heredadas `/proyectos` y `/stack` son redirecciones 308 a `/sobre-mi#proyectos` y `/sobre-mi#stack` (nueva IA); se validan como redirects, no como páginas P0.
 - Violaciones de severidad `critical` o `serious` bloquean el job E2E.
 - `/catalog` se escanea además como banco visual (noindex; no es P0).
 - Complementa (no sustituye) auditorías manuales AA/AAA de Fase 8.

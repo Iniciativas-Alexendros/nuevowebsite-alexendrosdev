@@ -46,14 +46,6 @@ export function getFeaturedServices(): Service[] {
   return getPublishedServices().filter((s) => s.featured);
 }
 
-export function getFeaturedProjects(): Project[] {
-  return getPublishedProjects().filter((p) => p.featured);
-}
-
-export function getFeaturedTechnologies(): Technology[] {
-  return getPublishedTechnologies().filter((t) => t.featured);
-}
-
 export function getTechnologyById(id: string): Technology | undefined {
   return getPublishedTechnologies().find((t) => t.id === id);
 }
