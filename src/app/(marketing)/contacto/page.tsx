@@ -6,6 +6,7 @@ import { PageHeader } from "@/components/layout/page-header";
 import { Section } from "@/components/layout/section";
 import { Link } from "@/components/ui/link";
 import { getVisibleContactChannels } from "@/lib/content";
+import { resolveContactSubjectQuery } from "@/lib/contact-subject-query";
 import { buildPageMetadata } from "@/lib/seo";
 
 export const metadata: Metadata = buildPageMetadata({
@@ -15,8 +16,15 @@ export const metadata: Metadata = buildPageMetadata({
   path: "/contacto",
 });
 
-export default function ContactoPage() {
+type ContactoPageProps = {
+  searchParams: Promise<{ subject?: string | string[] }>;
+};
+
+export default async function ContactoPage({ searchParams }: ContactoPageProps) {
   const channels = getVisibleContactChannels().filter((channel) => channel.type !== "form");
+  const params = await searchParams;
+  const rawSubject = Array.isArray(params.subject) ? params.subject[0] : params.subject;
+  const initialSubject = resolveContactSubjectQuery(rawSubject) ?? "";
 
   return (
     <>
@@ -32,7 +40,7 @@ export default function ContactoPage() {
               Ideal para consultas con contexto: alcance, plazos orientativos del lado del cliente y
               enlaces relevantes. Respuesta directa a tu email.
             </p>
-            <ContactForm />
+            <ContactForm initialSubject={initialSubject} />
           </div>
 
           <aside className="flex flex-col gap-6">

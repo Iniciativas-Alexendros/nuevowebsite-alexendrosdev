@@ -8,6 +8,7 @@ import { ServiceList } from "@/components/domain/service-list";
 import { Container } from "@/components/layout/container";
 import { Section } from "@/components/layout/section";
 import { Link } from "@/components/ui/link";
+import { contactChannels } from "@/content/contact";
 import { siteConfig } from "@/content/site";
 import {
   getFeaturedProjects,
@@ -26,6 +27,10 @@ export const metadata: Metadata = {
 };
 
 const HOME_STACK_LIMIT = 8;
+
+const calendarHref =
+  contactChannels.find((channel) => channel.type === "calendar" && channel.visible)?.href ??
+  "https://cal.com/alexendros";
 
 export default function Home() {
   const profile = getPublishedProfile();
@@ -49,7 +54,7 @@ export default function Home() {
         title={heroTitle}
         description={heroDescription}
         primaryCta={{ label: "Escríbeme", href: "/contacto" }}
-        secondaryCta={{ label: "Ver servicios", href: "/servicios" }}
+        secondaryCta={{ label: "Agendar llamada", href: calendarHref }}
       />
 
       <Section variant="surface" deferPaint aria-labelledby="servicios-destacados">
@@ -107,6 +112,7 @@ export default function Home() {
         title="¿Hablamos de tu proyecto?"
         description="Cuéntame qué necesitas por el formulario o agenda una llamada. Respuesta directa, sin formularios opacos."
         cta={{ label: "Ir a contacto", href: "/contacto" }}
+        secondaryCta={{ label: "Agendar llamada", href: calendarHref }}
       />
     </>
   );

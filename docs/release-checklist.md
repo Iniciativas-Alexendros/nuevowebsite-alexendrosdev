@@ -26,7 +26,7 @@
 | Smoke post-deploy preprod | 18-08 · manual ✅ · GHA [32094880161](https://github.com/Iniciativas-Alexendros/nuevowebsite-alexendrosdev/actions/runs/32094880161) ✅ |
 | MITL Playwright preview | ✅ | Preview `ffd975d` revisada decisor 18-08 |
 | Firmas Fases 5 / 6 / 7 / 7.z / 8 | ✅ decisor | 18-08-2026 · [firmas-go-live-v1.0.md](./firmas-go-live-v1.0.md) |
-| PROMOTE run / Production deployment_id | ☐ post-firmas |
+| PROMOTE run / Production deployment_id | ☐ waiting Environment · [33809704201](https://github.com/Iniciativas-Alexendros/nuevowebsite-alexendrosdev/actions/runs/33809704201) |
 | Smoke postprod | ☐ post-PROMOTE |
 | Release `v1.0.0` (tag = mismo SHA) | ☐ post-PROMOTE |
 

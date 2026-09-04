@@ -32,5 +32,13 @@ test.describe("captación OBJ-002", () => {
     await expect(page.getByRole("heading", { level: 1, name: "Servicios" })).toBeVisible();
     await expect(page.getByRole("heading", { level: 3 })).toHaveCount(4);
     await expect(page.getByRole("link", { name: "Contactar" }).first()).toBeVisible();
+    await expect(page.getByRole("link", { name: "Pedir auditoría" })).toBeVisible();
+    await expect(page.getByText("Entregables").first()).toBeVisible();
+  });
+
+  test("inicio ofrece Cal.com como CTA secundario", async ({ page }) => {
+    await page.goto("/");
+
+    await expect(page.getByRole("link", { name: "Agendar llamada" }).first()).toBeVisible();
   });
 });

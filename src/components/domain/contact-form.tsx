@@ -10,6 +10,7 @@ import { Input } from "@/components/ui/input";
 import { Link } from "@/components/ui/link";
 import { Select } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
+import { contactChannels } from "@/content/contact";
 import { CONTACT_SUBJECTS, type ContactSubject } from "@/content/contact-subjects";
 import { contactFormSchema, type ContactApiResponse } from "@/lib/validations/contact-form";
 
@@ -21,23 +22,34 @@ type FormStatus =
 
 const FIELD_ORDER = ["name", "email", "company", "subject", "message", "consent"] as const;
 
-const initialValues = {
-  name: "",
-  email: "",
-  company: "",
-  subject: "" as "" | ContactSubject,
-  message: "",
-  consent: false,
-  website: "",
+function buildInitialValues(subject: "" | ContactSubject = "") {
+  return {
+    name: "",
+    email: "",
+    company: "",
+    subject,
+    message: "",
+    consent: false,
+    website: "",
+  };
+}
+
+const calendarChannel = contactChannels.find(
+  (channel) => channel.type === "calendar" && channel.visible
+);
+
+export type ContactFormProps = {
+  /** Asunto preseleccionado desde `?subject=` (resuelto en el Server Component). */
+  initialSubject?: "" | ContactSubject;
 };
 
 /**
  * Formulario de contacto (REQ-FORM-CONTACT-001).
  * Única excepción "use client" en domain (ARCHITECTURE §4.9).
  */
-export function ContactForm() {
+export function ContactForm({ initialSubject = "" }: ContactFormProps) {
   const formId = useId();
-  const [values, setValues] = useState(initialValues);
+  const [values, setValues] = useState(() => buildInitialValues(initialSubject));
   const [status, setStatus] = useState<FormStatus>({ kind: "idle" });
 
   const fieldErrors = status.kind === "error" ? (status.fieldErrors ?? {}) : {};
@@ -97,7 +109,7 @@ export function ContactForm() {
         return;
       }
 
-      setValues(initialValues);
+      setValues(buildInitialValues());
       setStatus({ kind: "success", message: payload.message });
     } catch {
       setStatus({
@@ -116,7 +128,17 @@ export function ContactForm() {
     >
       {status.kind === "success" ? (
         <Alert variant="success" title="Mensaje enviado">
-          {status.message}
+          <div className="flex flex-col gap-3">
+            <p>{status.message}</p>
+            {calendarChannel ? (
+              <p>
+                ¿Prefieres hablar ya?{" "}
+                <Link href={calendarChannel.href} variant="inline">
+                  {calendarChannel.label}
+                </Link>
+              </p>
+            ) : null}
+          </div>
         </Alert>
       ) : null}
 
