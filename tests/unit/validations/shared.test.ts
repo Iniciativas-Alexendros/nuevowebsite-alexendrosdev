@@ -9,7 +9,7 @@ import {
 
 describe("slugSchema", () => {
   it("acepta un slug kebab-case válido", () => {
-    expect(slugSchema.safeParse("desarrollo-web").success).toBe(true);
+    expect(slugSchema.safeParse("produccion-sitios-web").success).toBe(true);
   });
 
   it("acepta un slug de un solo segmento", () => {

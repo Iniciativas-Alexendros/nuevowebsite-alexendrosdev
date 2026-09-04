@@ -18,8 +18,11 @@ describe("contact-subject-query", () => {
   });
 
   it("añade ?subject= según slug de servicio", () => {
-    expect(contactHrefForServiceSlug("auditoria-web")).toBe("/contacto?subject=auditoria");
-    expect(contactHrefForServiceSlug("desarrollo-web")).toBe("/contacto?subject=desarrollo");
+    expect(contactHrefForServiceSlug("auditorias")).toBe("/contacto?subject=auditoria");
+    expect(contactHrefForServiceSlug("produccion-sitios-web")).toBe("/contacto?subject=desarrollo");
+    expect(contactHrefForServiceSlug("consultoria-tecnologica")).toBe(
+      "/contacto?subject=asesoramiento"
+    );
     expect(contactHrefForServiceSlug("desconocido")).toBe("/contacto");
   });
 });

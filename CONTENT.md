@@ -81,7 +81,7 @@ Batería 5.3 respondida íntegramente, verificaciones del plan cumplidas y ADR-0
 
 # 3. Entidad Service
 
-**Fuente:** `src/content/services/<slug>.ts` — un módulo TS por servicio (cuatro servicios aprobados, DEC-SPECS-02), validado con `serviceSchema`.
+**Fuente:** `src/content/services/<slug>.ts` — un módulo TS por servicio (tres servicios aprobados: `produccion-sitios-web`, `auditorias`, `consultoria-tecnologica`; consolidación de los cuatro originales de DEC-SPECS-02), validado con `serviceSchema`.
 
 **Campos:**
 
@@ -193,16 +193,16 @@ Batería 5.3 respondida íntegramente, verificaciones del plan cumplidas y ADR-0
 
 **Fuente:** `src/content/contact.ts` — array TS tipado validado con `contactChannelsSchema`; consumida por `/contacto` y el footer (SPECS §6.8, ADR-0007). Asuntos del formulario: `src/content/contact-subjects.ts` (lista cerrada, REQ-FORM-CONTACT-001).
 
-**Taxonomía de asuntos (comercial, no 1:1 con servicios):** los seis asuntos son categorías de consulta más amplias que el catálogo de cuatro servicios (DEC-SPECS-02). Mapeo orientativo:
+**Taxonomía de asuntos (comercial, no 1:1 con servicios):** los seis asuntos son categorías de consulta más amplias que el catálogo de tres servicios (DEC-SPECS-02, consolidado a tres ofertas). Mapeo orientativo:
 
 | Asunto del formulario | Servicios / alcance relacionado |
 | --- | --- |
-| Proyecto de software · Programación de aplicaciones | Desarrollo web a medida |
-| Portal · Blog · Portafolio | Desarrollo web, landing pages |
-| Formación en Nuevas Tecnologías · Herramientas IA para la empresa | Automatización IA (formación/consultoría adyacente) |
-| Auditoría de seguridad y posicionamiento | Auditoría web |
-| Sistemas profesionales · Flujos de trabajos automatizables | Automatización y agentes IA |
-| Asesoramiento tecnológico · Consultor especializado | Transversal a los cuatro servicios |
+| Proyecto de software · Programación de aplicaciones | Producción de sitios web |
+| Portal · Blog · Portafolio | Producción de sitios web |
+| Formación en Nuevas Tecnologías · Herramientas IA para la empresa | Consultoría tecnológica (formación/consultoría adyacente) |
+| Auditoría de seguridad y posicionamiento | Auditorías |
+| Sistemas profesionales · Flujos de trabajos automatizables | Consultoría tecnológica (la implementación es proyecto aparte) |
+| Asesoramiento tecnológico · Consultor especializado | Transversal a los tres servicios |
 
 No se fuerza equivalencia slug↔asunto: el formulario captura intención comercial; el catálogo `/servicios` describe ofertas publicadas.
 
@@ -337,7 +337,7 @@ Al añadir analítica, newsletter, pagos, CMS u otro encargado / destinatario:
 | Pieza | Fuente prevista | Estado |
 | --- | --- | --- |
 | Propuesta de valor y home | `site.ts` • secciones | Tipado en `site.ts`; secciones de landing en Fase 5; hechos de site firmados 15-08-2026 (REQ-GLOBAL-008) |
-| 4 servicios (DEC-SPECS-02) | `services/*.ts` | Tipado `published`; firmado por el decisor el 15-08-2026 (REQ-GLOBAL-008) |
+| 3 servicios (DEC-SPECS-02, consolidados) | `services/*.ts` | Tipado `published`; consolidación 4→3 aprobada por el decisor (REQ-GLOBAL-008) |
 | 4 proyectos (DEC-SPECS-03) | `projects/*.ts` | Tipado `published`; firmado por el decisor el 15-08-2026 (REQ-GLOBAL-008); sin capturas aún (DES-07) |
 | Stack y prácticas | `technologies/index.ts` | Tipado `published`; firmado por el decisor el 15-08-2026 (REQ-GLOBAL-008) |
 | Bio (/sobre-mi) | `profile.ts` | Tipado `published`; firmado por el decisor el 15-08-2026 (REQ-GLOBAL-008) |

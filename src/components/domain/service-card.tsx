@@ -33,7 +33,7 @@ export function ServiceCard({
   const exclusionPreview =
     showExclusions && service.exclusions?.[0] ? service.exclusions[0] : undefined;
   const ctaHref = contactHrefForServiceSlug(service.slug, service.cta.href);
-  const ctaLabel = service.slug === "auditoria-web" ? "Pedir auditoría" : service.cta.label;
+  const ctaLabel = service.slug === "auditorias" ? "Pedir auditoría" : service.cta.label;
 
   return (
     <article className={cn("flex h-full flex-col gap-4 border-t border-border pt-6", className)}>
