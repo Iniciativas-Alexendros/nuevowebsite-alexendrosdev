@@ -7,7 +7,7 @@ test.describe("contacto", () => {
     await page.goto("/contacto");
 
     await expect(page.getByRole("heading", { level: 1, name: "Contacto" })).toBeVisible();
-    await expect(page.getByRole("link", { name: /Agendar una llamada/i })).toBeVisible();
+    await expect(page.getByRole("link", { name: /Agendar una llamada/i }).first()).toBeVisible();
     await expect(page.getByRole("link", { name: /política de privacidad/i }).first()).toBeVisible();
     await expect(page.getByLabel("Nombre")).toBeVisible();
     await expect(page.getByRole("button", { name: "Enviar mensaje" })).toBeVisible();
