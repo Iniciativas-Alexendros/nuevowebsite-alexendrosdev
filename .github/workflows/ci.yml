@@ -121,7 +121,9 @@ jobs:
           node-version-file: .nvmrc
           cache: pnpm
       - run: pnpm install --frozen-lockfile
-      - run: pnpm audit --prod --audit-level=high
+      # fetch-timeout alto: el endpoint de auditoría de npm responde en >60 s
+      # bajo degradación; el umbral de severidad no cambia.
+      - run: pnpm audit --prod --audit-level=high --config.fetch-timeout=240000
 
   lighthouse:
     name: Lighthouse CI
