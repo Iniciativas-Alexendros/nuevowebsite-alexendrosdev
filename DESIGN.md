@@ -376,7 +376,7 @@ Los tokens de componente no deben duplicar un token semántico sin aportar una r
 
 Reforma aprobada el 04-09-2026. Fuente de verdad de color desde P11-1. Reglas:
 
-- Todo valor en OKLCH; las escalas varían solo L con C/H constantes dentro de cada familia.
+- Todo valor en OKLCH; cada familia mantiene el matiz constante y L monótona en la escala (verificado en tests; la croma puede variar ligeramente entre pasos según los valores cerrados).
 - `:root` es el tema **oscuro** (default intencional); el claro se sirve con `@media (prefers-color-scheme: light)` (ADR-0016 ratificado).
 - Los componentes consumen tokens semánticos; prohibido `oklch()` arbitrario en `src/components/**` y `src/app/**` (§13, gate ADR-0030/0032).
 - Los ratios de §4.5 se verifican en tests de CI (REQ-DS-CONTRAST-001); si un valor no llega, se ajusta L dentro de la misma C/H y se registra aquí en el mismo PR.
@@ -396,25 +396,30 @@ Reforma aprobada el 04-09-2026. Fuente de verdad de color desde P11-1. Reglas:
 --color-fg-100: oklch(0.97 0.005 255);
 --color-fg-200: oklch(0.93 0.01 255);         /* foreground */
 --color-fg-300: oklch(0.75 0.015 255);
---color-fg-400: oklch(0.55 0.015 255);        /* placeholder */
+--color-fg-400: oklch(0.55 0.015 255);
+--color-fg-450: oklch(0.52 0.015 255);        /* placeholder (light) */
 
 /* Ámbar (matiz 75) — único acento de marca */
 --color-amber-100: oklch(0.97 0.04 75);
---color-amber-400: oklch(0.82 0.15 75);       /* hover (dark) */
+--color-amber-400: oklch(0.82 0.15 75);       /* hover (dark), warning (dark) */
 --color-amber-500: oklch(0.77 0.17 75);       /* primary (dark) */
---color-amber-600: oklch(0.70 0.17 75);       /* active (dark) */
---color-amber-700: oklch(0.58 0.15 75);       /* primary (light) */
---color-amber-800: oklch(0.52 0.14 75);       /* active (light) */
+--color-amber-600: oklch(0.70 0.17 75);       /* active (dark), warning (light) */
+--color-amber-700: oklch(0.58 0.15 75);
+--color-amber-750: oklch(0.45 0.11 75);       /* primary/ring/link (light) */
+--color-amber-800: oklch(0.42 0.11 75);       /* primary-hover (light) */
+--color-amber-850: oklch(0.39 0.10 75);       /* primary-active (light) */
 --color-amber-900: oklch(0.25 0.08 75);
 
 /* Estados */
 --color-lime-400: oklch(0.85 0.16 145);
 --color-lime-500: oklch(0.80 0.18 145);       /* success (dark) */
---color-lime-600: oklch(0.55 0.15 145);       /* success (light) */
+--color-lime-600: oklch(0.50 0.14 145);       /* success (light) */
 --color-cyan-500: oklch(0.75 0.12 205);       /* info (dark) */
---color-cyan-600: oklch(0.55 0.12 205);       /* info (light) */
+--color-cyan-600: oklch(0.48 0.11 205);       /* info (light) */
+--color-red-400: oklch(0.72 0.18 25);         /* destructive-hover (dark) */
 --color-red-500: oklch(0.65 0.20 25);         /* destructive (dark) */
 --color-red-600: oklch(0.55 0.19 25);         /* destructive (light) */
+--color-red-700: oklch(0.48 0.18 25);         /* destructive-hover (light) */
 
 /* Papel (matiz 255) — solo tema claro */
 --color-paper-50: oklch(0.98 0.003 255);      /* background light */
@@ -432,30 +437,30 @@ Reforma aprobada el 04-09-2026. Fuente de verdad de color desde P11-1. Reglas:
 | `--foreground` | `fg-200` | `obsidian-800` |
 | `--card` / `--popover` | `obsidian-800` | `paper-100` |
 | `--card-foreground` / `--popover-foreground` | `fg-200` | `obsidian-800` |
-| `--primary` | `amber-500` | `amber-700` |
-| `--primary-foreground` | `obsidian-900` | `obsidian-900` |
-| `--primary-hover` | `amber-400` | `oklch(0.64 0.15 75)` (entre 500 y 700) |
-| `--primary-active` | `amber-600` | `amber-800` |
+| `--primary` | `amber-500` | `amber-750` |
+| `--primary-foreground` | `obsidian-900` | `paper-50` |
+| `--primary-hover` | `amber-400` | `amber-800` |
+| `--primary-active` | `amber-600` | `amber-850` |
 | `--secondary` / `--muted` / `--accent` | `obsidian-700` | `paper-200` |
 | `--secondary-foreground` / `--accent-foreground` | `fg-200` | `obsidian-800` |
 | `--muted-foreground` | `oklch(0.65 0.015 255)` | `obsidian-500` |
 | `--destructive` | `red-500` | `red-600` |
-| `--destructive-foreground` | `fg-100` | `paper-50` |
-| `--success` | `lime-500` | `lime-600` |
-| `--info` | `cyan-500` | `cyan-600` |
-| `--warning` | `amber-400` | `amber-700` |
+| `--destructive-foreground` | `obsidian-900` | `paper-50` |
+| `--success` / `--success-foreground` | `lime-500` / `obsidian-900` | `lime-600` / `paper-50` |
+| `--info` / `--info-foreground` | `cyan-500` / `obsidian-900` | `cyan-600` / `paper-50` |
+| `--warning` / `--warning-foreground` | `amber-400` / `obsidian-900` | `amber-600` / `obsidian-900` |
 | `--border` / `--input` | `obsidian-700` | `paper-300` |
 | `--border-hover` (alias `--border-strong`) | `obsidian-600` | `paper-400` |
-| `--ring` / `--focus` | `amber-500` | `amber-700` |
-| `--placeholder` (alias `--foreground-subtle`) | `fg-400` | `oklch(0.55 0.015 255)` |
+| `--ring` / `--focus` | `amber-500` | `amber-750` |
+| `--placeholder` (alias `--foreground-subtle`) | `oklch(0.65 0.015 255)` | `fg-450` |
 | `--foreground-muted` | `oklch(0.65 0.015 255)` | `obsidian-500` |
-| `--link` | `amber-500` | `oklch(0.45 0.11 75)` (ámbar oscurecido, AA texto) |
+| `--link` | `amber-500` | `amber-750` |
 | `--link-hover` | `amber-400` | `amber-800` |
 | `--selection` | `oklch(0.77 0.17 75 / 0.2)` | `oklch(0.77 0.17 75 / 0.25)` |
 | `--overlay` | `oklch(0 0 0 / 0.7)` | `oklch(0.16 0.012 255 / 0.6)` |
 | `--disabled` | `obsidian-700` | `paper-200` |
 | `--disabled-foreground` | `obsidian-500` | `oklch(0.60 0.01 255)` |
-| `--terminal` | `obsidian-950` | `obsidian-950` (el terminal es oscuro en ambos temas, intencional) |
+| `--terminal` / `--terminal-foreground` | `obsidian-950` / `fg-200` | `obsidian-950` / `fg-200` (el terminal es oscuro en ambos temas, intencional) |
 
 Asignación de tokens heredados (se mantienen funcionando en P11-1; los componentes migran a los nuevos nombres en P11-2…P11-4): `--surface` → `--card`; `--surface-raised` → `--secondary` (oscuro) / `--card` (claro); `--surface-sunken` → `--terminal`; `--surface-inverse` → inversión de `--background`/`--foreground`; `--button-primary-hover` → `--primary-hover`; `--button-secondary-hover` / `--button-subtle-hover` → `--border-hover` / `--card`; `--button-destructive-hover` → `oklch(0.72 0.18 25)` (oscuro) / `oklch(0.48 0.18 25)` (claro).
 
@@ -468,6 +473,26 @@ Asignación de tokens heredados (se mantienen funcionando en P11-1; los componen
 ```
 
 El glow ámbar solo se aplica en `TerminalWindow` (con `withGlow`) y en el hover de `Button` primary; queda neutralizado bajo `prefers-reduced-motion` (§12).
+
+### Verificación de contraste (P11-1, REQ-DS-CONTRAST-001)
+
+Ratios medidos con colorjs.io (WCAG 2.1) en `tests/unit/forge-tokens.test.ts`; los valores ajustados frente a la propuesta inicial se marcaron en las tablas de arriba:
+
+| Par | Oscuro | Claro | Umbral |
+| --- | --- | --- | --- |
+| `--foreground` / `--background` | 15,8 | 16,7 | ≥ 15 |
+| `--muted-foreground` / `--card` | 5,5 | 6,6 | ≥ 4,5 |
+| `--primary` / `--background` | 9,1 | 7,2 | ≥ 7 |
+| `--placeholder` / fondo de control | 4,7 | 4,9 | ≥ 4,5 |
+| `--primary-foreground` / `--primary` | 9,1 | 7,2 | ≥ 4,5 |
+| `--destructive-foreground` / `--destructive` | 5,5 | 5,1 | ≥ 4,5 |
+| `--success-foreground` / `--success` | 11,1 | 5,3 | ≥ 4,5 |
+| `--info-foreground` / `--info` | 9,1 | 5,9 | ≥ 4,5 |
+| `--warning-foreground` / `--warning` | 10,9 | 7,1 | ≥ 4,5 |
+| `--link` / `--background` | 9,1 | 7,2 | ≥ 4,5 |
+| `--terminal-foreground` / `--terminal` | 16,5 | 16,5 | ≥ 15 |
+
+Ajustes registrados: placeholder oscuro 0,55 → 0,65 y claro 0,55 → 0,52; `--primary` claro 0,58 → 0,45 (con hover 0,42 y active 0,39); `--destructive-foreground` oscuro fg-100 → obsidian-900; success/info claro 0,55 → 0,50/0,48; warning claro amber-700 → amber-600.
 
 ---
 

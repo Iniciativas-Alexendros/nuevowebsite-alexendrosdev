@@ -18,6 +18,10 @@ const PATTERNS = [
     name: "tailwind-color-arbitrario",
     re: /(?:bg|text|border|from|to|via|fill|stroke|ring|outline|decoration|shadow)-\[#/,
   },
+  {
+    name: "tailwind-oklch-arbitrario",
+    re: /(?:bg|text|border|from|to|via|fill|stroke|ring|outline|decoration|shadow)-\[oklch\(/i,
+  },
   { name: "tailwind-px-arbitrario", re: /(?:^|[^\w-])[\w:-]*-\[\d+(?:\.\d+)?px\]/ },
 ];
 

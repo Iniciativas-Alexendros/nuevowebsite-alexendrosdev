@@ -1,27 +1,23 @@
-import localFont from "next/font/local";
+import { Geist, Geist_Mono } from "next/font/google";
 
 /**
- * Tipografías self-hosted (DES-03).
- * Los woff2 están subset a Latin/Latin-1 (español) para LCP (OBJ-005);
- * los archivos completos no viven en el repo.
+ * Tipografías Forge Terminal (DESIGN §5, reforma 04-09-2026 / ADR-0032).
+ * Geist se descarga en build y se self-hostea vía next/font: cero peticiones
+ * a terceros en runtime (espíritu de DES-03).
  */
-export const fontSans = localFont({
-  src: "../fonts/inter/InterVariable.woff2",
-  // optional: el LCP de rutas densas (/sobre-mi) es el h1 Inter; swap retrasaba ~100 ms lab (OBJ-005).
+export const fontSans = Geist({
+  subsets: ["latin"],
+  // optional: la sans cubre el LCP (h1); swap retrasaba ~100 ms lab (OBJ-005).
   display: "optional",
-  variable: "--font-inter",
-  weight: "400 700",
-  adjustFontFallback: "Arial",
-  fallback: ["system-ui", "-apple-system", "Segoe UI", "sans-serif"],
+  variable: "--font-geist-sans",
+  fallback: ["ui-sans-serif", "system-ui", "-apple-system", "Segoe UI", "sans-serif"],
 });
 
-export const fontMono = localFont({
-  src: "../fonts/jetbrains-mono/JetBrainsMono-Variable.woff2",
-  // optional: mono solo en badges; no debe competir con Inter en LCP (OBJ-005 /sobre-mi).
+export const fontMono = Geist_Mono({
+  subsets: ["latin"],
   display: "optional",
-  variable: "--font-jetbrains",
-  weight: "400 700",
+  variable: "--font-geist-mono",
+  // La mono cubre badges/kickers/terminal; no debe competir con la sans en LCP (OBJ-005).
   preload: false,
-  adjustFontFallback: "Arial",
   fallback: ["ui-monospace", "SF Mono", "Cascadia Mono", "monospace"],
 });
