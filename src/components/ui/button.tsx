@@ -1,31 +1,39 @@
 import type { ButtonHTMLAttributes } from "react";
+import { cva } from "class-variance-authority";
 import { LoaderCircle } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Icon } from "@/components/ui/icon";
 
+const buttonVariantsCva = cva(
+  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md font-medium transition-all duration-200 ease-out focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background disabled:pointer-events-none disabled:text-disabled-foreground [&_svg]:shrink-0",
+  {
+    variants: {
+      variant: {
+        primary:
+          "bg-primary text-primary-foreground hover:bg-primary-hover hover:shadow-[var(--shadow-glow-amber)] active:bg-primary-active disabled:bg-disabled",
+        secondary:
+          "border border-border bg-secondary text-secondary-foreground hover:border-border-hover disabled:bg-disabled",
+        ghost: "bg-transparent text-muted-foreground hover:bg-secondary hover:text-foreground",
+        outline: "border border-border bg-transparent text-foreground hover:bg-secondary",
+        destructive:
+          "bg-destructive text-destructive-foreground hover:bg-button-destructive-hover disabled:bg-disabled",
+      },
+      size: {
+        sm: "h-8 px-3 font-mono text-xs uppercase tracking-widest min-tap-target",
+        md: "h-10 px-4 text-sm",
+        lg: "h-11 px-6 text-base",
+        icon: "h-10 w-10 min-tap-target",
+      },
+    },
+    defaultVariants: {
+      variant: "primary",
+      size: "md",
+    },
+  }
+);
+
 export type ButtonVariant = "primary" | "secondary" | "outline" | "ghost" | "destructive";
 export type ButtonSize = "sm" | "md" | "lg" | "icon";
-
-const baseClasses =
-  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md font-medium transition-colors disabled:pointer-events-none disabled:text-disabled-foreground [&_svg]:shrink-0";
-
-const variantClasses: Record<ButtonVariant, string> = {
-  primary: "bg-primary text-primary-foreground hover:bg-button-primary-hover disabled:bg-disabled",
-  secondary:
-    "bg-secondary text-secondary-foreground hover:bg-button-secondary-hover disabled:bg-disabled",
-  outline:
-    "border border-border bg-transparent text-foreground hover:bg-button-subtle-hover disabled:border-muted",
-  ghost: "text-foreground hover:bg-button-subtle-hover",
-  destructive:
-    "bg-destructive text-destructive-foreground hover:bg-button-destructive-hover disabled:bg-disabled",
-};
-
-const sizeClasses: Record<ButtonSize, string> = {
-  sm: "h-9 px-3 text-sm min-tap-target",
-  md: "h-11 px-4 text-base",
-  lg: "h-12 px-6 text-lg",
-  icon: "h-11 w-11",
-};
 
 export function buttonVariants({
   variant = "primary",
@@ -36,7 +44,7 @@ export function buttonVariants({
   size?: ButtonSize;
   className?: string;
 } = {}) {
-  return cn(baseClasses, variantClasses[variant], sizeClasses[size], className);
+  return cn(buttonVariantsCva({ variant, size }), className);
 }
 
 export type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
