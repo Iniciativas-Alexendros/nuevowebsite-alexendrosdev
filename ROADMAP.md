@@ -484,6 +484,32 @@ Camino crítico ~70 h con solape de Fase 4. Sin holgura humana de revisión. Rec
 
 ---
 
+# 10.z. Consolidación de arquitectura de información (post-Fase 8)
+
+**Depende de:** Fase 8 integrada en `main` (PRs de cierre fusionados); apilada sobre el empaquetado de conversión (PR #79).
+
+<aside>
+📌
+
+Nueva IA editorial aprobada por el decisor (spec de sesión, 04-09-2026): el sitio se organiza en `/servicios` (tres ofertas) y `/sobre-mi` (perfil + método + proyectos + stack); `/contacto` conserva su carácter operativo de captación.
+
+</aside>
+
+**Objetivo:** simplificar la oferta pública a tres servicios y una única página de perfil que agrega evidencia (proyectos) y capacidades (stack), manteniendo compatibilidad mediante redirecciones permanentes.
+
+**Traza:** SPECS §6.2 (DEC-SPECS-02, consolidación 4→3), §6.4, §6.6, §6.7; CONTENT §3; ARCHITECTURE §5; REQ-GLOBAL-008.
+
+**Entregable:**
+
+- [ ] Tres servicios publicados (`produccion-sitios-web`, `auditorias`, `consultoria-tecnologica`) con descripción, destinatarios y alcance. — **PR #80.**
+- [ ] `/sobre-mi` con secciones `presentacion`, `metodo`, `#proyectos` y `#stack`; sin proyectos no públicos. — **PR #81.**
+- [ ] `/proyectos` → `/sobre-mi#proyectos` y `/stack` → `/sobre-mi#stack` como 308 en `next.config.ts`; páginas autónomas retiradas. — **PR #81.**
+- [ ] Home sin bloques de destacados; navegación principal Servicios / Sobre mí / Contacto; rutas P0 reducidas a seis en axe, Lighthouse, CI y smoke. — **PR #82.**
+
+**Criterio de salida (firma del decisor):** CI verde en los tres PRs, redirects 308 verificados con curl y e2e, documentación canónica sin IA contradictoria, y validación MITL del preview antes de cualquier promoción (ADR-0025).
+
+---
+
 # 11. Fase 9 — Mejoras posteriores priorizadas
 
 **Depende de:** — (posterior al lanzamiento)

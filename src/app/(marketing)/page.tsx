@@ -1,8 +1,6 @@
 import type { Metadata } from "next";
 
 import { CtaSection } from "@/components/domain/cta-section";
-import { FeaturedProjects } from "@/components/domain/featured-projects";
-import { FeaturedStack } from "@/components/domain/featured-stack";
 import { Hero } from "@/components/domain/hero";
 import { ServiceList } from "@/components/domain/service-list";
 import { Container } from "@/components/layout/container";
@@ -10,12 +8,7 @@ import { Section } from "@/components/layout/section";
 import { Link } from "@/components/ui/link";
 import { contactChannels } from "@/content/contact";
 import { siteConfig } from "@/content/site";
-import {
-  getFeaturedProjects,
-  getFeaturedServices,
-  getFeaturedTechnologies,
-  getPublishedProfile,
-} from "@/lib/content";
+import { getFeaturedServices, getPublishedProfile } from "@/lib/content";
 import { absoluteUrl } from "@/lib/seo";
 
 export const metadata: Metadata = {
@@ -26,8 +19,6 @@ export const metadata: Metadata = {
   },
 };
 
-const HOME_STACK_LIMIT = 8;
-
 const calendarHref =
   contactChannels.find((channel) => channel.type === "calendar" && channel.visible)?.href ??
   "https://cal.com/alexendros";
@@ -35,8 +26,6 @@ const calendarHref =
 export default function Home() {
   const profile = getPublishedProfile();
   const featuredServices = getFeaturedServices();
-  const featuredProjects = getFeaturedProjects();
-  const featuredStack = getFeaturedTechnologies().slice(0, HOME_STACK_LIMIT);
 
   const heroTitle = siteConfig.defaultTitle.includes("—")
     ? siteConfig.defaultTitle.split("—")[1]!.trim()
@@ -67,8 +56,8 @@ export default function Home() {
               Servicios
             </h2>
             <p className="max-w-2xl text-lg text-foreground-muted">
-              Áreas en las que puedo ayudarte. Resultados adaptados a tu gusto y necesidades, sin
-              promesas vacías.
+              Tres formas de trabajar juntos: producir tu web, auditar lo que ya tienes o decidir
+              con criterio antes de invertir. Sin promesas vacías.
             </p>
           </div>
           <ServiceList services={featuredServices} showScope={false} showCta={false} />
@@ -88,23 +77,19 @@ export default function Home() {
         </Container>
       </Section>
 
-      <Section deferPaint aria-labelledby="proyectos-destacados">
-        <Container>
-          <FeaturedProjects
-            projects={featuredProjects}
-            heading="Proyectos destacados"
-            headingId="proyectos-destacados"
-          />
-        </Container>
-      </Section>
-
-      <Section variant="sunken" deferPaint aria-labelledby="stack-destacado">
-        <Container>
-          <FeaturedStack
-            technologies={featuredStack}
-            heading="Stack destacado"
-            headingId="stack-destacado"
-          />
+      <Section deferPaint aria-labelledby="sobre-mi-intro">
+        <Container className="flex max-w-3xl flex-col gap-6">
+          <h2 id="sobre-mi-intro" className="text-2xl font-semibold text-foreground md:text-3xl">
+            Sobre mí
+          </h2>
+          <p className="text-lg leading-relaxed text-foreground-muted">{profile?.title}</p>
+          <p className="text-base leading-relaxed text-foreground-muted">
+            Método de trabajo verificable, proyectos públicos y el stack que uso a diario:{" "}
+            <Link href="/sobre-mi" variant="inline">
+              conóceme mejor
+            </Link>
+            .
+          </p>
         </Container>
       </Section>
 

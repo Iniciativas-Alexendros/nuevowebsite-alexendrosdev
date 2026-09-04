@@ -17,7 +17,7 @@ Esta guía define las convenciones editoriales para todo el contenido del sitio.
 
 ## 2. Convenciones de slug
 
-- **kebab-case en minúsculas**: `desarrollo-web`, `front-valencia`, `vcf-cribador`.
+- **kebab-case en minúsculas**: `produccion-sitios-web`, `front-valencia`, `vcf-cribador`.
 - **Máximo 64 caracteres**, mínimo 2.
 - **Solo letras, números y guiones**: `^[a-z0-9]+(?:-[a-z0-9]+)*$`.
 - **Semánticos y estables**: el slug no cambia aunque cambie el título.

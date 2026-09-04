@@ -8,8 +8,6 @@ import { getServiceBySlug } from "@/lib/content";
 import { getProjectBySlug } from "@/lib/content";
 import { getTechnologiesByCategory } from "@/lib/content";
 import { getFeaturedServices } from "@/lib/content";
-import { getFeaturedProjects } from "@/lib/content";
-import { getFeaturedTechnologies } from "@/lib/content";
 import { getTechnologyById } from "@/lib/content";
 import { getRelatedTechnologies } from "@/lib/content";
 import { getPublishedLegalDocuments } from "@/lib/content";
@@ -112,27 +110,6 @@ describe("selectores de contenido publicado", () => {
     for (const service of featured) {
       expect(service.featured).toBe(true);
       expect(service.status).toBe("published");
-    }
-  });
-
-  it("getFeaturedProjects solo devuelve proyectos featured", () => {
-    const featured = getFeaturedProjects();
-
-    expect(featured.length).toBeGreaterThan(0);
-    for (const project of featured) {
-      expect(project.featured).toBe(true);
-      expect(project.status).toBe("published");
-      expect(project.visibility).toBe("publico");
-    }
-  });
-
-  it("getFeaturedTechnologies solo devuelve tecnologías featured", () => {
-    const featured = getFeaturedTechnologies();
-
-    expect(featured.length).toBeGreaterThan(0);
-    for (const tech of featured) {
-      expect(tech.featured).toBe(true);
-      expect(tech.status).toBe("published");
     }
   });
 

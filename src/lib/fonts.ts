@@ -7,7 +7,7 @@ import localFont from "next/font/local";
  */
 export const fontSans = localFont({
   src: "../fonts/inter/InterVariable.woff2",
-  // optional: el LCP de rutas densas (/stack) es el h1 Inter; swap retrasaba ~100 ms lab (OBJ-005).
+  // optional: el LCP de rutas densas (/sobre-mi) es el h1 Inter; swap retrasaba ~100 ms lab (OBJ-005).
   display: "optional",
   variable: "--font-inter",
   weight: "400 700",
@@ -17,7 +17,7 @@ export const fontSans = localFont({
 
 export const fontMono = localFont({
   src: "../fonts/jetbrains-mono/JetBrainsMono-Variable.woff2",
-  // optional: mono solo en badges; no debe competir con Inter en LCP (OBJ-005 /stack).
+  // optional: mono solo en badges; no debe competir con Inter en LCP (OBJ-005 /sobre-mi).
   display: "optional",
   variable: "--font-jetbrains",
   weight: "400 700",
