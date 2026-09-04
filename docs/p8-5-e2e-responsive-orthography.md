@@ -15,6 +15,8 @@
 | **E2E-3** | Formulario contacto | Enviar formulario `/contacto` con datos inválidos y válidos; mensajes de error | `contact-form.spec.ts` | ☐ |
 | **E2E-4** | Servicios page | Navegar a `/servicios`, verificar tarjetas y enlaces | `services.spec.ts` | ☐ |
 | **E2E-5** | Proyectos page | Navegar a `/proyectos`, filtrar y ver tarjetas | `projects.spec.ts` | ☐ |
+
+> **Nota 04-09-2026 (Fase 10.z, nueva IA):** `/proyectos` ya no es página autónoma; es redirección 308 a `/sobre-mi#proyectos`, donde vive el listado. La fila E2E-5 se interpreta sobre ese bloque de `/sobre-mi` (validado en `portfolio.spec.ts` / e2e de redirects 308).
 | **E2E-6** | Footer links | Todos los enlaces del footer abren destinos correctos (no rotos) | `footer.spec.ts` | ☐ |
 | **E2E-6** | Error pages | `404` y `500` pages renderizan correctamente | `error-pages.spec.ts` | ☐ |
 

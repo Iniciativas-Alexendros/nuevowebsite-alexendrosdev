@@ -26,9 +26,27 @@
 | Smoke post-deploy preprod | 18-08 · manual ✅ · GHA [32094880161](https://github.com/Iniciativas-Alexendros/nuevowebsite-alexendrosdev/actions/runs/32094880161) ✅ |
 | MITL Playwright preview | ✅ | Preview `ffd975d` revisada decisor 18-08 |
 | Firmas Fases 5 / 6 / 7 / 7.z / 8 | ✅ decisor | 18-08-2026 · [firmas-go-live-v1.0.md](./firmas-go-live-v1.0.md) |
-| PROMOTE run / Production deployment_id | ☐ waiting Environment · [33809704201](https://github.com/Iniciativas-Alexendros/nuevowebsite-alexendrosdev/actions/runs/33809704201) |
-| Smoke postprod | ☐ post-PROMOTE |
-| Release `v1.0.0` (tag = mismo SHA) | ☐ post-PROMOTE |
+| PROMOTE run / Production deployment_id | ✅ 18-08-2026 (go-live v1.0 en `ffd975d`). El run [33809704201](https://github.com/Iniciativas-Alexendros/nuevowebsite-alexendrosdev/actions/runs/33809704201) quedó en `waiting` por re-dispatch posterior y se canceló el 04-09-2026 al quedar superado por el PROMOTE v1.1.0. |
+| Smoke postprod | ✅ 18-08-2026 (go-live v1.0); revalidado 04-09-2026 tras PROMOTE v1.1.0 (smoke verde: 6 rutas 200 + 2 redirects 308). |
+| Release `v1.0.0` (tag = mismo SHA) | ✅ 18-08-2026 · [v1.0.0](https://github.com/Iniciativas-Alexendros/nuevowebsite-alexendrosdev/releases/tag/v1.0.0) → `ffd975d` · issue #64 cerrado. |
+
+---
+
+## Cierre v1.1.0 — Fase 10.z (04-09-2026)
+
+Consolidación de la arquitectura de información (tres servicios; `/sobre-mi` con perfil, método, proyectos y stack; `/proyectos` y `/stack` como 308). Firma del criterio de salida registrada en ROADMAP §10.z.
+
+| Campo | Valor |
+| --- | --- |
+| SHA aprobado (preview = PROMOTE = tag, R-P0-01) | `62a8565b8ec936c1bc9290af5134b9e4ebeb7b66` |
+| PRs integrados | #79 (empaquetado conversión) · #83 (tres servicios) · #81 (sobre-mi + 308 + nav) · #82 (home + gates 6 rutas) · #84 (docs firma) |
+| CI main verde | runs 33850712933/33850712857 (#81), 33854742327 (#82) |
+| Preview MITL (run / URL) | [33856683583](https://github.com/Iniciativas-Alexendros/nuevowebsite-alexendrosdev/actions/runs/33856683583) · https://nuevowebsite-alexendrosdev-pryajorth-alexendros-team.vercel.app |
+| MITL + firma decisor | ✅ 04-09-2026 (firma en ROADMAP §10.z, PR #84) |
+| PROMOTE run / deployment | [33862518627](https://github.com/Iniciativas-Alexendros/nuevowebsite-alexendrosdev/actions/runs/33862518627) · deployment `6262848393` · https://nuevowebsite-alexendrosdev-q41vs5j3p-alexendros-team.vercel.app |
+| Smoke postprod | ✅ 04-09-2026 · https://alexendros.dev: 6 canónicas 200; `/proyectos` → 308 `/sobre-mi#proyectos`; `/stack` → 308 `/sobre-mi#stack` |
+| Release `v1.1.0` (tag = mismo SHA) | ✅ 04-09-2026 · run [33880235785](https://github.com/Iniciativas-Alexendros/nuevowebsite-alexendrosdev/actions/runs/33880235785) · [v1.1.0](https://github.com/Iniciativas-Alexendros/nuevowebsite-alexendrosdev/releases/tag/v1.1.0) → `62a8565` |
+| Incidencia resuelta | Run v1.0 en `waiting` (33809704201) retenía el grupo `deploy-fase-production`; cancelado 04-09 antes del PROMOTE. |
 
 ---
 
@@ -69,7 +87,7 @@
 | **P8-1.2** | Revisado por decisor | ✅ | 18-08-2026 |
 | **P8-1.3** | MITL Fases 5–7 en preview | ✅ firma | Preview `ffd975d` · decisor 18-08 |
 | **P8-1.4** | Smoke SMTP real | ✅ | `operaciones@` 18-08 + HTTP 200 |
-| **P8-1.5** | Tag `v1.0.0` vía `release.yml` | ☐ | ADR-0026 + `expected_sha`; post-PROMOTE |
+| **P8-1.5** | Tag `v1.0.0` vía `release.yml` | ✅ | 18-08-2026 · tag → `ffd975d` (ADR-0026) |
 | **P8-1.6** | Redirecciones legacy | ✅ | N/A (ADR-0013) |
 | **P8-1.7** | Rollback documentado y ensayable | ✅ | Runbook + simulacro 18-08 |
 
@@ -135,9 +153,9 @@ Ver [runbook-rollback.md](./runbook-rollback.md). Resumen:
 | **P8-6.2** | MITL preview (`expected_sha`) aprobada | ✅ firma | Decisor 18-08-2026 |
 | **P8-6.3** | Smoke SMTP preprod | ✅ | GHA + bandeja 18-08 |
 | **P8-6.4** | Firmas Fases 5, 6, 7, 7.z, 8 | ✅ | 18-08-2026 |
-| **P8-6.5** | `PROMOTE` production (mismo SHA) | ☐ | Decisor · ADR-0025 |
-| **P8-6.6** | Smoke postproducción | ☐ | Post-PROMOTE |
-| **P8-6.7** | Tag + GitHub Release `v1.0.0` (mismo SHA) | ☐ | Post-PROMOTE · ADR-0026 |
+| **P8-6.5** | `PROMOTE` production (mismo SHA) | ✅ | Decisor 18-08-2026 · ADR-0025 (go-live v1.0) |
+| **P8-6.6** | Smoke postproducción | ✅ | 18-08-2026; revalidado 04-09-2026 (v1.1.0) |
+| **P8-6.7** | Tag + GitHub Release `v1.0.0` (mismo SHA) | ✅ | 18-08-2026 · release.yml · ADR-0026 |
 
 ---
 

@@ -6,6 +6,8 @@
 **Firmas:** [docs/firmas-go-live-v1.0.md](./firmas-go-live-v1.0.md)  
 **Dictamen:** MITL + firmas **firmadas 18-08-2026**. PROMOTE disparado 03-09-2026 — **pendiente aprobación entorno GitHub `Production`**.
 
+> **Cerrado 04-09-2026:** el run 33809704201 (re-dispatch del PROMOTE v1.0, en `waiting`) se canceló: retenía el grupo de concurrencia `deploy-fase-production` y quedó superado por el PROMOTE de la Fase 10.z. El go-live v1.0 ya se había realizado el 18-08-2026 (deployment en `ffd975d`, tag `v1.0.0`, issue #64 cerrado). Producción quedó en `62a8565` (v1.1.0); evidencias en [release-checklist.md](./release-checklist.md) § Cierre v1.1.0.
+
 **SHA candidato (inmutable):** `ffd975d77d79a815c237954842eed092ec2c0d94`  
 **Preview MITL:** https://nuevowebsite-alexendrosdev-ifq50j8q2-alexendros-team.vercel.app  
 **PROMOTE run (waiting):** https://github.com/Iniciativas-Alexendros/nuevowebsite-alexendrosdev/actions/runs/33809704201  
