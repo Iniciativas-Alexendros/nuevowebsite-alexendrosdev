@@ -88,9 +88,12 @@ export function StackGroup({
                 ))}
               </ul>
             ) : (
-              <ul className="grid list-none grid-cols-1 gap-8 md:grid-cols-2">
+              <ul className="grid list-none grid-cols-1 gap-4 md:grid-cols-2">
                 {items.map((tech) => (
-                  <li key={tech.id} className="flex flex-col gap-3 border-t border-border pt-6">
+                  <li
+                    key={tech.id}
+                    className="flex flex-col gap-2 rounded-lg border border-border bg-card p-4 transition-colors duration-200 hover:border-border-hover"
+                  >
                     {/* font-sans: evita resolución mono en el critical path del catálogo (LCP). */}
                     <TechnologyBadge technology={tech} className="font-sans" />
                     <p className="text-base leading-relaxed text-foreground-muted">
