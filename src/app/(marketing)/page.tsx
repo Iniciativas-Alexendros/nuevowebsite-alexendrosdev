@@ -60,6 +60,9 @@ export default function Home() {
       <Section variant="surface" deferPaint aria-labelledby="servicios-destacados">
         <Container className="flex flex-col gap-10">
           <div className="flex flex-col gap-3">
+            <p className="font-mono text-xs uppercase tracking-widest text-muted-foreground">
+              ~/servicios
+            </p>
             <h2
               id="servicios-destacados"
               className="text-2xl font-semibold text-foreground md:text-3xl"
@@ -101,9 +104,14 @@ export default function Home() {
 
       <Section deferPaint aria-labelledby="sobre-mi-intro">
         <Container className="flex max-w-3xl flex-col gap-6">
-          <h2 id="sobre-mi-intro" className="text-2xl font-semibold text-foreground md:text-3xl">
-            Sobre mí
-          </h2>
+          <div className="flex flex-col gap-3">
+            <p className="font-mono text-xs uppercase tracking-widest text-muted-foreground">
+              ~/sobre-mi
+            </p>
+            <h2 id="sobre-mi-intro" className="text-2xl font-semibold text-foreground md:text-3xl">
+              Sobre mí
+            </h2>
+          </div>
           <p className="text-lg leading-relaxed text-foreground-muted">{profile?.title}</p>
           <p className="text-base leading-relaxed text-foreground-muted">
             Método de trabajo verificable, proyectos públicos y el stack que uso a diario:{" "}

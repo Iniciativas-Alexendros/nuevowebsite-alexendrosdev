@@ -30,6 +30,7 @@ export default async function ContactoPage({ searchParams }: ContactoPageProps) 
   return (
     <>
       <PageHeader
+        kicker="~/contacto"
         title="Contacto"
         description="Puedes escribirme por el formulario, enviarme un email o agendar una llamada. Elige el canal que te resulte más cómodo."
       />
@@ -50,9 +51,12 @@ export default async function ContactoPage({ searchParams }: ContactoPageProps) 
             <h2 className="text-xl font-semibold text-foreground">Otros canales</h2>
             <ul className="flex list-none flex-col gap-4">
               {channels.map((channel) => (
-                <li key={channel.href} className="flex flex-col gap-1 border-t border-border pt-4">
-                  <Link href={channel.href} variant="inline">
-                    {channel.label}
+                <li
+                  key={channel.href}
+                  className="flex flex-col gap-1 border-l-2 border-transparent py-1 pl-4 transition-colors hover:border-primary"
+                >
+                  <Link href={channel.href} variant="inline" className="font-mono text-sm">
+                    $ {channel.label}
                   </Link>
                   {channel.availability ? (
                     <p className="text-sm text-foreground-muted">{channel.availability}</p>
