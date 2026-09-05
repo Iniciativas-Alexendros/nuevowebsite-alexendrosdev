@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 
 import { CtaSection } from "@/components/domain/cta-section";
-import { ServiceList } from "@/components/domain/service-list";
+import { ServiceSection } from "@/components/domain/service-section";
 import { Container } from "@/components/layout/container";
 import { PageHeader } from "@/components/layout/page-header";
 import { Section } from "@/components/layout/section";
@@ -26,12 +26,15 @@ export default function ServiciosPage() {
   return (
     <>
       <PageHeader
+        kicker="~/servicios"
         title="Servicios"
         description="Tres líneas de trabajo con alcance, entregables y exclusiones explícitas. Sin precios, plazos ni garantías no confirmados."
       />
       <Section>
         <Container>
-          <ServiceList services={services} showDeliverables showExclusions />
+          {services.map((service, index) => (
+            <ServiceSection key={service.id} service={service} index={index} />
+          ))}
         </Container>
       </Section>
       <CtaSection
