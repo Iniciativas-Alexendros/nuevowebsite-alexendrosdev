@@ -39,18 +39,18 @@ Este archivo es el punto de entrada de lectura del proyecto. Te dice qué leer d
 
 # Estado en una mirada
 
-**Pulso:** 4 de septiembre de 2026 — v1.0 (18-08) y **v1.1.0** (Fase 10.z, consolidación de IA) en producción; **Fase 11 (Forge Terminal DS)** anclada en canon con ADR-0032, pendiente de arrancar P11-1.
+**Pulso:** 5 de septiembre de 2026 — v1.0 (18-08) y **v1.1.0** (Fase 10.z, consolidación de IA) en producción; **Fase 11 (Forge Terminal DS)** con P11-1…P11-4 integrados en `main` (#87–#90, `834b33a`), pendiente de `Deploy fase (Vercel)` → QA visual MITL (claro/oscuro) y firma del decisor (ADR-0025).
 
 **Fase activa:** 11 — Design System Forge Terminal (ADR-0032). Fases 0–8 y 10.z cerradas y firmadas.
 
-**Siguiente acción:** P11-1 (tokens Forge + Geist + tests de contraste). Detalle: [ROADMAP.md](./ROADMAP.md) §11.
+**Siguiente acción:** decisor lanza `Deploy fase (Vercel)` sobre `main` (`834b33a`) y valida el preview MITL antes de firmar el cierre de Fase 11. Detalle: [ROADMAP.md](./ROADMAP.md) §11.
 
 **Objetivo de producto:** v1.0 lanzada el 18-08-2026; v1.1.0 el 04-09-2026. Siguiente hito: Fase 11 (DS Forge Terminal).
 
 | Capa | Estado |
 | --- | --- |
 | Documentación canónica | Aprobada el 13-08-2026; ADR-0032 (Forge Terminal) aceptada el 04-09-2026 |
-| Código del sitio nuevo | v1.1.0 en producción (`https://alexendros.dev`); Fase 11 pendiente de arrancar |
+| Código del sitio nuevo | v1.1.0 en producción (`https://alexendros.dev`); Fase 11 integrada en `main` (#87–#90), pendiente de preview MITL y firma |
 | Repositorio nuevo | `Iniciativas-Alexendros/nuevowebsite-alexendrosdev` (público) |
 | Sitio anterior | Solo lectura; sin redirecciones legacy (ADR-0013) |
 | Contenido editorial | Hechos firmados; legales `published`; asesoría externa post-v1.0 (ADR-0027); DES-07 diferido (ADR-0028) |

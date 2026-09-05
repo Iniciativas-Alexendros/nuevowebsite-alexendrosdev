@@ -527,10 +527,10 @@ Migración del design system a «Forge Terminal — Developer Obsidian» aprobad
 
 **Entregable:**
 
-- [ ] **P11-1** Tokens fundacionales: `src/lib/tokens/` (primitivos tipados + `isValidOklch` + `getContrastRatio`), `src/styles/forge-terminal.css` (`@theme inline`, `<alpha-value>`, dual dark/light), Geist vía `next/font` (retira woff2 de `src/fonts/`), gate anti-`oklch(` arbitrario en `scripts/check-design-tokens.mjs`, tests de contraste en CI. Deps: `class-variance-authority`, `colorjs.io`.
-- [ ] **P11-2** Primitivos UI con cva: Button, Badge, Input, Textarea y Card nuevo; API pública estable; foco `ring-2 ring-offset-background`.
-- [ ] **P11-3** Componentes Forge de dominio: `TerminalWindow`, `ServiceCommand`, `GridPattern` (en `src/components/domain/`), migración de `ProjectCard`, `SiteHeader`/`SiteFooter` (mono, skip link `#main`).
-- [ ] **P11-4** Páginas: hero con `TerminalWindow` + `GridPattern`, servicios con `ServiceCommand` (tres ofertas vigentes), contacto con Card; SEO/metadata intactos; e2e (incl. `seo.spec.ts` con `https://alexendros.dev`), axe 6/6 y Lighthouse ≥ 90 móvil en verde.
+- [x] **P11-1** Tokens fundacionales: `src/lib/tokens/` (primitivos tipados + `isValidOklch` + `getContrastRatio`), `src/styles/forge-terminal.css` (`@theme inline`, dual dark/light), Geist self-hosted vía `next/font/local` (subset latin en `src/fonts/geist/`), gate anti-`oklch(` arbitrario en `scripts/check-design-tokens.mjs`, tests de contraste en CI. Deps: `class-variance-authority`, `colorjs.io`. — **PR #87.** Nota: `<alpha-value>` descartado (idioma v3; en v4 la opacidad se resuelve con `color-mix()`); Geist pasa de `next/font/google` a `next/font/local` en P11-4 por estabilidad de LCP (PR #90).
+- [x] **P11-2** Primitivos UI con cva: Button, Badge, Input, Textarea y Card nuevo; API pública estable; foco `ring-2 ring-offset-background`. — **PR #88.**
+- [x] **P11-3** Componentes Forge de dominio: `TerminalWindow`, `ServiceCommand`, `GridPattern` (en `src/components/domain/`), migración de `ProjectCard`, `SiteHeader`/`SiteFooter` (mono, skip link `#main`). — **PR #89.**
+- [x] **P11-4** Páginas: hero con `TerminalWindow` + `GridPattern`, servicios con `ServiceCommand` (tres ofertas vigentes), contacto con Card; SEO/metadata intactos; e2e (incl. `seo.spec.ts` con `https://alexendros.dev`), axe 6/6 y Lighthouse ≥ 90 móvil en verde. — **PR #90** (incluye fix de LCP: Geist local latin + `display: swap`).
 
 **Exclusiones:** textos legales (ADR-0027), endpoint SMTP y rotación de `SMTP_TOKEN`, multiidioma, cualquier P1/P2 de la Fase 9.
 
