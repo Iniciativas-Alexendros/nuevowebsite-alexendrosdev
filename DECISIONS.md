@@ -111,6 +111,7 @@ Ruta: ./DECISIONS.md
 - **ADR-0030** — Gate anti-hex en CI, CSP de producción sin `unsafe-eval`, HSTS `includeSubDomains`+`preload`. *(aceptada, 17-08-2026)*
 - **ADR-0031** — Runtime Node 24 LTS y majors de Actions fijados. *(aceptada, 18-08-2026)*
 - **ADR-0032** — Design System Forge Terminal — Developer Obsidian: paleta OKLCH obsidiana/ámbar, dark default dual, Geist y variantes cva. *(aceptada, 04-09-2026)* — invierte el tema `:root` de ADR-0016 (oscuro pasa a ser el default) y sustituye las familias tipográficas de DES-03.
+- **ADR-0033** — Umbral LCP lab de CI local a 2750 ms por deriva del runner de GitHub. *(aceptada, 05-09-2026)* — ajusta el valor ejecutable de DEC-AGENTS-04 sin relajar las categorías (≥90) ni CLS.
 
 ---
 
@@ -1093,6 +1094,43 @@ Ruta: ./DECISIONS.md
 	- Sin proveedores runtime nuevos: Geist se descarga en build (next/font) y se self-hostea; colorjs.io y cva son dependencias de build/test.
 - Verificación:
 	- Tests de contraste en CI (REQ-DS-CONTRAST-001), gate anti-`oklch(` arbitrario en `pnpm lint`, axe 6/6 rutas P0 y Lighthouse ≥ 90 móvil tras P11-4.
+- Fecha de revisión:
+	- Tras la firma de la Fase 11 o a 3 meses.
+
+</details>
+
+<details>
+<summary>**ADR-0033** — Umbral LCP lab de CI local a 2750 ms por deriva del runner de GitHub</summary>
+
+- Estado: aceptada
+- Fecha: 2026-09-05
+- Decisores: Alexendros (con evidencia aportada por el asistente IA)
+- Relacionado con: DEC-AGENTS-04 (umbrales P0), R-P0-04 (Fase 8), OBJ-005, ADR-0025 (Lighthouse en CI local), ADR-0032
+- Contexto:
+	- El umbral ejecutable de LCP en CI local se fijó en 2500 ms (R-P0-04, Fase 8) con los runners de GitHub de mediados de agosto.
+	- El 05-09-2026 el gate falla de forma sistemática sin cambios de código relevantes: la PR #92 (un prop opcional sin impacto visual) falla con LCP `/servicios` 2731 ms, `/sobre-mi` 2590 ms y `/aviso-legal` 2731 ms; la PR #86 (docs-only) falló con 2594 ms; la PR #90 falló dos veces (2597/2590 ms) y pasó en re-run sin cambiar código.
+	- La misma rama en local pasa el assert canónico con mediana 2271–2422 ms en las 6 rutas P0. La deriva observada del runner entre el 04-09 y el 05-09 es de ~+300-460 ms, variable según la hora del día.
+	- Consecuencia práctica: el gate se ha convertido en una lotería de re-runs y bloquea cualquier PR, incluidos los docs-only.
+- Decisión:
+	1. El umbral `largest-contentful-paint` de `lighthouserc.json` pasa de 2500 ms a **2750 ms** (mediana de 3 runs, CI local tras `pnpm build`, ADR-0025).
+	2. NO se relajan las cuatro categorías (≥90 en móvil, OBJ-005), ni CLS (<0,1), ni axe-core bloqueante, ni la cobertura ≥70 % en `src/lib/`.
+	3. El trabajo de adelgazamiento real continúa (fuentes self-hosted latin en #90; reducción de payload de `/sobre-mi` en la migración Forge de páginas interiores); si el margen mejora de forma sostenida, este umbral DEBE revisarse a la baja.
+- Alternativas consideradas:
+	- Mantener 2500 ms y re-lanzar jobs hasta que un runner rápido pase: rechazado; convierte el gate en ruido y deja PRs bloqueados por causas ajenas al código.
+	- Mantener 2500 ms y solo optimizar payload: rechazado como única vía; la dieta realista ronda 100-150 ms, insuficiente ante una deriva de +300-460 ms, aunque se sigue haciendo por mérito propio.
+	- Subir `numberOfRuns` y afirmar sobre la mediana: no corrige un offset sistemático del runner; se mantiene como opción futura de robustez estadística.
+- Consecuencias positivas:
+	- El gate vuelve a medir regresiones en lugar de deriva del runner; CI desbloqueado para PRs docs-only y de diseño.
+- Consecuencias negativas:
+	- 250 ms menos de exigencia nominal en LCP lab; mitigado por la revisión a la baja comprometida y por el presupuesto de categorías intacto.
+- Plan de implementación:
+	- `lighthouserc.json` (`maxNumericValue: 2750`) y referencias en `docs/quality-gates.md` y `docs/release-checklist.md`; se documenta en la ficha Notion de Fase 11.
+- Plan de reversión:
+	- ADR sustituto o edición directa del valor al constatar margen sostenido tras el adelgazamiento de páginas.
+- Seguridad y privacidad:
+	- Sin impacto; es un umbral de medición en CI local.
+- Verificación:
+	- CI verde en la PR que introduce el cambio y en las PRs de Fase 11 pendientes sin re-runs.
 - Fecha de revisión:
 	- Tras la firma de la Fase 11 o a 3 meses.
 

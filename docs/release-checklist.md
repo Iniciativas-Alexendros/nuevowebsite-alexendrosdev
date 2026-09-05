@@ -74,7 +74,7 @@ Consolidación de la arquitectura de información (tres servicios; `/sobre-mi` c
 | **R-P0-01** | `expected_sha` en Deploy fase y Release | ✅ código | Preview / Production / tag = mismo SHA |
 | **R-P0-02** | Rollback por SHA / tag / deployment ID | ✅ código + runbook + simulacro | Preview 18-08 OK (#64) |
 | **R-P0-03** | Bypass seguro smoke SMTP | N/A — Vercel Hobby: sin Deployment Protection (feature Pro) | — |
-| **R-P0-04** | LCP máx. 2500 ms (OBJ-005) | ✅ | `lighthouserc.json`; sin relajación 2700 |
+| **R-P0-04** | LCP máx. 2500 ms (OBJ-005) | ✅ | `lighthouserc.json`; verificado a 2500 ms en Fase 8; umbral vigente 2750 ms por ADR-0033 (05-09-2026) |
 | **R-P0-05** | Secuencia única en README / handoff / checklist / #64 / Notion | ✅ docs | Este archivo + handoff |
 
 ---

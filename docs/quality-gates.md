@@ -60,7 +60,7 @@ Son **siete** checks requeridos desde el scaffold de Fase 1 (histórico: gate Li
 ## 5. Lighthouse (OBJ-005)
 
 - **Umbral:** ≥ **90** en performance, accessibility, best-practices y SEO (móvil).
-- **LCP lab:** ≤ **2500 ms** en LHCI (OBJ-005; sin relajación implícita). CLS &lt;0,1.
+- **LCP lab:** ≤ **2750 ms** en LHCI (OBJ-005; valor ajustado por ADR-0033, 05-09-2026, deriva del runner de GitHub; revisable a la baja tras adelgazar páginas). CLS &lt;0,1.
 - **Dónde:** CI local tras `pnpm build` + servidor `pnpm start` (no despliega Vercel por PR; ADR-0025).
 - **Config:** [`lighthouserc.json`](../lighthouserc.json).
 
