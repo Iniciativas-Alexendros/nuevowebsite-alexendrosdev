@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 
 import { CtaSection } from "@/components/domain/cta-section";
 import { Hero } from "@/components/domain/hero";
-import { ServiceList } from "@/components/domain/service-list";
+import { ServiceCommand } from "@/components/domain/service-command";
 import { Container } from "@/components/layout/container";
 import { Section } from "@/components/layout/section";
 import { Link } from "@/components/ui/link";
@@ -44,6 +44,17 @@ export default function Home() {
         description={heroDescription}
         primaryCta={{ label: "Escríbeme", href: "/contacto" }}
         secondaryCta={{ label: "Agendar llamada", href: calendarHref }}
+        withGridPattern
+        terminal={{
+          title: "alexendros@forge:~$",
+          withGlow: true,
+          logs: [
+            { type: "cmd", text: "pnpm ci && pnpm build" },
+            { type: "success", text: "✓ Typecheck, lint y tests en verde" },
+            { type: "success", text: "✓ axe-core: 0 violaciones en 6 rutas" },
+            { type: "muted", text: "▶ https://alexendros.dev" },
+          ],
+        }}
       />
 
       <Section variant="surface" deferPaint aria-labelledby="servicios-destacados">
@@ -60,7 +71,18 @@ export default function Home() {
               con criterio antes de invertir. Sin promesas vacías.
             </p>
           </div>
-          <ServiceList services={featuredServices} showScope={false} showCta={false} />
+          <div className="flex flex-col">
+            {featuredServices.map((service, index) => (
+              <ServiceCommand
+                key={service.id}
+                id={String(index + 1).padStart(2, "0")}
+                command={service.slug}
+                description={service.shortDescription}
+                checks={service.deliverables.slice(0, 2)}
+                href="/servicios"
+              />
+            ))}
+          </div>
           <div className="flex max-w-2xl flex-col gap-4 border-t border-border pt-8">
             <p className="text-lg leading-relaxed text-foreground">
               Requisitos exigentes, productos de calidad, mantenimiento continuado y criterio

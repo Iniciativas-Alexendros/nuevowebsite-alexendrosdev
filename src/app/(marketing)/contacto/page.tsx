@@ -4,6 +4,7 @@ import { ContactForm } from "@/components/domain/contact-form";
 import { Container } from "@/components/layout/container";
 import { PageHeader } from "@/components/layout/page-header";
 import { Section } from "@/components/layout/section";
+import { Card } from "@/components/ui/card";
 import { Link } from "@/components/ui/link";
 import { getVisibleContactChannels } from "@/lib/content";
 import { resolveContactSubjectQuery } from "@/lib/contact-subject-query";
@@ -40,7 +41,9 @@ export default async function ContactoPage({ searchParams }: ContactoPageProps) 
               Ideal para consultas con contexto: alcance, plazos orientativos del lado del cliente y
               enlaces relevantes. Respuesta directa a tu email.
             </p>
-            <ContactForm initialSubject={initialSubject} />
+            <Card>
+              <ContactForm initialSubject={initialSubject} />
+            </Card>
           </div>
 
           <aside className="flex flex-col gap-6">

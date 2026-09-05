@@ -169,14 +169,35 @@
 }
 
 /*
- * Utilidades Forge (DESIGN §4.5): fondos decorativos tokenizados.
+ * Utilidades Forge (DESIGN §4.5): fondos decorativos y z-index tokenizados.
  * Viven aquí y no en componentes para cumplir el gate §13 (sin valores arbitrarios).
+ * Nota: en Tailwind v4 el namespace `--z-*` de @theme NO genera utilidades `z-*`;
+ * se declaran como @utility explícitas sobre los tokens --z-*.
  */
 @layer utilities {
   .bg-grid-pattern {
     background-image: radial-gradient(var(--grid-dot) 1px, transparent 1px);
     background-size: 1.5rem 1.5rem;
   }
+}
+
+@utility z-base {
+  z-index: var(--z-base);
+}
+@utility z-dropdown {
+  z-index: var(--z-dropdown);
+}
+@utility z-sticky {
+  z-index: var(--z-sticky);
+}
+@utility z-overlay {
+  z-index: var(--z-overlay);
+}
+@utility z-modal {
+  z-index: var(--z-modal);
+}
+@utility z-toast {
+  z-index: var(--z-toast);
 }
 
 /*
@@ -233,13 +254,6 @@
   --color-button-secondary-hover: var(--button-secondary-hover);
   --color-button-subtle-hover: var(--button-subtle-hover);
   --color-button-destructive-hover: var(--button-destructive-hover);
-
-  --z-base: var(--z-base);
-  --z-dropdown: var(--z-dropdown);
-  --z-sticky: var(--z-sticky);
-  --z-overlay: var(--z-overlay);
-  --z-modal: var(--z-modal);
-  --z-toast: var(--z-toast);
 
   --font-sans: var(--font-geist-sans, var(--font-family-sans));
   --font-mono: var(--font-geist-mono, var(--font-family-mono));

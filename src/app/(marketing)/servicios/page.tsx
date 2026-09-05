@@ -12,7 +12,7 @@ import { buildPageMetadata } from "@/lib/seo";
 export const metadata: Metadata = buildPageMetadata({
   title: "Servicios",
   description:
-    "Desarrollo web a medida, landing pages, automatización con IA y auditoría técnica. Alcance claro, sin precios ni plazos inventados.",
+    "Producción de sitios web, auditorías técnicas y consultoría tecnológica. Alcance claro, sin precios ni plazos inventados.",
   path: "/servicios",
 });
 
@@ -27,7 +27,7 @@ export default function ServiciosPage() {
     <>
       <PageHeader
         title="Servicios"
-        description="Cuatro líneas de trabajo con alcance, entregables y exclusiones explícitas. Sin precios, plazos ni garantías no confirmados."
+        description="Tres líneas de trabajo con alcance, entregables y exclusiones explícitas. Sin precios, plazos ni garantías no confirmados."
       />
       <Section>
         <Container>
