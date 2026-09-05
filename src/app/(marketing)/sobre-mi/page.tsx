@@ -35,7 +35,7 @@ export default function SobreMiPage() {
 
   return (
     <>
-      <PageHeader title="Sobre mí" description={profile.summary} />
+      <PageHeader kicker="~/sobre-mi" title="Sobre mí" description={profile.summary} />
 
       <Section aria-labelledby="presentacion">
         <Container className="flex max-w-3xl flex-col gap-8">
@@ -45,43 +45,59 @@ export default function SobreMiPage() {
             </h2>
             <p className="text-lg text-foreground-muted">{profile.title}</p>
             {profile.location ? (
-              <p className="text-base text-foreground-muted">{profile.location}</p>
+              <p className="font-mono text-xs uppercase tracking-widest text-muted-foreground">
+                {profile.location}
+              </p>
             ) : null}
           </div>
 
-          <div className="flex flex-col gap-5">
+          <div className="flex flex-col gap-4">
             {profile.bio.map((paragraph, index) => (
-              <p key={`bio-${index}`} className="text-lg leading-relaxed text-foreground">
+              <p key={`bio-${index}`} className="text-base leading-relaxed text-foreground">
                 {paragraph}
               </p>
             ))}
           </div>
 
-          {profile.languages && profile.languages.length > 0 ? (
-            <div className="flex flex-col gap-2 border-t border-border pt-8">
-              <h3 className="text-lg font-semibold text-foreground">Idiomas</h3>
-              <ul className="list-inside list-disc text-base text-foreground-muted">
-                {profile.languages.map((language) => (
-                  <li key={language}>{language}</li>
-                ))}
-              </ul>
-            </div>
-          ) : null}
+          <div className="grid gap-6 border-t border-border pt-8 sm:grid-cols-2">
+            {profile.languages && profile.languages.length > 0 ? (
+              <div className="flex flex-col gap-3">
+                <h3 className="font-mono text-xs uppercase tracking-widest text-muted-foreground">
+                  Idiomas
+                </h3>
+                <ul className="flex list-none flex-col gap-2">
+                  {profile.languages.map((language) => (
+                    <li key={language} className="font-mono text-sm text-foreground-muted">
+                      <span aria-hidden="true" className="text-success">
+                        ✓
+                      </span>{" "}
+                      {language}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ) : null}
 
-          {profile.links && profile.links.length > 0 ? (
-            <div className="flex flex-col gap-3 border-t border-border pt-8">
-              <h3 className="text-lg font-semibold text-foreground">Enlaces</h3>
-              <ul className="flex flex-wrap gap-4">
-                {profile.links.map((link) => (
-                  <li key={link.href}>
-                    <Link href={link.href} variant="inline">
-                      {link.label}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          ) : null}
+            {profile.links && profile.links.length > 0 ? (
+              <div className="flex flex-col gap-3">
+                <h3 className="font-mono text-xs uppercase tracking-widest text-muted-foreground">
+                  Enlaces
+                </h3>
+                <ul className="flex list-none flex-col gap-2">
+                  {profile.links.map((link) => (
+                    <li key={link.href} className="font-mono text-sm">
+                      <span aria-hidden="true" className="text-muted-foreground">
+                        ${" "}
+                      </span>
+                      <Link href={link.href} variant="inline">
+                        {link.label}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ) : null}
+          </div>
         </Container>
       </Section>
 
@@ -90,9 +106,17 @@ export default function SobreMiPage() {
           <h2 id="metodo" className="text-2xl font-semibold text-foreground">
             Método de trabajo
           </h2>
-          <ol className="flex list-decimal flex-col gap-3 pl-6 text-base leading-relaxed text-foreground">
-            {profile.method.map((step) => (
-              <li key={step.slice(0, 32)}>{step}</li>
+          <ol className="flex list-none flex-col gap-3">
+            {profile.method.map((step, index) => (
+              <li
+                key={step.slice(0, 32)}
+                className="flex gap-3 text-base leading-relaxed text-foreground"
+              >
+                <span aria-hidden="true" className="font-mono text-muted-foreground">
+                  {String(index + 1).padStart(2, "0")}.
+                </span>
+                <span>{step}</span>
+              </li>
             ))}
           </ol>
         </Container>
