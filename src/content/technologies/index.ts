@@ -62,19 +62,19 @@ export const technologies: Technology[] = [
     relatedServices: ["consultoria-tecnologica"],
   }),
   technologySchema.parse({
-    id: "go",
-    name: "Go",
-    category: "lenguaje",
+    id: "react",
+    name: "React",
+    category: "framework",
     description:
-      "Lenguaje compilado, concurrencia nativa, binarios estáticos. Para microservicios, workers y tooling de infraestructura.",
-    icon: "terminal",
-    website: "https://go.dev",
+      "Biblioteca para construir interfaces de usuario. Server Components, hooks, concurrent features. Base de Next.js y Astro islands.",
+    icon: "atom",
+    website: "https://react.dev",
     relevance:
-      "Workers de validación de archivos (Gráficas Nasve), agentes MCP, APIs internas. Simplicidad operativa y despliegue trivial.",
-    featured: false,
+      "Framework principal de todos los proyectos web (Next.js App Router, Astro islands). React 19 con Server Components, hooks personalizados, patrones compuestos.",
+    featured: true,
     status: "published",
-    relatedProjects: ["graficas-nasve"],
-    relatedServices: ["consultoria-tecnologica"],
+    relatedProjects: ["front-valencia", "graficas-nasve", "alexendros-me"],
+    relatedServices: ["produccion-sitios-web", "auditorias"],
   }),
   technologySchema.parse({
     id: "tailwind-css",
@@ -216,7 +216,7 @@ export const technologies: Technology[] = [
     name: "Model Context Protocol (MCP)",
     category: "herramienta",
     description:
-      "Protocolo abierto para conectar LLMs con herramientas, datos y APIs. Servidores MCP en TypeScript/Rust/Go para exponer capacidades de forma segura.",
+      "Protocolo abierto para conectar LLMs con herramientas, datos y APIs. Servidores MCP en TypeScript/Rust para exponer capacidades de forma segura.",
     icon: "plug",
     website: "https://modelcontextprotocol.io",
     relevance:
