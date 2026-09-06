@@ -301,3 +301,63 @@
     }
   }
 }
+
+/*
+ * Fondo «framed» (petición del decisor 05-09-2026; referencia Forge-Theme-Fondo).
+ * Telón fijo detrás de la hoja de contenido, en tres capas tokenizadas:
+ * wash ámbar (--primary), grid de líneas 2 rem con máscara radial (--grid-dot)
+ * y línea horizonte. Sin animación ni JS; reduced-motion no aplica.
+ * La hoja de contenido (bg-background, border-x) la monta el layout raíz.
+ */
+@utility framed-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    radial-gradient(
+      ellipse 70% 55% at 30% 18%,
+      color-mix(in oklch, var(--primary) 12%, transparent) 0%,
+      transparent 65%
+    ),
+    radial-gradient(
+      ellipse 85% 65% at 80% 85%,
+      color-mix(in oklch, var(--surface-sunken) 85%, transparent) 0%,
+      transparent 70%
+    );
+
+  &::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background:
+      linear-gradient(
+        to right,
+        color-mix(in oklch, var(--grid-dot) 90%, transparent) 1px,
+        transparent 1px
+      ),
+      linear-gradient(
+        to bottom,
+        color-mix(in oklch, var(--grid-dot) 90%, transparent) 1px,
+        transparent 1px
+      );
+    background-size: 2rem 2rem;
+    mask-image: radial-gradient(ellipse 90% 70% at 50% 40%, black 35%, transparent 100%);
+  }
+
+  &::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 42vh;
+    height: 1px;
+    background: linear-gradient(
+      90deg,
+      transparent 0%,
+      color-mix(in oklch, var(--primary) 55%, transparent) 55%,
+      transparent 100%
+    );
+    opacity: 0.6;
+  }
+}

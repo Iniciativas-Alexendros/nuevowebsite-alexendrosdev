@@ -16,7 +16,8 @@
   }
 
   body {
-    @apply bg-background text-foreground font-sans;
+    /* Telón exterior del layout «framed»; la hoja de contenido lleva bg-background. */
+    @apply bg-surface-sunken text-foreground font-sans;
   }
 
   ::selection {
