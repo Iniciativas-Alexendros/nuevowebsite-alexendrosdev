@@ -9,7 +9,10 @@ export type LabelProps = LabelHTMLAttributes<HTMLLabelElement> & {
 export function Label({ required = false, className, children, ...props }: LabelProps) {
   return (
     <label
-      className={cn("text-sm font-medium leading-normal text-foreground", className)}
+      className={cn(
+        "font-mono text-xs uppercase tracking-widest leading-normal text-foreground",
+        className
+      )}
       {...props}
     >
       {children}
