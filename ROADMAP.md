@@ -531,6 +531,8 @@ Migración del design system a «Forge Terminal — Developer Obsidian» aprobad
 - [x] **P11-2** Primitivos UI con cva: Button, Badge, Input, Textarea y Card nuevo; API pública estable; foco `ring-2 ring-offset-background`. — **PR #88.**
 - [x] **P11-3** Componentes Forge de dominio: `TerminalWindow`, `ServiceCommand`, `GridPattern` (en `src/components/domain/`), migración de `ProjectCard`, `SiteHeader`/`SiteFooter` (mono, skip link `#main`). — **PR #89.**
 - [x] **P11-4** Páginas: hero con `TerminalWindow` + `GridPattern`, servicios con `ServiceCommand` (tres ofertas vigentes), contacto con Card; SEO/metadata intactos; e2e (incl. `seo.spec.ts` con `https://alexendros.dev`), axe 6/6 y Lighthouse ≥ 90 móvil en verde. — **PR #90** (incluye fix de LCP: Geist local latin + `display: swap`).
+- [x] **P11-5** Interiores Forge: `/servicios` (ServiceSection + PageHeader), `/sobre-mi` (ProjectGrid + StackGroup + PageHeader), `/contacto` (ContactForm + PageHeader + Card), home kickers mono. — **PR #94, #97, #98.**
+- [x] **P11-6** Fondo «framed»: `@utility framed-backdrop` (wash radial primary/surface-sunken, grid 2rem --grid-dot + mask radial, horizonte top:42vh), body bg-surface-sunken, wrapper hoja border-x bg-background shadow-2xl. — **PR #99.**
 
 **Exclusiones:** textos legales (ADR-0027), endpoint SMTP y rotación de `SMTP_TOKEN`, multiidioma, cualquier P1/P2 de la Fase 9.
 
