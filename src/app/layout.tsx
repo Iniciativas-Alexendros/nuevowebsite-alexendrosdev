@@ -18,12 +18,16 @@ export default function RootLayout({
   return (
     <html lang="es" className={`${fontSans.variable} ${fontMono.variable}`}>
       <body>
+        {/* Telón «framed» fijo (solo decorativo; capas tokenizadas en forge-terminal.css) */}
+        <div aria-hidden="true" className="framed-backdrop" />
         <SkipLink />
-        <SiteHeader />
-        <main id="contenido-principal" tabIndex={-1}>
-          {children}
-        </main>
-        <SiteFooter />
+        <div className="relative mx-auto flex min-h-svh w-full max-w-6xl flex-col border-x border-border bg-background shadow-2xl">
+          <SiteHeader />
+          <main id="contenido-principal" tabIndex={-1} className="flex-1">
+            {children}
+          </main>
+          <SiteFooter />
+        </div>
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
