@@ -39,11 +39,11 @@ Este archivo es el punto de entrada de lectura del proyecto. Te dice qué leer d
 
 # Estado en una mirada
 
-**Pulso:** 5 de septiembre de 2026 — v1.0 (18-08) y **v1.1.0** (Fase 10.z, consolidación de IA) en producción; **Fase 11 (Forge Terminal DS)** con P11-1…P11-4 integrados en `main` (#87–#90, `834b33a`), pendiente de `Deploy fase (Vercel)` → QA visual MITL (claro/oscuro) y firma del decisor (ADR-0025).
+**Pulso:** 6 de septiembre de 2026 — v1.0 (18-08) y **v1.1.0** (Fase 10.z) en producción; **Fase 11 (Forge Terminal DS)** completada: P11-1…P11-6 integrados en `main` (#87–#90, #94, #97, #98, #99; `e6eff3e`), pendiente `Deploy fase (Vercel)` fase 11 → QA visual MITL y firma del decisor (ADR-0025).
 
-**Fase activa:** 11 — Design System Forge Terminal (ADR-0032). Fases 0–8 y 10.z cerradas y firmadas.
+**Fase activa:** 11 — Design System Forge Terminal (ADR-0032). Fases 0–8 y 10.z cerradas y firmadas; implementación Fase 11 completa (P11-1…P11-6).
 
-**Siguiente acción:** decisor lanza `Deploy fase (Vercel)` sobre `main` (`834b33a`) y valida el preview MITL antes de firmar el cierre de Fase 11. Detalle: [ROADMAP.md](./ROADMAP.md) §11.
+**Siguiente acción:** decisor lanza `Deploy fase (Vercel)` fase 11 sobre `main` (`e6eff3e`) y valida el preview MITL antes de firmar el cierre de Fase 11. Detalle: [ROADMAP.md](./ROADMAP.md) §11.
 
 **Objetivo de producto:** v1.0 lanzada el 18-08-2026; v1.1.0 el 04-09-2026. Siguiente hito: Fase 11 (DS Forge Terminal).
 
@@ -156,11 +156,11 @@ El sitio lo implementa un agente de código. El humano dirige, revisa diffs, hac
 
 # Pendiente ahora
 
-v1.0 (18-08) y v1.1.0 (04-09) en producción. **Activa:** Fase 11 — Design System Forge Terminal (ADR-0032; ROADMAP §11).
+v1.0 (18-08) y v1.1.0 (04-09) en producción. **Activa:** Fase 11 — Design System Forge Terminal (ADR-0032; ROADMAP §11) — implementación completa (P11-1…P11-6), pendiente deploy MITL + firma.
 
-## Fase 11 — Forge Terminal DS (activa)
+## Fase 11 — Forge Terminal DS (implementación completa; pendiente deploy MITL)
 
-Unidades: P11-1 tokens + Geist + contraste en CI · P11-2 primitivos cva · P11-3 componentes Forge · P11-4 páginas. Canon: ADR-0032, REQ-DS-*, DESIGN §4.5.
+Unidades: P11-1 tokens + Geist + contraste · P11-2 primitivos cva · P11-3 componentes Forge · P11-4 páginas · P11-5 interiores (#94, #97, #98) · P11-6 fondo framed (#99). Canon: ADR-0032, REQ-DS-*, DESIGN §4.5.
 
 ## Residuales humanos (post-go-live)
 
@@ -203,7 +203,7 @@ Capacidad: 50 h/semana de dirección y revisión humana. Ventana: 14–24 ago 20
 | 7 | vie 21 – sáb 22 | Aviso legal y privacidad |
 | 8 | sáb 22 – lun 24 | **Lanzamiento v1.0** (realizado 18-08) |
 | 10.z | jue 3 – vie 4 sep | Consolidación IA (v1.1.0, realizado 04-09) |
-| 11 | a partir del 4 sep | **Forge Terminal DS** (ADR-0032; P11-1…P11-4) |
+| 11 | 4–6 sep 2026 | **Forge Terminal DS** (ADR-0032; P11-1…P11-6 **implementados**) |
 | 9 | posterior a Fase 11 | P1/P2 solo con disparador + ADR |
 
 **Disparadores P1** (no adelantar trabajo):
